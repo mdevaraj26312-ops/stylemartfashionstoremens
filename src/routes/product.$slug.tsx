@@ -92,7 +92,7 @@ function ProductPage() {
             </div>
             {gallery.length > 1 && (
               <div className="mt-3 grid grid-cols-4 gap-3">
-                {gallery.slice(0, 4).map((g, i) => (
+                {gallery.slice(0, 4).map((g: string, i: number) => (
                   <div key={i} className="aspect-square overflow-hidden rounded-md bg-muted">
                     <img src={g} alt="" className="h-full w-full object-cover" />
                   </div>
@@ -132,7 +132,7 @@ function ProductPage() {
 
             {p.features && p.features.length > 0 && (
               <ul className="mt-5 grid gap-2 text-sm">
-                {p.features.map((f) => (
+                {p.features.map((f: string) => (
                   <li key={f} className="flex items-start gap-2">
                     <span className="mt-1.5 h-1 w-1 rounded-full bg-accent" />
                     <span>{f}</span>
@@ -178,7 +178,7 @@ function ProductPage() {
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-16">
           <h2 className="font-display text-2xl sm:text-3xl mb-6">You may also like</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {related.map((r) => (
+            {related.map((r: typeof p) => (
               <ProductCard key={r.slug} p={r} />
             ))}
           </div>

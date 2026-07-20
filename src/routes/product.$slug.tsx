@@ -1,7 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronRight, Star, ArrowUpRight, Heart, Share2, Truck, ShieldCheck, RotateCcw } from "lucide-react";
+import { useEffect } from "react";
+import { ChevronRight, Star, ArrowUpRight, Heart, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
+import { ShareButtons } from "@/components/site/ShareButtons";
+import { RecentlyViewed } from "@/components/site/RecentlyViewed";
+import { pushRecentView, trackAffiliateClick, useWishlist } from "@/lib/user-store";
 import {
   findProduct,
   getCategory,

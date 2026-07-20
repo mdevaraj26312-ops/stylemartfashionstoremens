@@ -95,13 +95,9 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-1">
-            <button className="hidden sm:grid place-items-center h-9 w-9 rounded-full hover:bg-muted" aria-label="Wishlist">
-              <Heart className="h-4 w-4" />
-            </button>
-            <button className="grid place-items-center h-9 w-9 rounded-full hover:bg-muted" aria-label="Bag">
-              <ShoppingBag className="h-4 w-4" />
-            </button>
+            <WishlistLink />
           </div>
+
         </div>
 
         <form onSubmit={submit} className="pb-4">

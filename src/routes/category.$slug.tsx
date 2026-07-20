@@ -1,7 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductGrid } from "@/components/site/ProductCard";
+import {
+  CatalogFilters,
+  applyFilters,
+  type FilterState,
+} from "@/components/site/CatalogFilters";
 import { CATEGORIES, getCategory, productsByCategory } from "@/lib/catalog";
 
 export const Route = createFileRoute("/category/$slug")({
@@ -28,6 +34,7 @@ export const Route = createFileRoute("/category/$slug")({
         { property: "og:description", content: c.tagline },
         { property: "og:image", content: c.hero },
       ],
+      links: [{ rel: "canonical", href: `/category/${c.slug}` }],
     };
   },
   component: CategoryPage,
@@ -46,6 +53,20 @@ export const Route = createFileRoute("/category/$slug")({
 
 function CategoryPage() {
   const { category, products } = Route.useLoaderData();
+
+  const priceCap = useMemo(
+    () => Math.max(2000, ...products.map((p) => p.price)),
+    [products],
+  );
+
+  const [filters, setFilters] = useState<FilterState>({
+    sort: "featured",
+    maxPrice: priceCap,
+    stores: [],
+  });
+
+  const filtered = useMemo(() => applyFilters(products, filters), [products, filters]);
+
   return (
     <SiteLayout>
       <section className="relative">
@@ -87,14 +108,17 @@ function CategoryPage() {
           ))}
         </div>
 
-        <div className="flex items-baseline justify-between pb-6">
+        <CatalogFilters value={filters} onChange={setFilters} priceCap={priceCap} />
+
+        <div className="mt-8 flex items-baseline justify-between pb-6">
           <p className="text-sm text-muted-foreground">
-            {products.length} {products.length === 1 ? "product" : "products"}
+            Showing {filtered.length} of {products.length}{" "}
+            {products.length === 1 ? "product" : "products"}
           </p>
           <p className="eyebrow">Curated · Updated daily</p>
         </div>
 
-        <ProductGrid products={products} />
+        <ProductGrid products={filtered} />
       </section>
     </SiteLayout>
   );

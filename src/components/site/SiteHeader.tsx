@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Search, Menu, Heart, ShoppingBag, X } from "lucide-react";
+import { Search, Menu, Heart, X } from "lucide-react";
 import { CATEGORIES } from "@/lib/catalog";
+import { useWishlist } from "@/lib/user-store";
+
 
 const EXTRA_NAV = [
   { label: "About", to: "/about" as const },

@@ -81,21 +81,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Discover trending fashion across men, women, kids, footwear, bags, watches, jewellery and accessories — curated from Amazon, Flipkart, Meesho and more.",
+          "Trending fashion, new arrivals and the best deals — curated from Amazon, Flipkart, Meesho, Myntra and more.",
       },
       { name: "author", content: "Style Mart" },
       { property: "og:title", content: "Style Mart — Curated Fashion from Every Store" },
       {
         property: "og:description",
         content:
-          "Trending fashion, new arrivals and the best deals — curated from top marketplaces in one place.",
+          "Trending fashion, new arrivals and the best deals — curated from Amazon, Flipkart, Meesho, Myntra and more.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Style Mart — Curated Fashion from Every Store" },
+      { name: "twitter:description", content: "Trending fashion, new arrivals and the best deals — curated from Amazon, Flipkart, Meesho, Myntra and more." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b1203a08-a6d7-49f2-b1e5-0d25adfead40" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b1203a08-a6d7-49f2-b1e5-0d25adfead40" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

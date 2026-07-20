@@ -211,3 +211,22 @@ function Trust({ icon: Icon, label }: { icon: typeof Truck; label: string }) {
     </div>
   );
 }
+
+function SaveButton({ slug }: { slug: string }) {
+  const { has, toggle } = useWishlist();
+  const saved = has(slug);
+  return (
+    <button
+      onClick={() => toggle(slug)}
+      className={`inline-flex items-center justify-center gap-2 h-11 rounded-full border text-xs tracking-wide transition ${
+        saved
+          ? "border-destructive text-destructive"
+          : "border-border hover:border-foreground"
+      }`}
+    >
+      <Heart className={`h-4 w-4 ${saved ? "fill-destructive" : ""}`} />
+      {saved ? "Saved to wishlist" : "Save to wishlist"}
+    </button>
+  );
+}
+}

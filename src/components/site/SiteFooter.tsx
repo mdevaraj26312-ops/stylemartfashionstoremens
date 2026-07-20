@@ -58,9 +58,10 @@ export function SiteFooter() {
                 Discover
               </p>
               <ul className="mt-4 space-y-2.5">
-                <li><Link to="/" hash="trending" className="text-sm text-primary-foreground/85 hover:text-accent">Trending</Link></li>
-                <li><Link to="/" hash="new" className="text-sm text-primary-foreground/85 hover:text-accent">New Arrivals</Link></li>
-                <li><Link to="/" hash="sale" className="text-sm text-primary-foreground/85 hover:text-accent">Best Deals</Link></li>
+                <li><Link to="/trending" className="text-sm text-primary-foreground/85 hover:text-accent">Trending</Link></li>
+                <li><Link to="/new-arrivals" className="text-sm text-primary-foreground/85 hover:text-accent">New Arrivals</Link></li>
+                <li><Link to="/deals" className="text-sm text-primary-foreground/85 hover:text-accent">Best Deals</Link></li>
+                <li><Link to="/wishlist" className="text-sm text-primary-foreground/85 hover:text-accent">Wishlist</Link></li>
                 <li><Link to="/search" search={{ q: "trending" }} className="text-sm text-primary-foreground/85 hover:text-accent">Search</Link></li>
               </ul>
             </div>
@@ -71,8 +72,7 @@ export function SiteFooter() {
               <ul className="mt-4 space-y-2.5">
                 <li><Link to="/about" className="text-sm text-primary-foreground/85 hover:text-accent">About</Link></li>
                 <li><Link to="/contact" className="text-sm text-primary-foreground/85 hover:text-accent">Contact</Link></li>
-                <li><a href="#" className="text-sm text-primary-foreground/85 hover:text-accent">Affiliate disclosure</a></li>
-                <li><a href="#" className="text-sm text-primary-foreground/85 hover:text-accent">Privacy</a></li>
+                <li><Link to="/affiliate-disclosure" className="text-sm text-primary-foreground/85 hover:text-accent">Affiliate disclosure</Link></li>
               </ul>
             </div>
           </div>

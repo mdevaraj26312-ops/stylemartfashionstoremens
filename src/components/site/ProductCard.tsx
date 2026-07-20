@@ -1,10 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, Heart, Star } from "lucide-react";
 import { type Product, inr, discountPct } from "@/lib/catalog";
+import { trackAffiliateClick, useWishlist } from "@/lib/user-store";
 
 export function ProductCard({ p, deal = false }: { p: Product; deal?: boolean }) {
   const pct = discountPct(p.price, p.original);
   const isDeal = deal || p.deal;
+  const { has, toggle } = useWishlist();
+  const saved = has(p.slug);
+
   return (
     <article className="group flex flex-col">
       <Link
@@ -31,11 +35,20 @@ export function ProductCard({ p, deal = false }: { p: Product; deal?: boolean })
         )}
         <button
           type="button"
-          onClick={(e) => e.preventDefault()}
-          aria-label="Save"
-          className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-background/90 text-foreground opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggle(p.slug);
+          }}
+          aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
+          aria-pressed={saved}
+          className={`absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-background/90 transition ${
+            saved
+              ? "text-destructive opacity-100 translate-y-0"
+              : "text-foreground opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0"
+          }`}
         >
-          <Heart className="h-4 w-4" />
+          <Heart className={`h-4 w-4 ${saved ? "fill-destructive" : ""}`} />
         </button>
         <span className="absolute left-3 bottom-3 rounded-sm bg-background/90 backdrop-blur px-2 py-0.5 text-[10px] tracking-[0.16em] uppercase">
           {p.source}
@@ -74,6 +87,7 @@ export function ProductCard({ p, deal = false }: { p: Product; deal?: boolean })
           href={p.affiliateUrl}
           target="_blank"
           rel="sponsored noopener noreferrer"
+          onClick={() => trackAffiliateClick(p)}
           className="mt-3 inline-flex items-center justify-center gap-1.5 h-10 rounded-full bg-primary text-primary-foreground text-xs tracking-[0.15em] uppercase hover:bg-accent transition-colors"
         >
           Buy Now <ArrowUpRight className="h-3.5 w-3.5" />

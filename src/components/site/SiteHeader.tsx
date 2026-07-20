@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Search, Menu, Heart, ShoppingBag, X } from "lucide-react";
+import { Search, Menu, Heart, X } from "lucide-react";
 import { CATEGORIES } from "@/lib/catalog";
+import { useWishlist } from "@/lib/user-store";
+
 
 const EXTRA_NAV = [
   { label: "About", to: "/about" as const },
@@ -93,13 +95,9 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-1">
-            <button className="hidden sm:grid place-items-center h-9 w-9 rounded-full hover:bg-muted" aria-label="Wishlist">
-              <Heart className="h-4 w-4" />
-            </button>
-            <button className="grid place-items-center h-9 w-9 rounded-full hover:bg-muted" aria-label="Bag">
-              <ShoppingBag className="h-4 w-4" />
-            </button>
+            <WishlistLink />
           </div>
+
         </div>
 
         <form onSubmit={submit} className="pb-4">
@@ -148,4 +146,23 @@ export function SiteHeader() {
       </div>
     </header>
   );
+}
+
+function WishlistLink() {
+  const { slugs } = useWishlist();
+  return (
+    <Link
+      to="/wishlist"
+      className="relative grid place-items-center h-9 w-9 rounded-full hover:bg-muted"
+      aria-label="Wishlist"
+    >
+      <Heart className="h-4 w-4" />
+      {slugs.length > 0 && (
+        <span className="absolute -top-0.5 -right-0.5 grid place-items-center h-4 min-w-4 px-1 rounded-full bg-accent text-accent-foreground text-[10px] font-medium">
+          {slugs.length}
+        </span>
+      )}
+    </Link>
+  );
+
 }

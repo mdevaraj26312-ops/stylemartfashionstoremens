@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
+import { RecentlyViewed } from "@/components/site/RecentlyViewed";
+import { InstagramSection } from "@/components/site/InstagramSection";
 import {
   CATEGORIES,
   trendingProducts,
@@ -332,6 +334,9 @@ function Home() {
         products={deals()}
         deal
       />
+      <RecentlyViewed />
+      <InstagramSection />
     </SiteLayout>
+
   );
 }

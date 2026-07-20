@@ -9,21 +9,52 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as TrendingRouteImport } from './routes/trending'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as NewArrivalsRouteImport } from './routes/new-arrivals'
+import { Route as DealsRouteImport } from './routes/deals'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as AdminProductsRouteImport } from './routes/admin.products'
 
+const WishlistRoute = WishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrendingRoute = TrendingRouteImport.update({
+  id: '/trending',
+  path: '/trending',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewArrivalsRoute = NewArrivalsRouteImport.update({
+  id: '/new-arrivals',
+  path: '/new-arrivals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DealsRoute = DealsRouteImport.update({
+  id: '/deals',
+  path: '/deals',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AffiliateDisclosureRoute = AffiliateDisclosureRouteImport.update({
+  id: '/affiliate-disclosure',
+  path: '/affiliate-disclosure',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -46,20 +77,37 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/admin/products',
+  path: '/admin/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/contact': typeof ContactRoute
+  '/deals': typeof DealsRoute
+  '/new-arrivals': typeof NewArrivalsRoute
   '/search': typeof SearchRoute
+  '/trending': typeof TrendingRoute
+  '/wishlist': typeof WishlistRoute
+  '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/contact': typeof ContactRoute
+  '/deals': typeof DealsRoute
+  '/new-arrivals': typeof NewArrivalsRoute
   '/search': typeof SearchRoute
+  '/trending': typeof TrendingRoute
+  '/wishlist': typeof WishlistRoute
+  '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -67,8 +115,14 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/contact': typeof ContactRoute
+  '/deals': typeof DealsRoute
+  '/new-arrivals': typeof NewArrivalsRoute
   '/search': typeof SearchRoute
+  '/trending': typeof TrendingRoute
+  '/wishlist': typeof WishlistRoute
+  '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -77,24 +131,42 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/affiliate-disclosure'
     | '/contact'
+    | '/deals'
+    | '/new-arrivals'
     | '/search'
+    | '/trending'
+    | '/wishlist'
+    | '/admin/products'
     | '/category/$slug'
     | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/affiliate-disclosure'
     | '/contact'
+    | '/deals'
+    | '/new-arrivals'
     | '/search'
+    | '/trending'
+    | '/wishlist'
+    | '/admin/products'
     | '/category/$slug'
     | '/product/$slug'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/affiliate-disclosure'
     | '/contact'
+    | '/deals'
+    | '/new-arrivals'
     | '/search'
+    | '/trending'
+    | '/wishlist'
+    | '/admin/products'
     | '/category/$slug'
     | '/product/$slug'
   fileRoutesById: FileRoutesById
@@ -102,14 +174,34 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AffiliateDisclosureRoute: typeof AffiliateDisclosureRoute
   ContactRoute: typeof ContactRoute
+  DealsRoute: typeof DealsRoute
+  NewArrivalsRoute: typeof NewArrivalsRoute
   SearchRoute: typeof SearchRoute
+  TrendingRoute: typeof TrendingRoute
+  WishlistRoute: typeof WishlistRoute
+  AdminProductsRoute: typeof AdminProductsRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wishlist': {
+      id: '/wishlist'
+      path: '/wishlist'
+      fullPath: '/wishlist'
+      preLoaderRoute: typeof WishlistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trending': {
+      id: '/trending'
+      path: '/trending'
+      fullPath: '/trending'
+      preLoaderRoute: typeof TrendingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
@@ -117,11 +209,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/new-arrivals': {
+      id: '/new-arrivals'
+      path: '/new-arrivals'
+      fullPath: '/new-arrivals'
+      preLoaderRoute: typeof NewArrivalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deals': {
+      id: '/deals'
+      path: '/deals'
+      fullPath: '/deals'
+      preLoaderRoute: typeof DealsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affiliate-disclosure': {
+      id: '/affiliate-disclosure'
+      path: '/affiliate-disclosure'
+      fullPath: '/affiliate-disclosure'
+      preLoaderRoute: typeof AffiliateDisclosureRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -152,14 +265,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/admin/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AffiliateDisclosureRoute: AffiliateDisclosureRoute,
   ContactRoute: ContactRoute,
+  DealsRoute: DealsRoute,
+  NewArrivalsRoute: NewArrivalsRoute,
   SearchRoute: SearchRoute,
+  TrendingRoute: TrendingRoute,
+  WishlistRoute: WishlistRoute,
+  AdminProductsRoute: AdminProductsRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,
 }

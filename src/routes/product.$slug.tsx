@@ -1,7 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ChevronRight, Star, ArrowUpRight, Heart, Share2, Truck, ShieldCheck, RotateCcw } from "lucide-react";
+import { useEffect } from "react";
+import { ChevronRight, Star, ArrowUpRight, Heart, Truck, ShieldCheck, RotateCcw } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
+import { ShareButtons } from "@/components/site/ShareButtons";
+import { RecentlyViewed } from "@/components/site/RecentlyViewed";
+import { pushRecentView, trackAffiliateClick, useWishlist } from "@/lib/user-store";
 import {
   findProduct,
   getCategory,
@@ -61,6 +65,12 @@ function ProductPage() {
   const { product: p, category, related } = Route.useLoaderData();
   const pct = discountPct(p.price, p.original);
   const gallery = p.gallery && p.gallery.length > 0 ? p.gallery : [p.img];
+
+  useEffect(() => {
+    pushRecentView(p.slug);
+  }, [p.slug]);
+
+
 
   return (
     <SiteLayout>
@@ -146,19 +156,17 @@ function ProductPage() {
                 href={p.affiliateUrl}
                 target="_blank"
                 rel="sponsored noopener noreferrer"
+                onClick={() => trackAffiliateClick(p)}
                 className="group inline-flex items-center justify-center gap-2 h-14 rounded-full bg-primary text-primary-foreground text-sm tracking-[0.16em] uppercase hover:bg-accent transition-colors"
               >
                 Buy Now on {p.source}
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
-              <div className="grid grid-cols-2 gap-3">
-                <button className="inline-flex items-center justify-center gap-2 h-11 rounded-full border border-border text-xs tracking-wide hover:border-foreground transition">
-                  <Heart className="h-4 w-4" /> Save
-                </button>
-                <button className="inline-flex items-center justify-center gap-2 h-11 rounded-full border border-border text-xs tracking-wide hover:border-foreground transition">
-                  <Share2 className="h-4 w-4" /> Share
-                </button>
-              </div>
+              <SaveButton slug={p.slug} />
+            </div>
+
+            <div className="mt-6">
+              <ShareButtons title={`${p.name} by ${p.brand} — Style Mart`} />
             </div>
 
             <div className="mt-8 grid grid-cols-3 gap-3 text-xs">
@@ -168,11 +176,18 @@ function ProductPage() {
             </div>
 
             <p className="mt-6 text-[11px] text-muted-foreground">
-              Style Mart earns a commission when you buy through this link, at no extra cost to you.
+              Style Mart earns a commission when you buy through this link, at no extra cost to you.{" "}
+              <Link to="/affiliate-disclosure" className="underline hover:text-accent">
+                Read our disclosure
+              </Link>
+              .
             </p>
           </div>
         </div>
       </section>
+
+      <RecentlyViewed excludeSlug={p.slug} />
+
 
       {related.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-16">
@@ -196,3 +211,22 @@ function Trust({ icon: Icon, label }: { icon: typeof Truck; label: string }) {
     </div>
   );
 }
+
+function SaveButton({ slug }: { slug: string }) {
+  const { has, toggle } = useWishlist();
+  const saved = has(slug);
+  return (
+    <button
+      onClick={() => toggle(slug)}
+      className={`inline-flex items-center justify-center gap-2 h-11 rounded-full border text-xs tracking-wide transition ${
+        saved
+          ? "border-destructive text-destructive"
+          : "border-border hover:border-foreground"
+      }`}
+    >
+      <Heart className={`h-4 w-4 ${saved ? "fill-destructive" : ""}`} />
+      {saved ? "Saved to wishlist" : "Save to wishlist"}
+    </button>
+  );
+}
+

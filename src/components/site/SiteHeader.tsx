@@ -157,9 +157,9 @@ function WishlistLink() {
       aria-label="Wishlist"
     >
       <Heart className="h-4 w-4" />
-      {items.length > 0 && (
+      {slugs.length > 0 && (
         <span className="absolute -top-0.5 -right-0.5 grid place-items-center h-4 min-w-4 px-1 rounded-full bg-accent text-accent-foreground text-[10px] font-medium">
-          {items.length}
+          {slugs.length}
         </span>
       )}
     </Link>

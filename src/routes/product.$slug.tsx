@@ -66,6 +66,12 @@ function ProductPage() {
   const pct = discountPct(p.price, p.original);
   const gallery = p.gallery && p.gallery.length > 0 ? p.gallery : [p.img];
 
+  useEffect(() => {
+    pushRecentView(p.slug);
+  }, [p.slug]);
+
+
+
   return (
     <SiteLayout>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-6">

@@ -149,7 +149,7 @@ export function SiteHeader() {
 }
 
 function WishlistLink() {
-  const { items } = useWishlist();
+  const { slugs } = useWishlist();
   return (
     <Link
       to="/wishlist"

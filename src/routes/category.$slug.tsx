@@ -55,7 +55,7 @@ function CategoryPage() {
   const { category, products } = Route.useLoaderData();
 
   const priceCap = useMemo(
-    () => Math.max(2000, ...products.map((p) => p.price)),
+    () => Math.max(2000, ...products.map((p: (typeof products)[number]) => p.price)),
     [products],
   );
 

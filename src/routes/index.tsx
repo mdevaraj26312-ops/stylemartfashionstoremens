@@ -334,6 +334,9 @@ function Home() {
         products={deals()}
         deal
       />
+      <RecentlyViewed />
+      <InstagramSection />
     </SiteLayout>
+
   );
 }

@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductGrid } from "@/components/site/ProductCard";
 import { useWishlist } from "@/lib/user-store";
-import { findProduct } from "@/lib/catalog";
+import { getProductsBySlugs } from "@/lib/products.functions";
 
 export const Route = createFileRoute("/wishlist")({
   head: () => ({
@@ -18,7 +19,13 @@ export const Route = createFileRoute("/wishlist")({
 
 function WishlistPage() {
   const { slugs, clear } = useWishlist();
-  const items = slugs.map(findProduct).filter((p): p is NonNullable<typeof p> => Boolean(p));
+  const { data } = useQuery({
+    queryKey: ["wishlist-products", slugs.join(",")],
+    queryFn: () => getProductsBySlugs({ data: { slugs } }),
+    enabled: slugs.length > 0,
+  });
+  const bySlug = new Map((data ?? []).map((p) => [p.slug, p]));
+  const items = slugs.map((s) => bySlug.get(s)).filter((p): p is NonNullable<typeof p> => Boolean(p));
 
   return (
     <SiteLayout>

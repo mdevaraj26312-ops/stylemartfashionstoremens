@@ -3,18 +3,16 @@ import { useMemo, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductGrid } from "@/components/site/ProductCard";
-import {
-  CatalogFilters,
-  applyFilters,
-  type FilterState,
-} from "@/components/site/CatalogFilters";
-import { CATEGORIES, getCategory, productsByCategory } from "@/lib/catalog";
+import { CatalogFilters, applyFilters, type FilterState } from "@/components/site/CatalogFilters";
+import { CATEGORIES, getCategory } from "@/lib/catalog";
+import { listProducts } from "@/lib/products.functions";
 
 export const Route = createFileRoute("/category/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const category = getCategory(params.slug);
     if (!category) throw notFound();
-    return { category, products: productsByCategory(category.slug) };
+    const res = await listProducts({ data: { category: category.slug, page: 1, pageSize: 100 } });
+    return { category, products: res.items, total: res.total };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -52,10 +50,10 @@ export const Route = createFileRoute("/category/$slug")({
 });
 
 function CategoryPage() {
-  const { category, products } = Route.useLoaderData();
+  const { category, products, total } = Route.useLoaderData();
 
   const priceCap = useMemo(
-    () => Math.max(2000, ...products.map((p: (typeof products)[number]) => p.price)),
+    () => Math.max(2000, ...products.map((p) => p.price)),
     [products],
   );
 
@@ -71,11 +69,7 @@ function CategoryPage() {
     <SiteLayout>
       <section className="relative">
         <div className="relative h-[38vh] min-h-[280px] overflow-hidden bg-muted">
-          <img
-            src={category.hero}
-            alt={category.name}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
+          <img src={category.hero} alt={category.name} className="absolute inset-0 h-full w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-background" />
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 h-full flex flex-col justify-end pb-8">
             <nav className="flex items-center gap-1 text-[11px] tracking-[0.2em] uppercase text-primary-foreground/90">
@@ -83,12 +77,8 @@ function CategoryPage() {
               <ChevronRight className="h-3 w-3" />
               <span>{category.name}</span>
             </nav>
-            <h1 className="mt-3 font-display text-4xl sm:text-6xl text-primary-foreground">
-              {category.name}
-            </h1>
-            <p className="mt-2 text-sm sm:text-base text-primary-foreground/90 max-w-lg">
-              {category.tagline}
-            </p>
+            <h1 className="mt-3 font-display text-4xl sm:text-6xl text-primary-foreground">{category.name}</h1>
+            <p className="mt-2 text-sm sm:text-base text-primary-foreground/90 max-w-lg">{category.tagline}</p>
           </div>
         </div>
       </section>
@@ -112,8 +102,7 @@ function CategoryPage() {
 
         <div className="mt-8 flex items-baseline justify-between pb-6">
           <p className="text-sm text-muted-foreground">
-            Showing {filtered.length} of {products.length}{" "}
-            {products.length === 1 ? "product" : "products"}
+            Showing {filtered.length} of {total} {total === 1 ? "product" : "products"}
           </p>
           <p className="eyebrow">Curated · Updated daily</p>
         </div>

@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductGrid } from "@/components/site/ProductCard";
 import { CatalogFilters, applyFilters, type FilterState } from "@/components/site/CatalogFilters";
-import { CATEGORIES, getCategory } from "@/lib/catalog";
+import { CATEGORIES, getCategory, type Product } from "@/lib/catalog";
 import { listProducts } from "@/lib/products.functions";
 
 export const Route = createFileRoute("/category/$slug")({

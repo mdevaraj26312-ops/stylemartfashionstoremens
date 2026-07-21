@@ -123,7 +123,7 @@ export const getRelated = createServerFn({ method: "GET" })
     const { data: rows, error } = await supabase
       .from("products")
       .select(sel("*"))
-      .eq("category", data.category)
+      .eq("category", data.category as never)
       .neq("slug", data.excludeSlug)
       .limit(data.limit)
       .returns<ProductRow[]>();

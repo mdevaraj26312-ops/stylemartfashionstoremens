@@ -65,8 +65,8 @@ export const listProducts = createServerFn({ method: "GET" })
     const to = from + data.pageSize - 1;
 
     let q = supabase.from("products").select(sel("*"), { count: "exact" });
-    if (data.category) q = q.eq("category", data.category);
-    if (data.source) q = q.eq("source", data.source);
+    if (data.category) q = q.eq("category", data.category as never);
+    if (data.source) q = q.eq("source", data.source as never);
     if (data.maxPrice) q = q.lte("price", data.maxPrice);
     if (data.flag === "trending") q = q.eq("is_trending", true);
     if (data.flag === "new") q = q.eq("is_new_arrival", true);

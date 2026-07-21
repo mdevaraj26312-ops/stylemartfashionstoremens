@@ -6,23 +6,17 @@ import { ProductCard } from "@/components/site/ProductCard";
 import { ShareButtons } from "@/components/site/ShareButtons";
 import { RecentlyViewed } from "@/components/site/RecentlyViewed";
 import { pushRecentView, trackAffiliateClick, useWishlist } from "@/lib/user-store";
-import {
-  findProduct,
-  getCategory,
-  relatedProducts,
-  inr,
-  discountPct,
-} from "@/lib/catalog";
+import { getCategory, inr, discountPct, type Product } from "@/lib/catalog";
+import { getProduct, getRelated } from "@/lib/products.functions";
 
 export const Route = createFileRoute("/product/$slug")({
-  loader: ({ params }) => {
-    const product = findProduct(params.slug);
+  loader: async ({ params }) => {
+    const product = await getProduct({ data: { slug: params.slug } });
     if (!product) throw notFound();
-    return {
-      product,
-      category: getCategory(product.category)!,
-      related: relatedProducts(product),
-    };
+    const related = await getRelated({
+      data: { category: product.category, excludeSlug: product.slug, limit: 4 },
+    });
+    return { product, category: getCategory(product.category)!, related };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
@@ -64,13 +58,10 @@ export const Route = createFileRoute("/product/$slug")({
 function ProductPage() {
   const { product: p, category, related } = Route.useLoaderData();
   const pct = discountPct(p.price, p.original);
-  const gallery = p.gallery && p.gallery.length > 0 ? p.gallery : [p.img];
 
   useEffect(() => {
     pushRecentView(p.slug);
   }, [p.slug]);
-
-
 
   return (
     <SiteLayout>
@@ -90,7 +81,7 @@ function ProductPage() {
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-muted">
-              <img src={gallery[0]} alt={p.name} className="absolute inset-0 h-full w-full object-cover" />
+              <img src={p.img} alt={p.name} className="absolute inset-0 h-full w-full object-cover" />
               {pct > 0 && (
                 <span className="absolute left-4 top-4 rounded-full bg-destructive text-destructive-foreground px-3 py-1 text-xs font-semibold tracking-wider">
                   {pct}% OFF
@@ -100,15 +91,6 @@ function ProductPage() {
                 {p.source}
               </span>
             </div>
-            {gallery.length > 1 && (
-              <div className="mt-3 grid grid-cols-4 gap-3">
-                {gallery.slice(0, 4).map((g: string, i: number) => (
-                  <div key={i} className="aspect-square overflow-hidden rounded-md bg-muted">
-                    <img src={g} alt="" className="h-full w-full object-cover" />
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           <div className="lg:col-span-5">
@@ -139,17 +121,6 @@ function ProductPage() {
             </p>
 
             <p className="mt-6 text-sm text-foreground/85 leading-relaxed">{p.description}</p>
-
-            {p.features && p.features.length > 0 && (
-              <ul className="mt-5 grid gap-2 text-sm">
-                {p.features.map((f: string) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <span className="mt-1.5 h-1 w-1 rounded-full bg-accent" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
 
             <div className="mt-8 grid gap-3">
               <a
@@ -188,12 +159,11 @@ function ProductPage() {
 
       <RecentlyViewed excludeSlug={p.slug} />
 
-
       {related.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-16">
           <h2 className="font-display text-2xl sm:text-3xl mb-6">You may also like</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {related.map((r: typeof p) => (
+            {related.map((r: Product) => (
               <ProductCard key={r.slug} p={r} />
             ))}
           </div>
@@ -219,9 +189,7 @@ function SaveButton({ slug }: { slug: string }) {
     <button
       onClick={() => toggle(slug)}
       className={`inline-flex items-center justify-center gap-2 h-11 rounded-full border text-xs tracking-wide transition ${
-        saved
-          ? "border-destructive text-destructive"
-          : "border-border hover:border-foreground"
+        saved ? "border-destructive text-destructive" : "border-border hover:border-foreground"
       }`}
     >
       <Heart className={`h-4 w-4 ${saved ? "fill-destructive" : ""}`} />
@@ -229,4 +197,3 @@ function SaveButton({ slug }: { slug: string }) {
     </button>
   );
 }
-

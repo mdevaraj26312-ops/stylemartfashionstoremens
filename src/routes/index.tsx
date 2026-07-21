@@ -4,14 +4,18 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
 import { RecentlyViewed } from "@/components/site/RecentlyViewed";
 import { InstagramSection } from "@/components/site/InstagramSection";
-import {
-  CATEGORIES,
-  trendingProducts,
-  newArrivals,
-  deals,
-} from "@/lib/catalog";
+import { CATEGORIES, type Product } from "@/lib/catalog";
+import { listProducts } from "@/lib/products.functions";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    const [trending, fresh, sale] = await Promise.all([
+      listProducts({ data: { flag: "trending", page: 1, pageSize: 10 } }),
+      listProducts({ data: { flag: "new", sort: "newest", page: 1, pageSize: 10 } }),
+      listProducts({ data: { flag: "deal", page: 1, pageSize: 10 } }),
+    ]);
+    return { trending: trending.items, fresh: fresh.items, sale: sale.items };
+  },
   head: () => ({
     meta: [
       { title: "Style Mart — Curated Fashion from Every Store" },
@@ -43,8 +47,7 @@ function Hero() {
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link
-                to="/"
-                hash="trending"
+                to="/trending"
                 className="group inline-flex items-center gap-2 h-12 px-6 rounded-full bg-primary text-primary-foreground text-sm tracking-wide hover:bg-accent transition-colors"
               >
                 Shop the edit
@@ -84,8 +87,7 @@ function Hero() {
                     Camel wool coat over ivory knit
                   </p>
                   <Link
-                    to="/"
-                    hash="trending"
+                    to="/trending"
                     className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-accent"
                   >
                     Shop this look <ArrowRight className="h-3.5 w-3.5" />
@@ -144,38 +146,6 @@ function Marquee() {
   );
 }
 
-function SectionHead({
-  eyebrow,
-  title,
-  to,
-  hash,
-  cta = "View all",
-}: {
-  eyebrow: string;
-  title: string;
-  to?: "/";
-  hash?: string;
-  cta?: string;
-}) {
-  return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-6 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
-      <div className="min-w-0">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          {title}
-        </h2>
-      </div>
-      <Link
-        to={to ?? "/"}
-        hash={hash}
-        className="shrink-0 inline-flex items-center gap-1.5 text-sm border-b border-foreground/40 hover:border-accent hover:text-accent transition-colors pb-1"
-      >
-        {cta} <ArrowRight className="h-4 w-4" />
-      </Link>
-    </div>
-  );
-}
-
 function Categories() {
   return (
     <section id="categories" className="py-14 sm:py-20">
@@ -224,11 +194,41 @@ function Categories() {
   );
 }
 
+function SectionHead({
+  eyebrow,
+  title,
+  to,
+  cta = "View all",
+}: {
+  eyebrow: string;
+  title: string;
+  to: "/trending" | "/new-arrivals" | "/deals";
+  cta?: string;
+}) {
+  return (
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-6 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
+      <div className="min-w-0">
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
+          {title}
+        </h2>
+      </div>
+      <Link
+        to={to}
+        className="shrink-0 inline-flex items-center gap-1.5 text-sm border-b border-foreground/40 hover:border-accent hover:text-accent transition-colors pb-1"
+      >
+        {cta} <ArrowRight className="h-4 w-4" />
+      </Link>
+    </div>
+  );
+}
+
 function ProductRail({
   id,
   eyebrow,
   title,
   cta,
+  to,
   products,
   deal = false,
   tinted = false,
@@ -237,13 +237,15 @@ function ProductRail({
   eyebrow: string;
   title: string;
   cta?: string;
-  products: ReturnType<typeof trendingProducts>;
+  to: "/trending" | "/new-arrivals" | "/deals";
+  products: Product[];
   deal?: boolean;
   tinted?: boolean;
 }) {
+  if (products.length === 0) return null;
   return (
     <section id={id} className={`py-14 sm:py-20 ${tinted ? "bg-secondary/60" : ""}`}>
-      <SectionHead eyebrow={eyebrow} title={title} cta={cta} hash={id} />
+      <SectionHead eyebrow={eyebrow} title={title} cta={cta} to={to} />
       <div className="mx-auto max-w-7xl">
         <div className="sm:hidden no-scrollbar overflow-x-auto pl-4 pr-4">
           <div className="flex gap-4 w-max">
@@ -258,6 +260,28 @@ function ProductRail({
           {products.map((p) => (
             <ProductCard key={p.slug} p={p} deal={deal} />
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function EmptyState() {
+  return (
+    <section className="py-14 sm:py-20">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
+        <p className="eyebrow">Getting started</p>
+        <h2 className="mt-2 font-display text-3xl sm:text-4xl">Your catalog is empty.</h2>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Sign in as an admin and add or bulk-import products to fill your storefront.
+        </p>
+        <div className="mt-6 flex justify-center gap-3">
+          <Link
+            to="/admin/products"
+            className="inline-flex items-center h-11 px-5 rounded-full bg-primary text-primary-foreground text-xs tracking-[0.18em] uppercase hover:bg-accent transition"
+          >
+            Open admin
+          </Link>
         </div>
       </div>
     </section>
@@ -305,17 +329,22 @@ function EditorialBanner() {
 }
 
 function Home() {
+  const { trending, fresh, sale } = Route.useLoaderData();
+  const hasAny = trending.length + fresh.length + sale.length > 0;
+
   return (
     <SiteLayout>
       <Hero />
       <Marquee />
       <Categories />
+      {!hasAny && <EmptyState />}
       <ProductRail
         id="trending"
         eyebrow="Trending now"
         title="What everyone is wearing."
         cta="View trending"
-        products={trendingProducts()}
+        to="/trending"
+        products={trending}
       />
       <EditorialBanner />
       <ProductRail
@@ -323,7 +352,8 @@ function Home() {
         eyebrow="Just in"
         title="New arrivals, freshly picked."
         cta="See all new"
-        products={newArrivals()}
+        to="/new-arrivals"
+        products={fresh}
         tinted
       />
       <ProductRail
@@ -331,12 +361,12 @@ function Home() {
         eyebrow="Best deals"
         title="Prices we couldn't ignore."
         cta="Shop the sale"
-        products={deals()}
+        to="/deals"
+        products={sale}
         deal
       />
       <RecentlyViewed />
       <InstagramSection />
     </SiteLayout>
-
   );
 }

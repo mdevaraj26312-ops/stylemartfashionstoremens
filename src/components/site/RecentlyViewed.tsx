@@ -1,14 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
 import { useRecentlyViewed } from "@/lib/user-store";
-import { findProduct } from "@/lib/catalog";
+import { getProductsBySlugs } from "@/lib/products.functions";
 import { ProductCard } from "./ProductCard";
 
 export function RecentlyViewed({ excludeSlug }: { excludeSlug?: string } = {}) {
-  const slugs = useRecentlyViewed();
-  const items = slugs
-    .filter((s) => s !== excludeSlug)
-    .map(findProduct)
-    .filter((p): p is NonNullable<typeof p> => Boolean(p))
-    .slice(0, 8);
+  const slugs = useRecentlyViewed().filter((s) => s !== excludeSlug);
+  const { data } = useQuery({
+    queryKey: ["recently-viewed", slugs.join(",")],
+    queryFn: () => getProductsBySlugs({ data: { slugs } }),
+    enabled: slugs.length > 0,
+  });
+
+  const bySlug = new Map((data ?? []).map((p) => [p.slug, p]));
+  const items = slugs.map((s) => bySlug.get(s)).filter((p): p is NonNullable<typeof p> => Boolean(p)).slice(0, 8);
 
   if (items.length === 0) return null;
 

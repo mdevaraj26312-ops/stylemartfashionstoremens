@@ -20,6 +20,7 @@ import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disc
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as GoIdRouteImport } from './routes/go.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 
@@ -78,6 +79,11 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GoIdRoute = GoIdRouteImport.update({
+  id: '/go/$id',
+  path: '/go/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/category/$slug',
   path: '/category/$slug',
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/wishlist': typeof WishlistRoute
   '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesByTo {
@@ -117,6 +124,7 @@ export interface FileRoutesByTo {
   '/wishlist': typeof WishlistRoute
   '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesById {
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/wishlist': typeof WishlistRoute
   '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRouteTypes {
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/wishlist'
     | '/admin/products'
     | '/category/$slug'
+    | '/go/$id'
     | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/wishlist'
     | '/admin/products'
     | '/category/$slug'
+    | '/go/$id'
     | '/product/$slug'
   id:
     | '__root__'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
     | '/wishlist'
     | '/admin/products'
     | '/category/$slug'
+    | '/go/$id'
     | '/product/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -196,6 +208,7 @@ export interface RootRouteChildren {
   WishlistRoute: typeof WishlistRoute
   AdminProductsRoute: typeof AdminProductsRoute
   CategorySlugRoute: typeof CategorySlugRoute
+  GoIdRoute: typeof GoIdRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
 
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/go/$id': {
+      id: '/go/$id'
+      path: '/go/$id'
+      fullPath: '/go/$id'
+      preLoaderRoute: typeof GoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/category/$slug'
@@ -308,18 +328,9 @@ const rootRouteChildren: RootRouteChildren = {
   WishlistRoute: WishlistRoute,
   AdminProductsRoute: AdminProductsRoute,
   CategorySlugRoute: CategorySlugRoute,
+  GoIdRoute: GoIdRoute,
   ProductSlugRoute: ProductSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

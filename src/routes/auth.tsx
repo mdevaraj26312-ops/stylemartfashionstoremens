@@ -20,9 +20,26 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [needsConfirm, setNeedsConfirm] = useState(false);
+  const [resending, setResending] = useState(false);
 
   useEffect(() => {
+    // Handle verification callback (Supabase appends #access_token=... on success)
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash;
+      if (hash.includes("access_token") || hash.includes("type=signup")) {
+        setInfo("Email verified successfully. You are now signed in.");
+        // Clean hash
+        history.replaceState(null, "", window.location.pathname);
+      } else if (hash.includes("error")) {
+        const params = new URLSearchParams(hash.slice(1));
+        setError(params.get("error_description") || "Verification failed. Please try again.");
+        history.replaceState(null, "", window.location.pathname);
+      }
+    }
+
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate({ to: "/admin/products", replace: true });
     });
@@ -31,24 +48,61 @@ function AuthPage() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setInfo(null);
+    setNeedsConfirm(false);
     setLoading(true);
     try {
       if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) throw error;
+        if (error) {
+          if (/confirm/i.test(error.message)) {
+            setNeedsConfirm(true);
+            throw new Error("Email not confirmed. Resend the verification email below, then try again.");
+          }
+          throw error;
+        }
+        navigate({ to: "/admin/products", replace: true });
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/admin/products` },
+          options: { emailRedirectTo: `${window.location.origin}/auth` },
         });
         if (error) throw error;
+        if (data.session) {
+          navigate({ to: "/admin/products", replace: true });
+        } else {
+          setInfo("Account created. Check your inbox to verify your email, then sign in.");
+          setMode("signin");
+        }
       }
-      navigate({ to: "/admin/products", replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Sign in failed");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const resendVerification = async () => {
+    if (!email) {
+      setError("Enter your email above first.");
+      return;
+    }
+    setResending(true);
+    setError(null);
+    setInfo(null);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email,
+        options: { emailRedirectTo: `${window.location.origin}/auth` },
+      });
+      if (error) throw error;
+      setInfo(`Verification email resent to ${email}.`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not resend email.");
+    } finally {
+      setResending(false);
     }
   };
 
@@ -88,6 +142,7 @@ function AuthPage() {
             />
           </label>
           {error && <p className="text-sm text-destructive">{error}</p>}
+          {info && <p className="text-sm text-emerald-700">{info}</p>}
           <button
             type="submit"
             disabled={loading}
@@ -97,12 +152,29 @@ function AuthPage() {
           </button>
         </form>
 
-        <button
-          onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="mt-4 text-sm text-muted-foreground hover:text-foreground"
-        >
-          {mode === "signin" ? "Need to create the first admin? Sign up" : "Already registered? Sign in"}
-        </button>
+        {(needsConfirm || mode === "signin") && (
+          <button
+            onClick={resendVerification}
+            disabled={resending}
+            className="mt-3 text-sm underline text-muted-foreground hover:text-foreground disabled:opacity-50"
+          >
+            {resending ? "Sending…" : "Resend verification email"}
+          </button>
+        )}
+
+        <div className="mt-4">
+          <button
+            onClick={() => {
+              setMode(mode === "signin" ? "signup" : "signin");
+              setError(null);
+              setInfo(null);
+              setNeedsConfirm(false);
+            }}
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            {mode === "signin" ? "Need to create the first admin? Sign up" : "Already registered? Sign in"}
+          </button>
+        </div>
 
         <p className="mt-8 text-xs text-muted-foreground">
           <Link to="/" className="underline">← Back to store</Link>

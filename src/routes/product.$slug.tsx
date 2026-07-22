@@ -124,7 +124,7 @@ function ProductPage() {
 
             <div className="mt-8 grid gap-3">
               <a
-                href={p.affiliateUrl}
+                href={`/go/${p.slug}`}
                 target="_blank"
                 rel="sponsored noopener noreferrer"
                 onClick={() => trackAffiliateClick(p)}

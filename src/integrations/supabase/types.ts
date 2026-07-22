@@ -14,69 +14,281 @@ export type Database = {
   }
   public: {
     Tables: {
-      products: {
+      activity_logs: {
         Row: {
-          affiliate_url: string
-          brand: string
-          category: Database["public"]["Enums"]["product_category"]
+          action: string
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          metadata: Json
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metadata?: Json
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          metadata?: Json
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      affiliate_networks: {
+        Row: {
+          base_url: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          tracking_param: string | null
+          updated_at: string
+        }
+        Insert: {
+          base_url?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          tracking_param?: string | null
+          updated_at?: string
+        }
+        Update: {
+          base_url?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          tracking_param?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      brands: {
+        Row: {
           created_at: string
           description: string
           id: string
+          is_featured: boolean
+          logo_url: string | null
+          name: string
+          slug: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string
+          id?: string
+          is_featured?: boolean
+          logo_url?: string | null
+          name: string
+          slug: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          is_featured?: boolean
+          logo_url?: string | null
+          name?: string
+          slug?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      product_clicks: {
+        Row: {
+          created_at: string
+          id: number
+          ip_hash: string | null
+          product_id: string
+          referrer: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          ip_hash?: string | null
+          product_id: string
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          ip_hash?: string | null
+          product_id?: string
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_clicks_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          additional_images: string[]
+          affiliate_network: string | null
+          affiliate_url: string
+          availability: string
+          brand: string
+          category: Database["public"]["Enums"]["product_category"]
+          click_count: number
+          colors: string[]
+          created_at: string
+          description: string
+          discount_pct: number
+          gender: string | null
+          id: string
           image_url: string
+          is_bestseller: boolean
           is_deal: boolean
+          is_featured: boolean
           is_new_arrival: boolean
           is_trending: boolean
+          material: string | null
           original_price: number
           price: number
           rating: number
           reviews_count: number
           search_tsv: unknown
+          seo_description: string | null
+          seo_title: string | null
+          sizes: string[]
+          sku: string | null
           slug: string
           source: Database["public"]["Enums"]["product_source"]
+          status: string
+          subcategory: string | null
+          tags: string[]
           title: string
+          tracking_id: string | null
           updated_at: string
         }
         Insert: {
+          additional_images?: string[]
+          affiliate_network?: string | null
           affiliate_url: string
+          availability?: string
           brand: string
           category: Database["public"]["Enums"]["product_category"]
+          click_count?: number
+          colors?: string[]
           created_at?: string
           description?: string
+          discount_pct?: number
+          gender?: string | null
           id?: string
           image_url: string
+          is_bestseller?: boolean
           is_deal?: boolean
+          is_featured?: boolean
           is_new_arrival?: boolean
           is_trending?: boolean
+          material?: string | null
           original_price?: number
           price: number
           rating?: number
           reviews_count?: number
           search_tsv?: unknown
+          seo_description?: string | null
+          seo_title?: string | null
+          sizes?: string[]
+          sku?: string | null
           slug: string
           source?: Database["public"]["Enums"]["product_source"]
+          status?: string
+          subcategory?: string | null
+          tags?: string[]
           title: string
+          tracking_id?: string | null
           updated_at?: string
         }
         Update: {
+          additional_images?: string[]
+          affiliate_network?: string | null
           affiliate_url?: string
+          availability?: string
           brand?: string
           category?: Database["public"]["Enums"]["product_category"]
+          click_count?: number
+          colors?: string[]
           created_at?: string
           description?: string
+          discount_pct?: number
+          gender?: string | null
           id?: string
           image_url?: string
+          is_bestseller?: boolean
           is_deal?: boolean
+          is_featured?: boolean
           is_new_arrival?: boolean
           is_trending?: boolean
+          material?: string | null
           original_price?: number
           price?: number
           rating?: number
           reviews_count?: number
           search_tsv?: unknown
+          seo_description?: string | null
+          seo_title?: string | null
+          sizes?: string[]
+          sku?: string | null
           slug?: string
           source?: Database["public"]["Enums"]["product_source"]
+          status?: string
+          subcategory?: string | null
+          tags?: string[]
           title?: string
+          tracking_id?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      subcategories: {
+        Row: {
+          category: Database["public"]["Enums"]["product_category"]
+          created_at: string
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["product_category"]
+          created_at?: string
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["product_category"]
+          created_at?: string
+          id?: string
+          name?: string
+          slug?: string
         }
         Relationships: []
       }
@@ -112,6 +324,10 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      increment_product_click: {
+        Args: { _product_id: string }
+        Returns: undefined
       }
     }
     Enums: {

@@ -84,7 +84,7 @@ export function ProductCard({ p, deal = false }: { p: Product; deal?: boolean })
           )}
         </div>
         <a
-          href={p.affiliateUrl}
+          href={`/go/${p.slug}`}
           target="_blank"
           rel="sponsored noopener noreferrer"
           onClick={() => trackAffiliateClick(p)}

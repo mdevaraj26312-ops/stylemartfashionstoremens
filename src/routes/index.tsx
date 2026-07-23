@@ -270,19 +270,11 @@ function EmptyState() {
   return (
     <section className="py-14 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
-        <p className="eyebrow">Getting started</p>
-        <h2 className="mt-2 font-display text-3xl sm:text-4xl">Your catalog is empty.</h2>
+        <p className="eyebrow">Coming soon</p>
+        <h2 className="mt-2 font-display text-3xl sm:text-4xl">New arrivals landing shortly.</h2>
         <p className="mt-3 text-sm text-muted-foreground">
-          Sign in as an admin and add or bulk-import products to fill your storefront.
+          Our editors are curating the next drop. Check back soon for fresh picks across every category.
         </p>
-        <div className="mt-6 flex justify-center gap-3">
-          <Link
-            to="/admin/products"
-            className="inline-flex items-center h-11 px-5 rounded-full bg-primary text-primary-foreground text-xs tracking-[0.18em] uppercase hover:bg-accent transition"
-          >
-            Open admin
-          </Link>
-        </div>
       </div>
     </section>
   );

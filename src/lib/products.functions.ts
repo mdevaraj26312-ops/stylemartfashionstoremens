@@ -245,20 +245,9 @@ export const getMyAdminStatus = createServerFn({ method: "GET" })
     return { isAdmin: Boolean(data), userId: context.userId };
   });
 
-// First-admin claim: any authenticated user can claim admin ONLY when no admin exists.
+// Admin claim is permanently disabled — the sole admin is provisioned already.
 export const claimFirstAdmin = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .handler(async ({ context }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { count, error: countErr } = await supabaseAdmin
-      .from("user_roles")
-      .select("id", { count: "exact", head: true })
-      .eq("role", "admin");
-    if (countErr) throw new Error(countErr.message);
-    if ((count ?? 0) > 0) throw new Error("An admin already exists.");
-    const { error } = await supabaseAdmin
-      .from("user_roles")
-      .insert({ user_id: context.userId, role: "admin" });
-    if (error) throw new Error(error.message);
-    return { ok: true };
+  .handler(async () => {
+    throw new Error("Admin registration is closed.");
   });

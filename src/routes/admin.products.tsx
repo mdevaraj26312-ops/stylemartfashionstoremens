@@ -10,7 +10,6 @@ import {
   adminDeleteProduct,
   adminListProducts,
   adminUpsertProduct,
-  claimFirstAdmin,
   getMyAdminStatus,
 } from "@/lib/products.functions";
 
@@ -89,10 +88,6 @@ function AdminProductsPage() {
     enabled: session === "signed-in",
   });
 
-  const claim = useMutation({
-    mutationFn: () => claimFirstAdmin(),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-status"] }),
-  });
 
   if (session === "loading" || (session === "signed-in" && statusQ.isLoading)) {
     return (
@@ -107,30 +102,26 @@ function AdminProductsPage() {
   if (session === "signed-in" && statusQ.data && !statusQ.data.isAdmin) {
     return (
       <SiteLayout>
-        <section className="mx-auto max-w-md px-6 py-16 text-center">
-          <p className="eyebrow">Almost there</p>
-          <h1 className="mt-2 font-display text-3xl">Claim admin access</h1>
+        <section className="mx-auto max-w-md px-6 py-24 text-center">
+          <p className="eyebrow">Restricted</p>
+          <h1 className="mt-2 font-display text-3xl">Not authorized</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            You're signed in. If no admin exists yet, you can claim it now.
+            This area is reserved for the site administrator.
           </p>
-          {claim.error && (
-            <p className="mt-4 text-sm text-destructive">
-              {(claim.error as Error).message}
-            </p>
-          )}
-          <button
-            onClick={() => claim.mutate()}
-            disabled={claim.isPending}
-            className="mt-6 h-11 px-6 rounded-full bg-primary text-primary-foreground text-xs tracking-[0.18em] uppercase hover:bg-accent transition disabled:opacity-50"
-          >
-            {claim.isPending ? "Claiming…" : "Claim admin"}
-          </button>
-          <button
-            onClick={() => supabase.auth.signOut()}
-            className="mt-4 block mx-auto text-xs text-muted-foreground hover:text-foreground"
-          >
-            Sign out
-          </button>
+          <div className="mt-6 flex justify-center gap-3">
+            <Link
+              to="/"
+              className="h-11 px-6 inline-flex items-center rounded-full bg-primary text-primary-foreground text-xs tracking-[0.18em] uppercase hover:bg-accent transition"
+            >
+              Back to store
+            </Link>
+            <button
+              onClick={() => supabase.auth.signOut()}
+              className="h-11 px-6 inline-flex items-center rounded-full border border-border text-xs tracking-[0.18em] uppercase hover:border-foreground"
+            >
+              Sign out
+            </button>
+          </div>
         </section>
       </SiteLayout>
     );

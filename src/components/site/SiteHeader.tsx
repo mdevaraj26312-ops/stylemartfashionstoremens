@@ -1,8 +1,12 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
-import { Search, Menu, Heart, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Search, Menu, Heart, X, Shield } from "lucide-react";
 import { CATEGORIES } from "@/lib/catalog";
 import { useWishlist } from "@/lib/user-store";
+import { supabase } from "@/integrations/supabase/client";
+import { getMyAdminStatus } from "@/lib/products.functions";
+
 
 
 const EXTRA_NAV = [
@@ -95,8 +99,10 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-1">
+            <AdminLink />
             <WishlistLink />
           </div>
+
 
         </div>
 
@@ -166,3 +172,30 @@ function WishlistLink() {
   );
 
 }
+
+function AdminLink() {
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s));
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+  const statusQ = useQuery({
+    queryKey: ["admin-status"],
+    queryFn: () => getMyAdminStatus(),
+    enabled: signedIn,
+    staleTime: 60_000,
+  });
+  if (!statusQ.data?.isAdmin) return null;
+  return (
+    <Link
+      to="/admin"
+      className="grid place-items-center h-9 w-9 rounded-full hover:bg-muted"
+      aria-label="Admin dashboard"
+      title="Admin"
+    >
+      <Shield className="h-4 w-4" />
+    </Link>
+  );
+}
+

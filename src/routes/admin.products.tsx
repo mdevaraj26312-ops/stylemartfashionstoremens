@@ -89,10 +89,6 @@ function AdminProductsPage() {
     enabled: session === "signed-in",
   });
 
-  const claim = useMutation({
-    mutationFn: () => claimFirstAdmin(),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-status"] }),
-  });
 
   if (session === "loading" || (session === "signed-in" && statusQ.isLoading)) {
     return (

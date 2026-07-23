@@ -172,3 +172,30 @@ function WishlistLink() {
   );
 
 }
+
+function AdminLink() {
+  const [signedIn, setSignedIn] = useState(false);
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s));
+    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+  const statusQ = useQuery({
+    queryKey: ["admin-status"],
+    queryFn: () => getMyAdminStatus(),
+    enabled: signedIn,
+    staleTime: 60_000,
+  });
+  if (!statusQ.data?.isAdmin) return null;
+  return (
+    <Link
+      to="/admin"
+      className="grid place-items-center h-9 w-9 rounded-full hover:bg-muted"
+      aria-label="Admin dashboard"
+      title="Admin"
+    >
+      <Shield className="h-4 w-4" />
+    </Link>
+  );
+}
+

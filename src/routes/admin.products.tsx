@@ -10,7 +10,6 @@ import {
   adminDeleteProduct,
   adminListProducts,
   adminUpsertProduct,
-  claimFirstAdmin,
   getMyAdminStatus,
 } from "@/lib/products.functions";
 

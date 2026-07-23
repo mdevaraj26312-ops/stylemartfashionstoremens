@@ -190,11 +190,12 @@ function AdminLink() {
   return (
     <Link
       to="/admin"
-      className="grid place-items-center h-9 w-9 rounded-full hover:bg-muted"
+      className="inline-flex items-center gap-1.5 h-9 px-3 rounded-full bg-primary text-primary-foreground text-[11px] tracking-[0.18em] uppercase hover:bg-accent transition"
       aria-label="Admin dashboard"
       title="Admin"
     >
-      <Shield className="h-4 w-4" />
+      <Shield className="h-3.5 w-3.5" />
+      <span className="hidden sm:inline">Admin</span>
     </Link>
   );
 }

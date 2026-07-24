@@ -469,13 +469,45 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
   );
 }
 
+const PLACEHOLDER_IMAGE =
+  "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=70";
+
+const VALID_CATEGORIES = ["women", "men", "kids", "footwear", "bags", "watches", "jewellery", "accessories"] as const;
+const VALID_SOURCES = ["Amazon", "Flipkart", "Meesho", "Myntra", "Ajio", "Other"] as const;
+
+function friendlyError(msg: string): string {
+  try {
+    const parsed = JSON.parse(msg);
+    if (Array.isArray(parsed)) {
+      return parsed
+        .slice(0, 5)
+        .map((p: { path?: (string | number)[]; message?: string }) =>
+          `${(p.path ?? []).join(".") || "row"}: ${p.message ?? "invalid"}`,
+        )
+        .join(" · ");
+    }
+  } catch {
+    /* not JSON */
+  }
+  return msg;
+}
+
+function isValidUrl(v: string): boolean {
+  try {
+    const u = new URL(v);
+    return u.protocol === "http:" || u.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 /* --------- CSV parser (RFC 4180 subset, handles quoted fields) --------- */
 function parseCsv(text: string): DraftProduct[] {
   const rows: string[][] = [];
   let cur: string[] = [];
   let field = "";
   let inQuotes = false;
-  const src = text.replace(/\r\n?/g, "\n");
+  const src = text.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
 
   for (let i = 0; i < src.length; i++) {
     const c = src[i];
@@ -494,36 +526,72 @@ function parseCsv(text: string): DraftProduct[] {
   if (field.length || cur.length) { cur.push(field); rows.push(cur); }
 
   const header = rows.shift();
-  if (!header) throw new Error("Empty CSV");
+  if (!header) throw new Error("The CSV file is empty.");
   const idx = (name: string) => header.findIndex((h) => h.trim().toLowerCase() === name);
 
-  const required = ["title", "brand", "category", "source", "price", "original_price", "image_url", "affiliate_url"];
-  for (const r of required) if (idx(r) < 0) throw new Error(`Missing column: ${r}`);
+  const required = ["title", "category", "price", "affiliate_url"];
+  const missing = required.filter((r) => idx(r) < 0);
+  if (missing.length) {
+    throw new Error(`CSV is missing required column(s): ${missing.join(", ")}. Download the template for the correct format.`);
+  }
 
   const bool = (v: string) => /^(1|true|yes|y)$/i.test(v.trim());
-  const num = (v: string) => Number((v || "0").trim());
+  const num = (v: string) => {
+    const n = Number((v || "").trim());
+    return Number.isFinite(n) ? n : 0;
+  };
 
-  return rows
+  const out: DraftProduct[] = [];
+  const errors: string[] = [];
+
+  rows
     .filter((r) => r.some((c) => c.trim().length))
-    .map((r): DraftProduct => {
+    .forEach((r, i) => {
+      const line = i + 2; // header is line 1
       const get = (n: string) => (idx(n) >= 0 ? (r[idx(n)] ?? "").trim() : "");
       const title = get("title");
-      const brand = get("brand");
-      return {
+      const brand = get("brand") || "Generic";
+      const category = get("category").toLowerCase();
+      const sourceRaw = get("source");
+      const source =
+        VALID_SOURCES.find((s) => s.toLowerCase() === sourceRaw.toLowerCase()) || "Other";
+      const affiliate_url = get("affiliate_url");
+      const image_url = get("image_url") || PLACEHOLDER_IMAGE;
+      const price = num(get("price"));
+      const original_price = num(get("original_price")) || price;
+
+      if (!title) errors.push(`Line ${line}: missing title`);
+      if (!(VALID_CATEGORIES as readonly string[]).includes(category))
+        errors.push(`Line ${line}: category "${category || "(empty)"}" is invalid. Use one of: ${VALID_CATEGORIES.join(", ")}`);
+      if (!affiliate_url) errors.push(`Line ${line}: missing affiliate_url`);
+      else if (!isValidUrl(affiliate_url)) errors.push(`Line ${line}: affiliate_url "${affiliate_url}" is not a valid http(s) URL`);
+      if (image_url && !isValidUrl(image_url)) errors.push(`Line ${line}: image_url is not a valid URL`);
+
+      if (errors.length > 10) return;
+
+      out.push({
         slug: get("slug") || slugify(`${brand}-${title}`),
-        title, brand,
-        category: get("category") || "women",
-        source: get("source") || "Amazon",
-        price: num(get("price")),
-        original_price: num(get("original_price")) || num(get("price")),
-        image_url: get("image_url"),
-        affiliate_url: get("affiliate_url"),
+        title,
+        brand,
+        category,
+        source,
+        price,
+        original_price,
+        image_url,
+        affiliate_url,
         description: get("description"),
         rating: idx("rating") >= 0 ? num(get("rating")) : 4.5,
         reviews_count: idx("reviews_count") >= 0 ? num(get("reviews_count")) : 0,
         is_trending: bool(get("is_trending")),
         is_new_arrival: idx("is_new_arrival") >= 0 ? bool(get("is_new_arrival")) : true,
         is_deal: bool(get("is_deal")),
-      };
+      });
     });
+
+  if (errors.length) {
+    throw new Error(
+      `Found ${errors.length} problem${errors.length === 1 ? "" : "s"} in the CSV:\n• ${errors.slice(0, 10).join("\n• ")}${errors.length > 10 ? "\n…" : ""}`,
+    );
+  }
+  return out;
 }

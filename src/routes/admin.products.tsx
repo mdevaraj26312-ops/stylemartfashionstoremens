@@ -277,7 +277,7 @@ function AdminDashboard() {
               <Download className="h-4 w-4" /> Download template
             </button>
           </div>
-          {importMsg && <p className="mt-3 text-sm text-muted-foreground">{importMsg}</p>}
+          {importMsg && <pre className="mt-3 text-sm text-muted-foreground whitespace-pre-wrap font-sans">{importMsg}</pre>}
         </div>
 
         {/* Manual form */}

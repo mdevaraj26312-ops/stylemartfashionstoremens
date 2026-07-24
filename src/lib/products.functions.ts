@@ -158,15 +158,26 @@ async function assertAdmin(ctx: { supabase: Awaited<ReturnType<typeof publicClie
   if (error || !data) throw new Error("Forbidden");
 }
 
+const PLACEHOLDER_IMAGE =
+  "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=70";
+
 const productInput = z.object({
   slug: z.string().min(1).max(120),
   title: z.string().min(1).max(200),
-  brand: z.string().min(1).max(100),
+  brand: z
+    .string()
+    .max(100)
+    .optional()
+    .transform((v) => (v && v.trim() ? v.trim() : "Generic")),
   category: z.enum(["women", "men", "kids", "footwear", "bags", "watches", "jewellery", "accessories"]),
-  source: z.enum(["Amazon", "Flipkart", "Meesho", "Myntra", "Ajio", "Other"]),
+  source: z.enum(["Amazon", "Flipkart", "Meesho", "Myntra", "Ajio", "Other"]).default("Other"),
   price: z.number().min(0),
   original_price: z.number().min(0),
-  image_url: z.string().url(),
+  image_url: z
+    .string()
+    .optional()
+    .transform((v) => (v && v.trim() ? v.trim() : PLACEHOLDER_IMAGE))
+    .pipe(z.string().url()),
   affiliate_url: z.string().url(),
   description: z.string().max(2000).default(""),
   rating: z.number().min(0).max(5).default(4.5),

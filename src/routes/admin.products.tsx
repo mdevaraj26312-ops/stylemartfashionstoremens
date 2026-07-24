@@ -161,19 +161,25 @@ function AdminDashboard() {
   const bulk = useMutation({
     mutationFn: (rows: DraftProduct[]) => adminBulkImport({ data: { rows } }),
     onSuccess: (r) => {
-      setImportMsg(`Imported ${r.inserted} products.`);
+      setImportMsg(`✓ Imported ${r.inserted} products. They're now live on the homepage and category pages.`);
       qc.invalidateQueries({ queryKey: ["admin-products"] });
+      qc.invalidateQueries({ queryKey: ["products"] });
     },
-    onError: (e) => setImportMsg(`Import failed: ${(e as Error).message}`),
+    onError: (e) => setImportMsg(`✗ Import failed: ${friendlyError((e as Error).message)}`),
   });
 
   const save = () => {
-    if (!draft.title || !draft.brand || !draft.image_url || !draft.affiliate_url) {
-      alert("Title, brand, image URL and affiliate URL are required.");
+    if (!draft.title || !draft.affiliate_url) {
+      alert("Title and affiliate URL are required.");
       return;
     }
-    const slug = draft.slug || slugify(`${draft.brand}-${draft.title}`);
-    upsert.mutate({ ...draft, slug });
+    const slug = draft.slug || slugify(`${draft.brand || "generic"}-${draft.title}`);
+    upsert.mutate({
+      ...draft,
+      slug,
+      brand: draft.brand?.trim() || "Generic",
+      image_url: draft.image_url?.trim() || PLACEHOLDER_IMAGE,
+    });
   };
 
   const set = <K extends keyof DraftProduct>(k: K, v: DraftProduct[K]) =>
@@ -184,26 +190,30 @@ function AdminDashboard() {
     const text = await file.text();
     try {
       const rows = parseCsv(text);
-      if (rows.length === 0) throw new Error("No rows found");
+      if (rows.length === 0) throw new Error("No product rows found in the file");
       setImportMsg(`Uploading ${rows.length} rows…`);
       bulk.mutate(rows);
     } catch (err) {
-      setImportMsg(`Parse failed: ${(err as Error).message}`);
+      setImportMsg(`✗ ${(err as Error).message}`);
     }
   };
 
   const downloadTemplate = () => {
     const header = [
-      "slug", "title", "brand", "category", "source", "price", "original_price",
-      "image_url", "affiliate_url", "description", "rating", "reviews_count",
-      "is_trending", "is_new_arrival", "is_deal",
+      "title", "category", "price", "affiliate_url",
+      "brand", "source", "original_price", "image_url",
+      "description", "rating", "reviews_count",
+      "is_trending", "is_new_arrival", "is_deal", "slug",
     ].join(",");
-    const example = [
-      "ribbed-midi-dress", "Ribbed Knit Midi Dress", "Zara", "women", "Myntra",
-      "1999", "2999", "https://example.com/img.jpg", "https://myntra.com/xyz",
-      "\"Soft ribbed midi, ivory.\"", "4.6", "128", "true", "true", "false",
-    ].join(",");
-    const blob = new Blob([`${header}\n${example}\n`], { type: "text/csv" });
+    const rows = [
+      ["Ribbed Knit Midi Dress", "women", "1999", "https://www.myntra.com/dress/12345",
+        "Zara", "Myntra", "2999", "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=70",
+        "\"Soft ribbed midi in ivory.\"", "4.6", "128", "true", "true", "false", "ribbed-midi-dress"],
+      ["Classic White Sneakers", "footwear", "2499", "https://www.amazon.in/dp/B0EXAMPLE",
+        "", "Amazon", "3499", "",
+        "Everyday leather sneakers.", "4.4", "540", "false", "true", "true", ""],
+    ].map((r) => r.join(","));
+    const blob = new Blob([`${header}\n${rows.join("\n")}\n`], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;

@@ -249,7 +249,7 @@ function AdminDashboard() {
         <div className="mt-8 rounded-lg border border-border bg-card p-5 sm:p-7">
           <h2 className="font-display text-2xl">Bulk import (CSV)</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Columns: slug, title, brand, category, source, price, original_price, image_url, affiliate_url, description, rating, reviews_count, is_trending, is_new_arrival, is_deal.
+            Required columns: <b>title, category, price, affiliate_url</b>. Optional: brand (defaults to "Generic"), source, original_price, image_url (a placeholder is used if empty), description, rating, reviews_count, is_trending, is_new_arrival, is_deal, slug. Category must be one of: women, men, kids, footwear, bags, watches, jewellery, accessories.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <input

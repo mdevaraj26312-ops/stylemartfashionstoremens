@@ -3,6 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2, Plus, Upload, ExternalLink, LogOut, Download } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
+import { EnrichPanel } from "@/components/site/EnrichPanel";
+
 import { CATEGORIES, STORES, inr } from "@/lib/catalog";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -137,7 +139,9 @@ function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [importMsg, setImportMsg] = useState<string | null>(null);
+  const [autoEnrichToken, setAutoEnrichToken] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
+
 
   const listQ = useQuery({
     queryKey: ["admin-products", page, search],

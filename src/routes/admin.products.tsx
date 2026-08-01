@@ -165,10 +165,13 @@ function AdminDashboard() {
   const bulk = useMutation({
     mutationFn: (rows: DraftProduct[]) => adminBulkImport({ data: { rows } }),
     onSuccess: (r) => {
-      setImportMsg(`✓ Imported ${r.inserted} products. They're now live on the homepage and category pages.`);
+      setImportMsg(`✓ Imported ${r.inserted} products. Now fetching real titles, prices and images from their affiliate links…`);
       qc.invalidateQueries({ queryKey: ["admin-products"] });
       qc.invalidateQueries({ queryKey: ["products"] });
+      qc.invalidateQueries({ queryKey: ["enrich-stats"] });
+      setAutoEnrichToken((t) => t + 1);
     },
+
     onError: (e) => setImportMsg(`✗ Import failed: ${friendlyError((e as Error).message)}`),
   });
 

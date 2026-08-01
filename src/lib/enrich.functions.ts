@@ -174,7 +174,7 @@ export const adminEnrichBatch = createServerFn({ method: "POST" })
           patch.discount_pct = op > price ? Math.round(((op - price) / op) * 100) : 0;
         }
 
-        const { error: upErr } = await supabaseAdmin.from("products").update(patch).eq("id", row.id);
+        const { error: upErr } = await supabaseAdmin.from("products").update(patch as never).eq("id", row.id);
         if (upErr) throw new Error(upErr.message);
         updated += 1;
       } catch (e) {

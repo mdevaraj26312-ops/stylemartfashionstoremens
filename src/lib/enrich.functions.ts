@@ -77,9 +77,23 @@ async function scrapeProduct(url: string): Promise<Scraped> {
     throw new Error("Scrape returned an unreadable response.");
   }
   const json = parsed.json ?? parsed.data?.json;
+  const landedOn = parsed.data?.metadata?.url ?? parsed.data?.metadata?.sourceURL ?? "";
   if (!json) throw new Error("No product data found on that page.");
+
+  // Guard against category / search / 404 pages, which would otherwise write
+  // junk like "Search Results" over the product record.
+  const title = clean(json.title, 200) ?? "";
+  const looksLikeListing =
+    /search results|no matches|page not found|404|not available/i.test(title) ||
+    /\/search|search\?|\?rf=|category|\/shop\//i.test(landedOn);
+  if (!toNumber(json.price) || looksLikeListing) {
+    throw new Error(
+      "This link is not a single product page (no price found) — it resolves to a category, search or expired page. Replace it with a direct product link.",
+    );
+  }
   return json;
 }
+
 
 async function assertAdmin(supabase: { from: (t: string) => any }, userId: string) {
   const { data, error } = await supabase

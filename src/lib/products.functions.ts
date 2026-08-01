@@ -215,8 +215,10 @@ export const adminBulkImport = createServerFn({ method: "POST" })
     const chunkSize = 500;
     let inserted = 0;
     for (let i = 0; i < data.rows.length; i += chunkSize) {
-      const chunk = data.rows.slice(i, i + chunkSize);
-      const { error } = await context.supabase.from("products").upsert(chunk, { onConflict: "slug" });
+      // Freshly imported rows are queued for automatic enrichment from their affiliate URL.
+      const chunk = data.rows.slice(i, i + chunkSize).map((r) => ({ ...r, enrich_status: "pending" }));
+      const { error } = await context.supabase.from("products").upsert(chunk as never, { onConflict: "slug" });
+
       if (error) throw new Error(`Row ${i}: ${error.message}`);
       inserted += chunk.length;
     }

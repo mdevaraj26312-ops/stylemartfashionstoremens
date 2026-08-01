@@ -161,6 +161,9 @@ export type Database = {
           created_at: string
           description: string
           discount_pct: number
+          enrich_error: string | null
+          enrich_status: string
+          enriched_at: string | null
           gender: string | null
           id: string
           image_url: string
@@ -200,6 +203,9 @@ export type Database = {
           created_at?: string
           description?: string
           discount_pct?: number
+          enrich_error?: string | null
+          enrich_status?: string
+          enriched_at?: string | null
           gender?: string | null
           id?: string
           image_url: string
@@ -239,6 +245,9 @@ export type Database = {
           created_at?: string
           description?: string
           discount_pct?: number
+          enrich_error?: string | null
+          enrich_status?: string
+          enriched_at?: string | null
           gender?: string | null
           id?: string
           image_url?: string

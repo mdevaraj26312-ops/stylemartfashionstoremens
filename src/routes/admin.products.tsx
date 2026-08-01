@@ -3,6 +3,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2, Plus, Upload, ExternalLink, LogOut, Download } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
+import { EnrichPanel } from "@/components/site/EnrichPanel";
+
 import { CATEGORIES, STORES, inr } from "@/lib/catalog";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -137,7 +139,9 @@ function AdminDashboard() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [importMsg, setImportMsg] = useState<string | null>(null);
+  const [autoEnrichToken, setAutoEnrichToken] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
+
 
   const listQ = useQuery({
     queryKey: ["admin-products", page, search],
@@ -161,10 +165,13 @@ function AdminDashboard() {
   const bulk = useMutation({
     mutationFn: (rows: DraftProduct[]) => adminBulkImport({ data: { rows } }),
     onSuccess: (r) => {
-      setImportMsg(`✓ Imported ${r.inserted} products. They're now live on the homepage and category pages.`);
+      setImportMsg(`✓ Imported ${r.inserted} products. Now fetching real titles, prices and images from their affiliate links…`);
       qc.invalidateQueries({ queryKey: ["admin-products"] });
       qc.invalidateQueries({ queryKey: ["products"] });
+      qc.invalidateQueries({ queryKey: ["enrich-stats"] });
+      setAutoEnrichToken((t) => t + 1);
     },
+
     onError: (e) => setImportMsg(`✗ Import failed: ${friendlyError((e as Error).message)}`),
   });
 
@@ -279,6 +286,10 @@ function AdminDashboard() {
           </div>
           {importMsg && <pre className="mt-3 text-sm text-muted-foreground whitespace-pre-wrap font-sans">{importMsg}</pre>}
         </div>
+
+        <EnrichPanel autoRunToken={autoEnrichToken} />
+
+
 
         {/* Manual form */}
         <div className="mt-10 rounded-lg border border-border bg-card p-5 sm:p-7">

@@ -70,7 +70,9 @@ async function scrapeProduct(url: string): Promise<Scraped> {
     throw new Error(`Scrape failed [${res.status}]: ${body.slice(0, 200)}`);
   }
 
-  let parsed: { json?: Scraped; data?: { json?: Scraped } };
+  type Meta = { url?: string; sourceURL?: string };
+  let parsed: { json?: Scraped; metadata?: Meta; data?: { json?: Scraped; metadata?: Meta } };
+
   try {
     parsed = JSON.parse(body);
   } catch {

@@ -280,6 +280,10 @@ function AdminDashboard() {
           {importMsg && <pre className="mt-3 text-sm text-muted-foreground whitespace-pre-wrap font-sans">{importMsg}</pre>}
         </div>
 
+        <EnrichPanel autoRunToken={autoEnrichToken} />
+
+
+
         {/* Manual form */}
         <div className="mt-10 rounded-lg border border-border bg-card p-5 sm:p-7">
           <h2 className="font-display text-2xl">

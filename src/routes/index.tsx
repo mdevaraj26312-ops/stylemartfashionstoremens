@@ -7,6 +7,7 @@ import { RecentlyViewed } from "@/components/site/RecentlyViewed";
 import { InstagramSection } from "@/components/site/InstagramSection";
 import { CATEGORIES, type Product } from "@/lib/catalog";
 import { listProducts } from "@/lib/products.functions";
+import heroImg from "@/assets/hero-vintage.jpg";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
@@ -59,13 +60,15 @@ function Hero() {
   return (
     <section className="relative min-h-[88vh] sm:min-h-screen flex items-end overflow-hidden">
       <img
-        src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=2000&q=80"
-        alt="Vintage-inspired editorial fashion portrait"
-        className="absolute inset-0 h-full w-full object-cover"
+        src={heroImg}
+        alt="Vintage-inspired editorial portrait in a camel wool coat and silk scarf"
+        width={1920}
+        height={1280}
+        className="absolute inset-0 h-full w-full object-cover object-[70%_center]"
         loading="eager"
         fetchPriority="high"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/25" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
       <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pb-14 sm:pb-24 pt-28 text-primary-foreground">
         <p className="eyebrow text-gold">Est. Style Mart · Curated Since Day One</p>
         <h1 className="mt-5 font-display text-[13vw] leading-[0.95] sm:text-6xl lg:text-[5.75rem] max-w-4xl animate-fade-in">

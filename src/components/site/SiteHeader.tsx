@@ -175,7 +175,7 @@ function WishlistLink() {
 
 }
 
-function AdminLink() {
+function useIsAdmin() {
   const [signedIn, setSignedIn] = useState(false);
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s));
@@ -188,10 +188,15 @@ function AdminLink() {
     enabled: signedIn,
     staleTime: 60_000,
   });
-  if (!statusQ.data?.isAdmin) return null;
+  return Boolean(statusQ.data?.isAdmin);
+}
+
+function AdminLink() {
+  const isAdmin = useIsAdmin();
+  if (!isAdmin) return null;
   return (
     <Link
-      to="/admin"
+      to="/admin/products"
       className="inline-flex items-center gap-1.5 h-9 px-3 rounded-full bg-primary text-primary-foreground text-[11px] tracking-[0.18em] uppercase hover:bg-accent transition"
       aria-label="Admin dashboard"
       title="Admin"
@@ -201,4 +206,19 @@ function AdminLink() {
     </Link>
   );
 }
+
+function MobileAdminLink({ onNavigate }: { onNavigate: () => void }) {
+  const isAdmin = useIsAdmin();
+  if (!isAdmin) return null;
+  return (
+    <Link
+      to="/admin/products"
+      onClick={onNavigate}
+      className="mt-2 inline-flex items-center justify-center gap-2 h-11 rounded-full bg-primary text-primary-foreground text-[11px] tracking-[0.18em] uppercase"
+    >
+      <Shield className="h-3.5 w-3.5" /> Admin panel
+    </Link>
+  );
+}
+
 

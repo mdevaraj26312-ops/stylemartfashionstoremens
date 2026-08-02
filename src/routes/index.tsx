@@ -41,12 +41,12 @@ export const Route = createFileRoute("/")({
       {
         property: "og:image",
         content:
-          "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80",
+          "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=80",
       },
       {
         name: "twitter:image",
         content:
-          "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=80",
+          "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=80",
       },
     ],
   }),
@@ -59,7 +59,7 @@ function Hero() {
   return (
     <section className="relative min-h-[88vh] sm:min-h-screen flex items-end overflow-hidden">
       <img
-        src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=2000&q=80"
+        src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=2000&q=80"
         alt="Vintage-inspired editorial fashion portrait"
         className="absolute inset-0 h-full w-full object-cover"
         loading="eager"

@@ -147,8 +147,10 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
+            <MobileAdminLink onNavigate={() => setOpen(false)} />
           </div>
         )}
+
       </div>
     </header>
   );

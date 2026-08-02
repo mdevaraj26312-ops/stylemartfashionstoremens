@@ -14,7 +14,7 @@ export function ProductCard({ p, deal = false }: { p: Product; deal?: boolean })
       <Link
         to="/product/$slug"
         params={{ slug: p.slug }}
-        className="relative aspect-[3/4] overflow-hidden rounded-md bg-muted block"
+        className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-muted block"
       >
         <img
           src={p.img}

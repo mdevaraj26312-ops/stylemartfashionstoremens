@@ -53,9 +53,10 @@ function About() {
         <div className="mt-16 rounded-lg bg-secondary/60 p-8 sm:p-12">
           <p className="eyebrow">Affiliate disclosure</p>
           <p className="mt-3 text-sm text-foreground/85 leading-relaxed">
-            Style Mart participates in the affiliate programs of Amazon, Flipkart, Myntra, Meesho
-            and Ajio. When you buy through our links we earn a small commission — at no extra
+            Style Mart participates in the affiliate programs of leading fashion retailers. When
+            you buy through our links we may earn a small commission — at no extra
             cost to you. That's what keeps this platform independent and free.
+
           </p>
         </div>
 

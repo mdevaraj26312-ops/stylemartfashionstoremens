@@ -4,6 +4,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2, Plus, Upload, ExternalLink, LogOut, Download } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { EnrichPanel } from "@/components/site/EnrichPanel";
+import { AdminNav } from "@/components/site/AdminShell";
+
 
 import { CATEGORIES, STORES, inr } from "@/lib/catalog";
 import { supabase } from "@/integrations/supabase/client";
@@ -251,6 +253,9 @@ function AdminDashboard() {
             <LogOut className="h-3.5 w-3.5" /> Sign out
           </button>
         </div>
+
+        <AdminNav />
+
 
         {/* Bulk CSV */}
         <div className="mt-8 rounded-lg border border-border bg-card p-5 sm:p-7">

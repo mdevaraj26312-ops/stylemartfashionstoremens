@@ -483,47 +483,97 @@ function PremiumBrands({ products }: { products: Product[] }) {
   );
 }
 
-/* ---------------------------- Vintage editorial ---------------------------- */
+/* ------------------------------ Style banners ------------------------------ */
 
-function VintageBanner() {
+const STYLE_BANNERS = [
+  {
+    id: "gen-z",
+    img: genzImg,
+    eyebrow: "Gen Z",
+    title: "Bold, playful, unmistakably now.",
+    blurb:
+      "Statement silhouettes, street-ready layers and colour that refuses to whisper — the edit for a new generation.",
+    cta: "Shop Gen Z",
+    q: "gen z",
+  },
+  {
+    id: "classic",
+    img: classicImg,
+    eyebrow: "Classic",
+    title: "Tailoring that never dates.",
+    blurb:
+      "Crisp shirting, clean lines and quiet luxury. Considered pieces designed to stay in rotation for decades.",
+    cta: "Shop classic",
+    q: "classic",
+  },
+  {
+    id: "vintage",
+    img: vintageImg,
+    eyebrow: "Vintage",
+    title: "Pieces with a past, made for now.",
+    blurb:
+      "Camel wool coats, silk scarves, heritage denim and gold-toned watches — the archive edit, warmly reimagined.",
+    cta: "Shop vintage",
+    q: "vintage",
+  },
+  {
+    id: "premium",
+    img: premiumImg,
+    eyebrow: "Premium",
+    title: "The house of gold and ink.",
+    blurb:
+      "Our most refined selection: elevated fabrics, precise finishing and the kind of detail you only notice up close.",
+    cta: "Shop premium",
+    q: "premium",
+  },
+] as const;
+
+function StyleBanners() {
   return (
-    <section id="vintage" className="py-14 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="relative overflow-hidden rounded-3xl bg-secondary">
-          <div className="grid lg:grid-cols-2">
-            <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-between min-h-[320px]">
-              <p className="eyebrow">The vintage collection</p>
-              <div>
-                <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-                  Pieces with a <em className="italic text-accent">past</em>, made for now.
-                </h2>
-                <p className="mt-4 text-sm text-muted-foreground max-w-md leading-relaxed">
-                  Camel wool coats, silk scarves, heritage denim and gold-toned watches — the
-                  archive edit, sourced from trusted stores across India.
-                </p>
-                <Link
-                  to="/search"
-                  search={{ q: "vintage" }}
-                  className="mt-6 inline-flex items-center gap-2 h-12 px-6 rounded-full bg-primary text-primary-foreground text-xs tracking-[0.16em] uppercase hover:bg-accent transition"
-                >
-                  Shop vintage <ArrowRight className="h-4 w-4" />
-                </Link>
+    <div className="bg-background">
+      {STYLE_BANNERS.map((b, i) => (
+        <section
+          key={b.id}
+          id={b.id}
+          className={`py-10 sm:py-16 scroll-mt-24 ${i % 2 === 1 ? "bg-secondary/40" : ""}`}
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="group relative overflow-hidden rounded-3xl bg-secondary shadow-[0_20px_60px_-30px_rgba(0,0,0,0.45)]">
+              <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? "lg:[direction:rtl]" : ""}`}>
+                <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-center min-h-[320px] [direction:ltr]">
+                  <p className="eyebrow">{b.eyebrow}</p>
+                  <h2 className="mt-3 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
+                    {b.title}
+                  </h2>
+                  <p className="mt-4 text-sm text-muted-foreground max-w-md leading-relaxed">
+                    {b.blurb}
+                  </p>
+                  <Link
+                    to="/search"
+                    search={{ q: b.q }}
+                    className="mt-7 inline-flex w-fit items-center gap-2 h-12 px-6 rounded-full bg-primary text-primary-foreground text-xs tracking-[0.16em] uppercase hover:bg-accent transition-all duration-300 hover:gap-3"
+                  >
+                    {b.cta} <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+                <div className="relative min-h-[300px] lg:min-h-[440px] overflow-hidden [direction:ltr]">
+                  <img
+                    src={b.img}
+                    alt={`${b.eyebrow} fashion editorial`}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent lg:bg-gradient-to-r lg:from-secondary/60 lg:to-transparent" />
+                </div>
               </div>
             </div>
-            <div className="relative min-h-[280px] lg:min-h-full">
-              <img
-                src="https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=1200&q=80"
-                alt="Vintage camel coat editorial"
-                className="absolute inset-0 h-full w-full object-cover"
-                loading="lazy"
-              />
-            </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
+      ))}
+    </div>
   );
 }
+
 
 /* --------------------------------- Reviews --------------------------------- */
 

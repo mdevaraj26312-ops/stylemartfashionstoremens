@@ -24,6 +24,8 @@ import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as GoIdRouteImport } from './routes/go.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
+import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
+import { Route as AdminBrandsRouteImport } from './routes/admin.brands'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -100,6 +102,16 @@ const AdminProductsRoute = AdminProductsRouteImport.update({
   path: '/admin/products',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/admin/categories',
+  path: '/admin/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBrandsRoute = AdminBrandsRouteImport.update({
+  id: '/admin/brands',
+  path: '/admin/brands',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -112,6 +124,8 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/trending': typeof TrendingRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/brands': typeof AdminBrandsRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
@@ -129,6 +143,8 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/trending': typeof TrendingRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/brands': typeof AdminBrandsRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
@@ -147,6 +163,8 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/trending': typeof TrendingRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/brands': typeof AdminBrandsRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
@@ -166,6 +184,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/trending'
     | '/wishlist'
+    | '/admin/brands'
+    | '/admin/categories'
     | '/admin/products'
     | '/category/$slug'
     | '/go/$id'
@@ -183,6 +203,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/trending'
     | '/wishlist'
+    | '/admin/brands'
+    | '/admin/categories'
     | '/admin/products'
     | '/category/$slug'
     | '/go/$id'
@@ -200,6 +222,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/trending'
     | '/wishlist'
+    | '/admin/brands'
+    | '/admin/categories'
     | '/admin/products'
     | '/category/$slug'
     | '/go/$id'
@@ -218,6 +242,8 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   TrendingRoute: typeof TrendingRoute
   WishlistRoute: typeof WishlistRoute
+  AdminBrandsRoute: typeof AdminBrandsRoute
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminProductsRoute: typeof AdminProductsRoute
   CategorySlugRoute: typeof CategorySlugRoute
   GoIdRoute: typeof GoIdRoute
@@ -332,6 +358,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/admin/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/brands': {
+      id: '/admin/brands'
+      path: '/admin/brands'
+      fullPath: '/admin/brands'
+      preLoaderRoute: typeof AdminBrandsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -346,6 +386,8 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   TrendingRoute: TrendingRoute,
   WishlistRoute: WishlistRoute,
+  AdminBrandsRoute: AdminBrandsRoute,
+  AdminCategoriesRoute: AdminCategoriesRoute,
   AdminProductsRoute: AdminProductsRoute,
   CategorySlugRoute: CategorySlugRoute,
   GoIdRoute: GoIdRoute,

@@ -8,6 +8,11 @@ import { InstagramSection } from "@/components/site/InstagramSection";
 import { CATEGORIES, type Product } from "@/lib/catalog";
 import { listProducts } from "@/lib/products.functions";
 import heroImg from "@/assets/hero-vintage.jpg";
+import genzImg from "@/assets/banner-genz.jpg";
+import classicImg from "@/assets/banner-classic.jpg";
+import vintageImg from "@/assets/banner-vintage.jpg";
+import premiumImg from "@/assets/banner-premium.jpg";
+
 
 export const Route = createFileRoute("/")({
   loader: async () => {

@@ -717,7 +717,7 @@ function Home() {
       />
       <EditorsPicks products={best.length ? best : trending} />
       <PremiumBrands products={[...best, ...trending, ...fresh, ...sale]} />
-      <VintageBanner />
+      <StyleBanners />
       <ProductRail
         id="best-sellers"
         eyebrow="Best sellers"

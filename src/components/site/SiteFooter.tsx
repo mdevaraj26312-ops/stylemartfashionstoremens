@@ -80,15 +80,13 @@ export function SiteFooter() {
 
         <div className="mt-14 pt-6 border-t border-primary-foreground/15 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <p className="text-xs text-primary-foreground/60">
-            © {new Date().getFullYear()} Style Mart. Prices and availability provided by partner
-            stores. Style Mart earns commission on qualifying purchases.
+            © {new Date().getFullYear()} Style Mart. Prices and availability provided by our retail
+            partners.
           </p>
           <div className="flex items-center gap-3 text-[10px] tracking-[0.22em] uppercase text-primary-foreground/60">
-            <span>Amazon</span><span className="opacity-40">·</span>
-            <span>Flipkart</span><span className="opacity-40">·</span>
-            <span>Myntra</span><span className="opacity-40">·</span>
-            <span>Meesho</span><span className="opacity-40">·</span>
-            <span>Ajio</span>
+            <span>Classic</span><span className="opacity-40">·</span>
+            <span>Vintage</span><span className="opacity-40">·</span>
+            <span>Premium</span>
           </div>
         </div>
       </div>

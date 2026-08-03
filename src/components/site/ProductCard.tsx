@@ -50,9 +50,6 @@ export function ProductCard({ p, deal = false }: { p: Product; deal?: boolean })
         >
           <Heart className={`h-4 w-4 ${saved ? "fill-destructive" : ""}`} />
         </button>
-        <span className="absolute left-3 bottom-3 rounded-sm bg-background/90 backdrop-blur px-2 py-0.5 text-[10px] tracking-[0.16em] uppercase">
-          {p.source}
-        </span>
       </Link>
 
       <div className="mt-3 flex-1 flex flex-col">

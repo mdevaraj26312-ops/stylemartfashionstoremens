@@ -8,7 +8,7 @@ export const Route = createFileRoute("/affiliate-disclosure")({
       {
         name: "description",
         content:
-          "How Style Mart makes money: our affiliate relationships with Amazon, Flipkart, Myntra, Meesho and Ajio.",
+          "How Style Mart makes money: our affiliate relationships with leading fashion retailers.",
       },
       { property: "og:title", content: "Affiliate Disclosure — Style Mart" },
     ],
@@ -29,7 +29,7 @@ function DisclosurePage() {
         <div className="mt-10 space-y-6 text-base text-foreground/85 leading-relaxed">
           <p>
             Style Mart is an independent fashion discovery platform. We are a participant in
-            affiliate programs run by Amazon, Flipkart, Myntra, Meesho, Ajio and other partner
+            affiliate programs run by leading fashion retailers and other partner
             retailers. When you click a "Buy Now" button on our site and make a purchase, we may
             earn a small commission — at no extra cost to you.
           </p>

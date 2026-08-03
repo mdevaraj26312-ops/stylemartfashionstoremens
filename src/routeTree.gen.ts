@@ -23,7 +23,10 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as GoIdRouteImport } from './routes/go.$id'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
+import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
+import { Route as AdminBrandsRouteImport } from './routes/admin.brands'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -95,9 +98,24 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/admin/settings',
+  path: '/admin/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminProductsRoute = AdminProductsRouteImport.update({
   id: '/admin/products',
   path: '/admin/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/admin/categories',
+  path: '/admin/categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminBrandsRoute = AdminBrandsRouteImport.update({
+  id: '/admin/brands',
+  path: '/admin/brands',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -112,7 +130,10 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/trending': typeof TrendingRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/brands': typeof AdminBrandsRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -129,7 +150,10 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/trending': typeof TrendingRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/brands': typeof AdminBrandsRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -147,7 +171,10 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/trending': typeof TrendingRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/brands': typeof AdminBrandsRoute
+  '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
+  '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -166,7 +193,10 @@ export interface FileRouteTypes {
     | '/search'
     | '/trending'
     | '/wishlist'
+    | '/admin/brands'
+    | '/admin/categories'
     | '/admin/products'
+    | '/admin/settings'
     | '/category/$slug'
     | '/go/$id'
     | '/product/$slug'
@@ -183,7 +213,10 @@ export interface FileRouteTypes {
     | '/search'
     | '/trending'
     | '/wishlist'
+    | '/admin/brands'
+    | '/admin/categories'
     | '/admin/products'
+    | '/admin/settings'
     | '/category/$slug'
     | '/go/$id'
     | '/product/$slug'
@@ -200,7 +233,10 @@ export interface FileRouteTypes {
     | '/search'
     | '/trending'
     | '/wishlist'
+    | '/admin/brands'
+    | '/admin/categories'
     | '/admin/products'
+    | '/admin/settings'
     | '/category/$slug'
     | '/go/$id'
     | '/product/$slug'
@@ -218,7 +254,10 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   TrendingRoute: typeof TrendingRoute
   WishlistRoute: typeof WishlistRoute
+  AdminBrandsRoute: typeof AdminBrandsRoute
+  AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminProductsRoute: typeof AdminProductsRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
   CategorySlugRoute: typeof CategorySlugRoute
   GoIdRoute: typeof GoIdRoute
   ProductSlugRoute: typeof ProductSlugRoute
@@ -325,11 +364,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/admin/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/products': {
       id: '/admin/products'
       path: '/admin/products'
       fullPath: '/admin/products'
       preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/categories': {
+      id: '/admin/categories'
+      path: '/admin/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/brands': {
+      id: '/admin/brands'
+      path: '/admin/brands'
+      fullPath: '/admin/brands'
+      preLoaderRoute: typeof AdminBrandsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -346,7 +406,10 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   TrendingRoute: TrendingRoute,
   WishlistRoute: WishlistRoute,
+  AdminBrandsRoute: AdminBrandsRoute,
+  AdminCategoriesRoute: AdminCategoriesRoute,
   AdminProductsRoute: AdminProductsRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
   CategorySlugRoute: CategorySlugRoute,
   GoIdRoute: GoIdRoute,
   ProductSlugRoute: ProductSlugRoute,

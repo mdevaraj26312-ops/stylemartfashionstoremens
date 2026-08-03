@@ -1,5 +1,6 @@
 import { SiteHeader } from "./SiteHeader";
 import { SiteFooter } from "./SiteFooter";
+import { BottomNav } from "./BottomNav";
 import type { ReactNode } from "react";
 
 export function SiteLayout({ children }: { children: ReactNode }) {
@@ -8,6 +9,8 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <SiteHeader />
       <main className="flex-1">{children}</main>
       <SiteFooter />
+      <div className="h-16 md:hidden" aria-hidden />
+      <BottomNav />
     </div>
   );
 }

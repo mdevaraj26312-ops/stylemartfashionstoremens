@@ -30,8 +30,6 @@ export function applyFilters(products: Product[], f: FilterState): Product[] {
   return out;
 }
 
-const STORES = ["Amazon", "Flipkart", "Myntra", "Meesho", "Ajio"];
-
 export function CatalogFilters({
   value,
   onChange,
@@ -41,17 +39,8 @@ export function CatalogFilters({
   onChange: (v: FilterState) => void;
   priceCap: number;
 }) {
-  const toggleStore = (s: string) => {
-    onChange({
-      ...value,
-      stores: value.stores.includes(s)
-        ? value.stores.filter((x) => x !== s)
-        : [...value.stores, s],
-    });
-  };
-
   return (
-    <div className="grid gap-4 rounded-md border border-border bg-card p-4 sm:p-5">
+    <div className="grid gap-4 rounded-2xl border border-border bg-card p-4 sm:p-5">
       <div className="grid gap-3 sm:grid-cols-[1fr_1fr] sm:gap-6">
         <label className="text-sm">
           <span className="eyebrow">Sort by</span>
@@ -84,37 +73,6 @@ export function CatalogFilters({
             </span>
           </div>
         </label>
-      </div>
-      <div>
-        <p className="eyebrow">Store</p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {STORES.map((s) => {
-            const active = value.stores.includes(s);
-            return (
-              <button
-                key={s}
-                type="button"
-                onClick={() => toggleStore(s)}
-                className={`text-xs px-3 py-1.5 rounded-full border transition ${
-                  active
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "border-border hover:border-foreground"
-                }`}
-              >
-                {s}
-              </button>
-            );
-          })}
-          {value.stores.length > 0 && (
-            <button
-              type="button"
-              onClick={() => onChange({ ...value, stores: [] })}
-              className="text-xs px-3 py-1.5 rounded-full text-muted-foreground hover:text-foreground"
-            >
-              Clear
-            </button>
-          )}
-        </div>
       </div>
     </div>
   );

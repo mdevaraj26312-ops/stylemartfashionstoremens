@@ -17,7 +17,7 @@ export const Route = createFileRoute("/search")({
     return {
       meta: [
         { title: q ? `“${q}” — Search on Style Mart` : "Search — Style Mart" },
-        { name: "description", content: "Search fashion products across Amazon, Flipkart, Myntra, Meesho and Ajio." },
+        { name: "description", content: "Search fashion products across trusted fashion retailers." },
         { name: "robots", content: "noindex" },
       ],
     };

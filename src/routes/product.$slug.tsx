@@ -88,7 +88,7 @@ function ProductPage() {
                 </span>
               )}
               <span className="absolute right-4 top-4 rounded-sm bg-background/90 backdrop-blur px-2.5 py-1 text-[10px] tracking-[0.18em] uppercase">
-                {p.source}
+                {p.brand}
               </span>
             </div>
           </div>
@@ -117,7 +117,7 @@ function ProductPage() {
               )}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
-              Inclusive of all taxes · Price checked on {p.source}
+              Inclusive of all taxes · Price checked today
             </p>
 
             <p className="mt-6 text-sm text-foreground/85 leading-relaxed">{p.description}</p>
@@ -130,7 +130,7 @@ function ProductPage() {
                 onClick={() => trackAffiliateClick(p)}
                 className="group inline-flex items-center justify-center gap-2 h-14 rounded-full bg-primary text-primary-foreground text-sm tracking-[0.16em] uppercase hover:bg-accent transition-colors"
               >
-                Buy Now on {p.source}
+                Buy Now
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <SaveButton slug={p.slug} />

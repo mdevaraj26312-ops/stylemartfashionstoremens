@@ -40,7 +40,7 @@ function AnnouncementBar() {
         </span>
         <span className="hidden md:inline opacity-60">·</span>
         <span className="hidden md:inline tracking-[0.2em] uppercase whitespace-nowrap">
-          Curated across Amazon · Flipkart · Myntra · Meesho
+          Classic · Vintage · Premium edits
         </span>
       </div>
     </div>

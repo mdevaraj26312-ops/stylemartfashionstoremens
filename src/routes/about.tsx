@@ -8,7 +8,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "Style Mart is a curated fashion discovery platform. We hand-pick the best pieces from Amazon, Flipkart, Myntra, Meesho and Ajio.",
+          "Style Mart is a curated fashion discovery platform. We hand-pick the best pieces from India's most trusted fashion retailers.",
       },
       { property: "og:title", content: "About — Style Mart" },
       { property: "og:description", content: "A curated fashion discovery platform." },
@@ -29,7 +29,7 @@ function About() {
         <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl">
           Style Mart started with a simple frustration: too many apps, too many tabs, and never
           quite the right piece. So we built one place — an editor-led discovery platform that
-          scans Amazon, Flipkart, Myntra, Meesho and Ajio for the pieces actually worth wearing.
+          scans India's most trusted fashion retailers for the pieces actually worth wearing.
         </p>
 
         <div className="mt-14 grid gap-8 sm:grid-cols-3">
@@ -41,7 +41,7 @@ function About() {
           <Pillar
             n="02"
             t="Every major store"
-            b="One search across Amazon, Flipkart, Myntra, Meesho and Ajio — with honest source badges."
+            b="One search across India's most trusted fashion retailers — with honest source badges."
           />
           <Pillar
             n="03"

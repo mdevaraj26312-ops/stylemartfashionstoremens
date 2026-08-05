@@ -1,9 +1,7 @@
 export type Store = "Amazon" | "Flipkart" | "Meesho" | "Myntra" | "Ajio" | "Other";
 
 export type CategorySlug =
-  | "women"
   | "men"
-  | "kids"
   | "footwear"
   | "bags"
   | "watches"
@@ -40,15 +38,6 @@ export type Category = {
 
 export const CATEGORIES: Category[] = [
   {
-    slug: "women",
-    name: "Women's Fashion",
-    short: "Women",
-    tagline: "Dresses, ethnic, denim & everyday edits.",
-    hero: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1600&q=80",
-    img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=70",
-    count: "Shop women",
-  },
-  {
     slug: "men",
     name: "Men's Fashion",
     short: "Men",
@@ -58,19 +47,10 @@ export const CATEGORIES: Category[] = [
     count: "Shop men",
   },
   {
-    slug: "kids",
-    name: "Kids Fashion",
-    short: "Kids",
-    tagline: "Playful, comfy pieces for every age.",
-    hero: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1600&q=80",
-    img: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=900&q=70",
-    count: "Shop kids",
-  },
-  {
     slug: "footwear",
     name: "Footwear",
     short: "Footwear",
-    tagline: "Sneakers, heels, boots & everyday steps.",
+    tagline: "Sneakers, loafers, boots & formal shoes.",
     hero: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1600&q=80",
     img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=70",
     count: "Shop footwear",
@@ -79,7 +59,7 @@ export const CATEGORIES: Category[] = [
     slug: "bags",
     name: "Bags & Accessories",
     short: "Bags",
-    tagline: "Totes, backpacks, clutches & more.",
+    tagline: "Briefcases, backpacks, duffles & more.",
     hero: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=1600&q=80",
     img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=900&q=70",
     count: "Shop bags",
@@ -95,9 +75,9 @@ export const CATEGORIES: Category[] = [
   },
   {
     slug: "jewellery",
-    name: "Jewellery",
+    name: "Men's Jewellery",
     short: "Jewellery",
-    tagline: "Everyday gold, statement stones & bridal.",
+    tagline: "Chains, rings, bracelets & statement pieces.",
     hero: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1600&q=80",
     img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=900&q=70",
     count: "Shop jewellery",

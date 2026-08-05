@@ -64,7 +64,7 @@ export const listProducts = createServerFn({ method: "GET" })
     const from = (data.page - 1) * data.pageSize;
     const to = from + data.pageSize - 1;
 
-    let q = supabase.from("products").select(sel("*"), { count: "exact" });
+    let q = supabase.from("products").select(sel("*"), { count: "exact" }).not("category", "in", '("women","kids")');
     if (data.category) q = q.eq("category", data.category as never);
     if (data.source) q = q.eq("source", data.source as never);
     if (data.maxPrice) q = q.lte("price", data.maxPrice);
@@ -169,7 +169,7 @@ const productInput = z.object({
     .max(100)
     .optional()
     .transform((v) => (v && v.trim() ? v.trim() : "Generic")),
-  category: z.enum(["women", "men", "kids", "footwear", "bags", "watches", "jewellery", "accessories"]),
+  category: z.enum(["men", "footwear", "bags", "watches", "jewellery", "accessories"]),
   source: z.enum(["Amazon", "Flipkart", "Meesho", "Myntra", "Ajio", "Other"]).default("Other"),
   price: z.number().min(0),
   original_price: z.number().min(0),

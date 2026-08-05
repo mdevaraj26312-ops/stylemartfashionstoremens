@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Menu, Heart, X, Shield } from "lucide-react";
 import { CATEGORIES } from "@/lib/catalog";
@@ -113,7 +113,7 @@ export function SiteHeader() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
-              placeholder="Search dresses, sneakers, watches, brands…"
+               placeholder="Search shirts, sneakers, watches, brands…"
             />
             <button
               type="submit"
@@ -176,17 +176,26 @@ function WishlistLink() {
 }
 
 function useIsAdmin() {
-  const [signedIn, setSignedIn] = useState(false);
+  const [signedIn, setSignedIn] = useState(() => Boolean(supabase.auth.getSession));
+  const sessionReady = useSyncExternalStore(
+    (notify) => {
+      const { data } = supabase.auth.onAuthStateChange(() => notify());
+      return () => data.subscription.unsubscribe();
+    },
+    () => true,
+    () => false,
+  );
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s));
-    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(Boolean(s)));
+    supabase.auth.getUser().then(({ data }) => setSignedIn(Boolean(data.user)));
     return () => sub.subscription.unsubscribe();
   }, []);
   const statusQ = useQuery({
     queryKey: ["admin-status"],
     queryFn: () => getMyAdminStatus(),
-    enabled: signedIn,
-    staleTime: 60_000,
+    enabled: sessionReady && signedIn,
+    retry: 2,
+    staleTime: 0,
   });
   return Boolean(statusQ.data?.isAdmin);
 }

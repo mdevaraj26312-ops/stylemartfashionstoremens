@@ -113,7 +113,7 @@ export function SiteHeader() {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
-              placeholder="Search dresses, sneakers, watches, brands…"
+               placeholder="Search shirts, sneakers, watches, brands…"
             />
             <button
               type="submit"
@@ -176,17 +176,18 @@ function WishlistLink() {
 }
 
 function useIsAdmin() {
-  const [signedIn, setSignedIn] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(!!s));
-    supabase.auth.getSession().then(({ data }) => setSignedIn(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setUserId(s?.user.id ?? null));
+    supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
     return () => sub.subscription.unsubscribe();
   }, []);
   const statusQ = useQuery({
-    queryKey: ["admin-status"],
+    queryKey: ["admin-status", userId],
     queryFn: () => getMyAdminStatus(),
-    enabled: signedIn,
-    staleTime: 60_000,
+    enabled: Boolean(userId),
+    retry: 2,
+    staleTime: 0,
   });
   return Boolean(statusQ.data?.isAdmin);
 }

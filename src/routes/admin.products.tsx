@@ -50,8 +50,8 @@ const EMPTY: DraftProduct = {
   slug: "",
   title: "",
   brand: "",
-  category: "women",
-  source: "Amazon",
+  category: "men",
+  source: "Other",
   price: 0,
   original_price: 0,
   image_url: "",
@@ -215,11 +215,11 @@ function AdminDashboard() {
       "is_trending", "is_new_arrival", "is_deal", "slug",
     ].join(",");
     const rows = [
-      ["Ribbed Knit Midi Dress", "women", "1999", "https://www.myntra.com/dress/12345",
-        "Zara", "Myntra", "2999", "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=70",
-        "\"Soft ribbed midi in ivory.\"", "4.6", "128", "true", "true", "false", "ribbed-midi-dress"],
-      ["Classic White Sneakers", "footwear", "2499", "https://www.amazon.in/dp/B0EXAMPLE",
-        "", "Amazon", "3499", "",
+      ["Tailored Oxford Shirt", "men", "1999", "https://shop.example.com/products/oxford-shirt",
+        "Generic", "Other", "2999", "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=900&q=70",
+        "\"Crisp cotton Oxford shirt in ivory.\"", "4.6", "128", "true", "true", "false", "tailored-oxford-shirt"],
+      ["Classic White Sneakers", "footwear", "2499", "https://shop.example.com/products/white-sneakers",
+        "", "Other", "3499", "",
         "Everyday leather sneakers.", "4.4", "540", "false", "true", "true", ""],
     ].map((r) => r.join(","));
     const blob = new Blob([`${header}\n${rows.join("\n")}\n`], { type: "text/csv" });
@@ -261,7 +261,7 @@ function AdminDashboard() {
         <div className="mt-8 rounded-lg border border-border bg-card p-5 sm:p-7">
           <h2 className="font-display text-2xl">Bulk import (CSV)</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Required columns: <b>title, category, price, affiliate_url</b>. Optional: brand (defaults to "Generic"), source, original_price, image_url (a placeholder is used if empty), description, rating, reviews_count, is_trending, is_new_arrival, is_deal, slug. Category must be one of: women, men, kids, footwear, bags, watches, jewellery, accessories.
+             Required columns: <b>title, category, price, affiliate_url</b>. Optional: brand (defaults to "Generic"), source, original_price, image_url (a placeholder is used if empty), description, rating, reviews_count, is_trending, is_new_arrival, is_deal, slug. Category must be one of: men, footwear, bags, watches, jewellery, accessories.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <input
@@ -334,7 +334,7 @@ function AdminDashboard() {
               <input value={draft.image_url} onChange={(e) => set("image_url", e.target.value)} className="input" placeholder="https://…" />
             </Field>
             <Field label="Affiliate URL" full>
-              <input value={draft.affiliate_url} onChange={(e) => set("affiliate_url", e.target.value)} className="input" placeholder="https://www.amazon.in/..." />
+               <input value={draft.affiliate_url} onChange={(e) => set("affiliate_url", e.target.value)} className="input" placeholder="https://shop.example.com/product/..." />
             </Field>
             <Field label="Description" full>
               <textarea rows={3} value={draft.description} onChange={(e) => set("description", e.target.value)} className="input" />
@@ -488,7 +488,7 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 const PLACEHOLDER_IMAGE =
   "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=70";
 
-const VALID_CATEGORIES = ["women", "men", "kids", "footwear", "bags", "watches", "jewellery", "accessories"] as const;
+const VALID_CATEGORIES = ["men", "footwear", "bags", "watches", "jewellery", "accessories"] as const;
 const VALID_SOURCES = ["Amazon", "Flipkart", "Meesho", "Myntra", "Ajio", "Other"] as const;
 
 function friendlyError(msg: string): string {

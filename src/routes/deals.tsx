@@ -7,9 +7,9 @@ export const Route = createFileRoute("/deals")({
   loader: () => listProducts({ data: { flag: "deal", page: 1, pageSize: 60 } }),
   head: () => ({
     meta: [
-      { title: "Best Fashion Deals — Style Mart" },
-      { name: "description", content: "Biggest discounts on fashion, hand-picked across stores." },
-      { property: "og:title", content: "Best Fashion Deals — Style Mart" },
+      { title: "Best Men's Fashion Deals — Style Mart" },
+      { name: "description", content: "Biggest discounts on men's fashion, hand-picked across the market." },
+      { property: "og:title", content: "Best Men's Fashion Deals — Style Mart" },
     ],
     links: [{ rel: "canonical", href: "/deals" }],
   }),

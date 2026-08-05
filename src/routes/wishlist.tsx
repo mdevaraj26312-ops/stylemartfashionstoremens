@@ -10,7 +10,7 @@ export const Route = createFileRoute("/wishlist")({
   head: () => ({
     meta: [
       { title: "Your Wishlist — Style Mart" },
-      { name: "description", content: "Your saved fashion products on Style Mart." },
+      { name: "description", content: "Your saved men's fashion products on Style Mart." },
       { name: "robots", content: "noindex" },
     ],
   }),

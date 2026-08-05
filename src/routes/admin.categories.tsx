@@ -22,7 +22,7 @@ const slugify = (s: string) =>
 
 function AdminCategoriesPage() {
   const qc = useQueryClient();
-  const [category, setCategory] = useState<string>("women");
+  const [category, setCategory] = useState<string>("men");
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
 

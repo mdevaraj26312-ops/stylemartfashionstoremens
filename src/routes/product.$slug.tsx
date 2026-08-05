@@ -146,13 +146,6 @@ function ProductPage() {
               <Trust icon={RotateCcw} label="Store return policy" />
             </div>
 
-            <p className="mt-6 text-[11px] text-muted-foreground">
-              Style Mart earns a commission when you buy through this link, at no extra cost to you.{" "}
-              <Link to="/affiliate-disclosure" className="underline hover:text-accent">
-                Read our disclosure
-              </Link>
-              .
-            </p>
           </div>
         </div>
       </section>

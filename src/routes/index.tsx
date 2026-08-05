@@ -5,13 +5,13 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
 import { RecentlyViewed } from "@/components/site/RecentlyViewed";
 import { InstagramSection } from "@/components/site/InstagramSection";
-import { CATEGORIES, type Product } from "@/lib/catalog";
+import type { Product } from "@/lib/catalog";
 import { listProducts } from "@/lib/products.functions";
-import heroImg from "@/assets/hero-vintage.jpg";
+import heroImg from "@/assets/hero-mens-luxury.jpg";
 import genzImg from "@/assets/banner-genz.jpg";
-import classicImg from "@/assets/banner-classic.jpg";
-import vintageImg from "@/assets/banner-vintage.jpg";
-import premiumImg from "@/assets/banner-premium.jpg";
+import classicImg from "@/assets/banner-classic-men.jpg";
+import vintageImg from "@/assets/banner-vintage-men.jpg";
+import premiumImg from "@/assets/banner-premium-men.jpg";
 
 
 export const Route = createFileRoute("/")({
@@ -31,29 +31,19 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "Style Mart — Timeless Style, Modern Elegance" },
+       { title: "Style Mart — Premium Men's Fashion" },
       {
         name: "description",
         content:
-          "Discover classic, vintage and premium fashion from trusted brands — curated collections, editor's picks and the best deals in one elegant marketplace.",
+           "Discover premium men's fashion, from sharp tailoring and vintage classics to modern streetwear, footwear, watches and accessories.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "Style Mart — Timeless Style, Modern Elegance" },
+       { property: "og:title", content: "Style Mart — Premium Men's Fashion" },
       {
         property: "og:description",
-        content: "Classic, vintage and premium fashion curated from trusted brands.",
+         content: "Classic, vintage and premium menswear curated for the modern gentleman.",
       },
       { name: "twitter:card", content: "summary_large_image" },
-      {
-        property: "og:image",
-        content:
-          "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=80",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=80",
-      },
     ],
   }),
   component: Home,
@@ -63,33 +53,33 @@ export const Route = createFileRoute("/")({
 
 function Hero() {
   return (
-    <section className="relative min-h-[88vh] sm:min-h-screen flex items-end overflow-hidden">
+    <section id="top" className="relative h-[74svh] min-h-[540px] max-h-[780px] flex items-end overflow-hidden">
       <img
         src={heroImg}
-        alt="Vintage-inspired editorial portrait in a camel wool coat and silk scarf"
+        alt="Style Mart luxury menswear editorial with a tailored black suit"
         width={1920}
         height={1280}
-        className="absolute inset-0 h-full w-full object-cover object-[70%_center]"
+        className="absolute inset-0 h-full w-full object-cover object-[68%_center]"
         loading="eager"
         fetchPriority="high"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
-      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pb-14 sm:pb-24 pt-28 text-primary-foreground">
-        <p className="eyebrow text-gold">Est. Style Mart · Curated Since Day One</p>
-        <h1 className="mt-5 font-display text-[13vw] leading-[0.95] sm:text-6xl lg:text-[5.75rem] max-w-4xl animate-fade-in">
-          Timeless Style.
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/10" />
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pb-12 sm:pb-16 pt-24 text-primary-foreground">
+        <p className="eyebrow text-gold">The Men's Edit · 2026</p>
+        <h1 className="mt-5 font-display text-5xl leading-[0.98] sm:text-6xl lg:text-7xl max-w-3xl animate-fade-in">
+          Style Mart.
           <br />
-          <em className="italic text-gold">Modern</em> Elegance.
+          <em className="italic text-gold">Menswear</em>, refined.
         </h1>
         <p className="mt-6 max-w-xl text-sm sm:text-lg text-primary-foreground/80 leading-relaxed">
-          Discover Classic, Vintage &amp; Premium Fashion from trusted brands.
+          Tailoring, streetwear and timeless accessories selected for men who dress with intention.
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-3">
           <Link
             to="/trending"
             className="group inline-flex items-center gap-2 h-12 sm:h-14 px-7 rounded-full bg-gold text-ink text-sm tracking-[0.14em] uppercase hover:bg-primary-foreground transition-colors"
           >
-            Shop Collection
+            Shop men's edit
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
           <Link
@@ -101,9 +91,9 @@ function Hero() {
           </Link>
         </div>
         <div className="mt-12 grid grid-cols-3 gap-6 max-w-md border-t border-primary-foreground/20 pt-6">
-          <Stat n="10k+" l="Pieces" />
-          <Stat n="120+" l="Houses" />
-          <Stat n="8" l="Stores" />
+          <Stat n="20" l="Categories" />
+          <Stat n="5" l="Style edits" />
+          <Stat n="Daily" l="New finds" />
         </div>
       </div>
     </section>
@@ -121,12 +111,12 @@ function Stat({ n, l }: { n: string; l: string }) {
 
 function Marquee() {
   const items = [
-    "Timeless craftsmanship",
-    "Vintage archives",
-    "Trusted stores only",
-    "Best price checked",
-    "Curated by stylists",
-    "Free shipping",
+    "Modern tailoring",
+    "Vintage menswear",
+    "Premium essentials",
+    "Streetwear edits",
+    "Curated for men",
+    "New finds daily",
   ];
   return (
     <div className="border-y border-border bg-secondary/50 overflow-hidden">
@@ -151,33 +141,33 @@ type Collection = { title: string; blurb: string; img: string; q: string };
 
 const COLLECTIONS: Collection[] = [
   {
+    title: "Gen Z",
+    blurb: "Relaxed denim, graphic layers and street-led energy.",
+    img: genzImg,
+    q: "gen z",
+  },
+  {
     title: "Classic Collection",
     blurb: "Tailored staples that never date.",
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=70",
+    img: classicImg,
     q: "classic",
   },
   {
     title: "Vintage Collection",
     blurb: "Archive silhouettes, revived.",
-    img: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1000&q=70",
+    img: vintageImg,
     q: "vintage",
   },
   {
     title: "Premium Collection",
     blurb: "Elevated fabrics and finishing.",
-    img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1000&q=70",
+    img: premiumImg,
     q: "premium",
   },
   {
-    title: "Modern Essentials",
-    blurb: "The quiet everyday wardrobe.",
-    img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=1000&q=70",
-    q: "essentials",
-  },
-  {
-    title: "Luxury Accessories",
-    blurb: "Gold, leather and fine detail.",
-    img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1000&q=70",
+    title: "Luxury",
+    blurb: "Black tie, fine leather and considered detail.",
+    img: heroImg,
     q: "luxury",
   },
 ];
@@ -186,9 +176,9 @@ function FeaturedCollections() {
   return (
     <section id="collections" className="py-14 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
-        <p className="eyebrow">Featured collections</p>
+        <p className="eyebrow">Shop by style</p>
         <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          Curated houses of <em className="italic text-accent">taste</em>.
+          Five ways to dress with <em className="italic text-accent">character</em>.
         </h2>
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -197,8 +187,8 @@ function FeaturedCollections() {
             key={c.title}
             to="/search"
             search={{ q: c.q }}
-            className={`group relative overflow-hidden rounded-3xl bg-muted ${
-              i === 0 ? "lg:col-span-2 aspect-[16/10]" : "aspect-[4/3]"
+            className={`group relative overflow-hidden rounded-lg bg-muted ${
+              i === 0 ? "lg:col-span-2 aspect-[16/9]" : "aspect-[4/3]"
             }`}
           >
             <img
@@ -224,80 +214,36 @@ function FeaturedCollections() {
 
 /* ------------------------------- Categories ------------------------------- */
 
-const EXTRA_TILES = [
-  {
-    name: "Luxury",
-    q: "luxury",
-    img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=900&q=70",
-  },
-  {
-    name: "Vintage",
-    q: "vintage",
-    img: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=70",
-  },
-];
+const MEN_CATEGORIES = [
+  "T-Shirts", "Shirts", "Polos", "Jeans", "Trousers", "Cargo", "Hoodies", "Jackets",
+  "Blazers", "Suits", "Ethnic Wear", "Footwear", "Watches", "Bags", "Wallets", "Sunglasses",
+  "Belts", "Grooming", "Accessories", "Luxury",
+] as const;
 
 function Categories() {
   return (
     <section id="categories" className="py-14 sm:py-24 bg-secondary/40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
-        <p className="eyebrow">Premium categories</p>
+        <p className="eyebrow">The men's wardrobe</p>
         <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          Every wardrobe, one atelier.
+          Every essential, considered.
         </h2>
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-          {CATEGORIES.map((c) => (
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 border-l border-t border-border">
+          {MEN_CATEGORIES.map((name, index) => (
             <Link
-              key={c.slug}
-              to="/category/$slug"
-              params={{ slug: c.slug }}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted"
-            >
-              <img
-                src={c.img}
-                alt={c.name}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-primary-foreground">
-                <div className="flex items-end justify-between gap-2">
-                  <div className="min-w-0">
-                    <h3 className="font-display text-lg sm:text-xl leading-tight truncate">
-                      {c.short}
-                    </h3>
-                    <p className="text-[10px] tracking-[0.18em] uppercase opacity-80 mt-0.5 truncate">
-                      {c.count}
-                    </p>
-                  </div>
-                  <span className="shrink-0 grid place-items-center h-8 w-8 rounded-full bg-background/90 text-foreground group-hover:-translate-y-0.5 transition">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
-          {EXTRA_TILES.map((t) => (
-            <Link
-              key={t.name}
+              key={name}
               to="/search"
-              search={{ q: t.q }}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted"
+              search={{ q: name }}
+              className="group min-h-32 border-r border-b border-border bg-background p-4 sm:p-5 flex flex-col justify-between hover:bg-primary hover:text-primary-foreground transition-colors"
             >
-              <img
-                src={t.img}
-                alt={t.name}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-primary-foreground">
-                <h3 className="font-display text-lg sm:text-xl leading-tight">{t.name}</h3>
-                <p className="text-[10px] tracking-[0.18em] uppercase text-gold mt-0.5">
-                  The edit
-                </p>
+              <span className="text-[10px] text-muted-foreground group-hover:text-primary-foreground/60">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className="flex items-end justify-between gap-2">
+                <h3 className="font-display text-xl leading-tight">{name}</h3>
+                <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </div>
             </Link>
           ))}
@@ -507,7 +453,7 @@ const STYLE_BANNERS = [
     eyebrow: "Classic",
     title: "Tailoring that never dates.",
     blurb:
-      "Crisp shirting, clean lines and quiet luxury. Considered pieces designed to stay in rotation for decades.",
+      "Crisp shirting, trench coats and quiet tailoring. Considered menswear designed to stay in rotation for decades.",
     cta: "Shop classic",
     q: "classic",
   },
@@ -517,7 +463,7 @@ const STYLE_BANNERS = [
     eyebrow: "Vintage",
     title: "Pieces with a past, made for now.",
     blurb:
-      "Camel wool coats, silk scarves, heritage denim and gold-toned watches — the archive edit, warmly reimagined.",
+      "Corduroy blazers, knit polos, heritage denim and gold-toned watches — the gentleman's archive, warmly reimagined.",
     cta: "Shop vintage",
     q: "vintage",
   },
@@ -527,7 +473,7 @@ const STYLE_BANNERS = [
     eyebrow: "Premium",
     title: "The house of gold and ink.",
     blurb:
-      "Our most refined selection: elevated fabrics, precise finishing and the kind of detail you only notice up close.",
+      "Our most refined menswear: elevated fabrics, precise finishing and the kind of detail you only notice up close.",
     cta: "Shop premium",
     q: "premium",
   },
@@ -543,7 +489,7 @@ function StyleBanners() {
           className={`py-10 sm:py-16 scroll-mt-24 ${i % 2 === 1 ? "bg-secondary/40" : ""}`}
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="group relative overflow-hidden rounded-3xl bg-secondary shadow-[0_20px_60px_-30px_rgba(0,0,0,0.45)]">
+            <div className="group relative overflow-hidden rounded-lg bg-secondary shadow-[0_20px_60px_-30px_rgba(0,0,0,0.45)]">
               <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? "lg:[direction:rtl]" : ""}`}>
                 <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-center min-h-[320px] [direction:ltr]">
                   <p className="eyebrow">{b.eyebrow}</p>
@@ -565,6 +511,8 @@ function StyleBanners() {
                   <img
                     src={b.img}
                     alt={`${b.eyebrow} fashion editorial`}
+                    width={1536}
+                    height={1024}
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                   />
@@ -584,7 +532,7 @@ function StyleBanners() {
 
 const REVIEWS = [
   {
-    name: "Ananya R.",
+    name: "Arjun R.",
     city: "Bengaluru",
     text: "Style Mart is the only place I browse before buying. The vintage edit is genuinely well curated.",
   },
@@ -594,7 +542,7 @@ const REVIEWS = [
     text: "Found a camel coat at half the price I'd seen elsewhere. The links took me straight to checkout.",
   },
   {
-    name: "Priya S.",
+    name: "Pranav S.",
     city: "Delhi",
     text: "It feels like a luxury boutique but the prices are from stores I already trust. Beautifully done.",
   },
@@ -614,7 +562,7 @@ function Reviews() {
           {REVIEWS.map((r) => (
             <figure
               key={r.name}
-              className="rounded-3xl bg-card border border-border p-6 sm:p-8 flex flex-col"
+            className="rounded-lg bg-card border border-border p-6 sm:p-8 flex flex-col"
             >
               <Quote className="h-6 w-6 text-gold" />
               <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground/85">

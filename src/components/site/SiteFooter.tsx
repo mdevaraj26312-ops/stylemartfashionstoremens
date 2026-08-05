@@ -17,8 +17,8 @@ export function SiteFooter() {
               </span>
             </div>
             <p className="mt-5 text-sm text-primary-foreground/70 max-w-sm leading-relaxed">
-              A curated fashion discovery platform. We handpick pieces from India's favourite
-              stores so you spend less time scrolling — and more time wearing what you love.
+              A curated men's fashion marketplace. We handpick tailoring, streetwear and timeless
+              accessories so you spend less time scrolling — and dress with more intention.
             </p>
             <div className="mt-6 flex items-center gap-2">
               {[Instagram, Twitter, Facebook, Youtube].map((I, i) => (

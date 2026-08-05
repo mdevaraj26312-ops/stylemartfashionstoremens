@@ -8,7 +8,7 @@ export const Route = createFileRoute("/new-arrivals")({
   head: () => ({
     meta: [
       { title: "New Arrivals — Style Mart" },
-      { name: "description", content: "Freshly added fashion pieces on Style Mart." },
+      { name: "description", content: "Freshly added men's fashion pieces on Style Mart." },
       { property: "og:title", content: "New Arrivals — Style Mart" },
     ],
     links: [{ rel: "canonical", href: "/new-arrivals" }],
@@ -24,7 +24,7 @@ function NewArrivalsPage() {
         <p className="eyebrow">Just in</p>
         <h1 className="mt-2 font-display text-4xl sm:text-6xl">New arrivals, freshly picked.</h1>
         <p className="mt-3 text-sm text-muted-foreground max-w-xl">
-          The newest additions across every category, updated as our editors find them.
+          The newest menswear additions, updated as our editors find them.
         </p>
         <div className="mt-10">
           <ProductGrid products={items} />

@@ -453,7 +453,7 @@ const STYLE_BANNERS = [
     eyebrow: "Classic",
     title: "Tailoring that never dates.",
     blurb:
-      "Crisp shirting, clean lines and quiet luxury. Considered pieces designed to stay in rotation for decades.",
+      "Crisp shirting, trench coats and quiet tailoring. Considered menswear designed to stay in rotation for decades.",
     cta: "Shop classic",
     q: "classic",
   },
@@ -463,7 +463,7 @@ const STYLE_BANNERS = [
     eyebrow: "Vintage",
     title: "Pieces with a past, made for now.",
     blurb:
-      "Camel wool coats, silk scarves, heritage denim and gold-toned watches — the archive edit, warmly reimagined.",
+      "Corduroy blazers, knit polos, heritage denim and gold-toned watches — the gentleman's archive, warmly reimagined.",
     cta: "Shop vintage",
     q: "vintage",
   },
@@ -473,7 +473,7 @@ const STYLE_BANNERS = [
     eyebrow: "Premium",
     title: "The house of gold and ink.",
     blurb:
-      "Our most refined selection: elevated fabrics, precise finishing and the kind of detail you only notice up close.",
+      "Our most refined menswear: elevated fabrics, precise finishing and the kind of detail you only notice up close.",
     cta: "Shop premium",
     q: "premium",
   },
@@ -489,7 +489,7 @@ function StyleBanners() {
           className={`py-10 sm:py-16 scroll-mt-24 ${i % 2 === 1 ? "bg-secondary/40" : ""}`}
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="group relative overflow-hidden rounded-3xl bg-secondary shadow-[0_20px_60px_-30px_rgba(0,0,0,0.45)]">
+            <div className="group relative overflow-hidden rounded-lg bg-secondary shadow-[0_20px_60px_-30px_rgba(0,0,0,0.45)]">
               <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? "lg:[direction:rtl]" : ""}`}>
                 <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-center min-h-[320px] [direction:ltr]">
                   <p className="eyebrow">{b.eyebrow}</p>
@@ -511,6 +511,8 @@ function StyleBanners() {
                   <img
                     src={b.img}
                     alt={`${b.eyebrow} fashion editorial`}
+                    width={1536}
+                    height={1024}
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                   />
@@ -530,7 +532,7 @@ function StyleBanners() {
 
 const REVIEWS = [
   {
-    name: "Ananya R.",
+    name: "Arjun R.",
     city: "Bengaluru",
     text: "Style Mart is the only place I browse before buying. The vintage edit is genuinely well curated.",
   },
@@ -540,7 +542,7 @@ const REVIEWS = [
     text: "Found a camel coat at half the price I'd seen elsewhere. The links took me straight to checkout.",
   },
   {
-    name: "Priya S.",
+    name: "Pranav S.",
     city: "Delhi",
     text: "It feels like a luxury boutique but the prices are from stores I already trust. Beautifully done.",
   },
@@ -560,7 +562,7 @@ function Reviews() {
           {REVIEWS.map((r) => (
             <figure
               key={r.name}
-              className="rounded-3xl bg-card border border-border p-6 sm:p-8 flex flex-col"
+            className="rounded-lg bg-card border border-border p-6 sm:p-8 flex flex-col"
             >
               <Quote className="h-6 w-6 text-gold" />
               <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground/85">

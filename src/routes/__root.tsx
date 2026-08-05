@@ -78,25 +78,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "google-site-verification", content: "PASTE_MY_GOOGLE_VERIFICATION_CODE_HERE" },
-      { title: "Style Mart — Curated Fashion from Every Store" },
+      { title: "Style Mart — Premium Men's Fashion" },
       {
         name: "description",
         content:
-          "Trending fashion, new arrivals and the best deals — curated from trusted fashion retailers.",
+          "Premium men's tailoring, streetwear, footwear, watches and accessories, curated daily.",
       },
       { name: "author", content: "Style Mart" },
-      { property: "og:title", content: "Style Mart — Curated Fashion from Every Store" },
+      { property: "og:title", content: "Style Mart — Premium Men's Fashion" },
       {
         property: "og:description",
         content:
-          "Trending fashion, new arrivals and the best deals — curated from trusted fashion retailers.",
+          "Premium men's tailoring, streetwear, footwear, watches and accessories, curated daily.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Style Mart — Curated Fashion from Every Store" },
-      { name: "twitter:description", content: "Trending fashion, new arrivals and the best deals — curated from trusted fashion retailers." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b1203a08-a6d7-49f2-b1e5-0d25adfead40" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/b1203a08-a6d7-49f2-b1e5-0d25adfead40" },
+      { name: "twitter:title", content: "Style Mart — Premium Men's Fashion" },
+      { name: "twitter:description", content: "Premium men's tailoring, streetwear, footwear, watches and accessories." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

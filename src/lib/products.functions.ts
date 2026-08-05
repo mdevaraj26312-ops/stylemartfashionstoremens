@@ -248,14 +248,24 @@ export const adminListProducts = createServerFn({ method: "GET" })
 export const getMyAdminStatus = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
+    const ownerEmail = "mdevaraj26312@gmail.com";
+    const email = typeof context.claims.email === "string" ? context.claims.email.toLowerCase() : "";
+    const { data: existing, error } = await context.supabase
       .from("user_roles")
       .select("role")
       .eq("user_id", context.userId)
       .eq("role", "admin")
       .maybeSingle();
     if (error) throw new Error(error.message);
-    return { isAdmin: Boolean(data), userId: context.userId };
+    if (existing) return { isAdmin: true, userId: context.userId };
+    if (email !== ownerEmail) return { isAdmin: false, userId: context.userId };
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error: grantError } = await supabaseAdmin
+      .from("user_roles")
+      .upsert({ user_id: context.userId, role: "admin" }, { onConflict: "user_id,role" });
+    if (grantError) throw new Error(grantError.message);
+    return { isAdmin: true, userId: context.userId };
   });
 
 // Admin claim is permanently disabled — the sole admin is provisioned already.

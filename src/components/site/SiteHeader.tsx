@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Menu, Heart, X, Shield } from "lucide-react";
 import { CATEGORIES } from "@/lib/catalog";
@@ -176,24 +176,16 @@ function WishlistLink() {
 }
 
 function useIsAdmin() {
-  const [signedIn, setSignedIn] = useState(() => Boolean(supabase.auth.getSession));
-  const sessionReady = useSyncExternalStore(
-    (notify) => {
-      const { data } = supabase.auth.onAuthStateChange(() => notify());
-      return () => data.subscription.unsubscribe();
-    },
-    () => true,
-    () => false,
-  );
+  const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSignedIn(Boolean(s)));
-    supabase.auth.getUser().then(({ data }) => setSignedIn(Boolean(data.user)));
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setUserId(s?.user.id ?? null));
+    supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
     return () => sub.subscription.unsubscribe();
   }, []);
   const statusQ = useQuery({
-    queryKey: ["admin-status"],
+    queryKey: ["admin-status", userId],
     queryFn: () => getMyAdminStatus(),
-    enabled: sessionReady && signedIn,
+    enabled: Boolean(userId),
     retry: 2,
     staleTime: 0,
   });

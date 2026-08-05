@@ -141,33 +141,33 @@ type Collection = { title: string; blurb: string; img: string; q: string };
 
 const COLLECTIONS: Collection[] = [
   {
+    title: "Gen Z",
+    blurb: "Relaxed denim, graphic layers and street-led energy.",
+    img: genzImg,
+    q: "gen z",
+  },
+  {
     title: "Classic Collection",
     blurb: "Tailored staples that never date.",
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=1000&q=70",
+    img: classicImg,
     q: "classic",
   },
   {
     title: "Vintage Collection",
     blurb: "Archive silhouettes, revived.",
-    img: "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1000&q=70",
+    img: vintageImg,
     q: "vintage",
   },
   {
     title: "Premium Collection",
     blurb: "Elevated fabrics and finishing.",
-    img: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1000&q=70",
+    img: premiumImg,
     q: "premium",
   },
   {
-    title: "Modern Essentials",
-    blurb: "The quiet everyday wardrobe.",
-    img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=1000&q=70",
-    q: "essentials",
-  },
-  {
-    title: "Luxury Accessories",
-    blurb: "Gold, leather and fine detail.",
-    img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1000&q=70",
+    title: "Luxury",
+    blurb: "Black tie, fine leather and considered detail.",
+    img: heroImg,
     q: "luxury",
   },
 ];
@@ -176,9 +176,9 @@ function FeaturedCollections() {
   return (
     <section id="collections" className="py-14 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
-        <p className="eyebrow">Featured collections</p>
+        <p className="eyebrow">Shop by style</p>
         <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          Curated houses of <em className="italic text-accent">taste</em>.
+          Five ways to dress with <em className="italic text-accent">character</em>.
         </h2>
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -187,8 +187,8 @@ function FeaturedCollections() {
             key={c.title}
             to="/search"
             search={{ q: c.q }}
-            className={`group relative overflow-hidden rounded-3xl bg-muted ${
-              i === 0 ? "lg:col-span-2 aspect-[16/10]" : "aspect-[4/3]"
+            className={`group relative overflow-hidden rounded-lg bg-muted ${
+              i === 0 ? "lg:col-span-2 aspect-[16/9]" : "aspect-[4/3]"
             }`}
           >
             <img
@@ -214,80 +214,36 @@ function FeaturedCollections() {
 
 /* ------------------------------- Categories ------------------------------- */
 
-const EXTRA_TILES = [
-  {
-    name: "Luxury",
-    q: "luxury",
-    img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=900&q=70",
-  },
-  {
-    name: "Vintage",
-    q: "vintage",
-    img: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=70",
-  },
-];
+const MEN_CATEGORIES = [
+  "T-Shirts", "Shirts", "Polos", "Jeans", "Trousers", "Cargo", "Hoodies", "Jackets",
+  "Blazers", "Suits", "Ethnic Wear", "Footwear", "Watches", "Bags", "Wallets", "Sunglasses",
+  "Belts", "Grooming", "Accessories", "Luxury",
+] as const;
 
 function Categories() {
   return (
     <section id="categories" className="py-14 sm:py-24 bg-secondary/40">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
-        <p className="eyebrow">Premium categories</p>
+        <p className="eyebrow">The men's wardrobe</p>
         <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          Every wardrobe, one atelier.
+          Every essential, considered.
         </h2>
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-          {CATEGORIES.map((c) => (
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 border-l border-t border-border">
+          {MEN_CATEGORIES.map((name, index) => (
             <Link
-              key={c.slug}
-              to="/category/$slug"
-              params={{ slug: c.slug }}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted"
-            >
-              <img
-                src={c.img}
-                alt={c.name}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-primary-foreground">
-                <div className="flex items-end justify-between gap-2">
-                  <div className="min-w-0">
-                    <h3 className="font-display text-lg sm:text-xl leading-tight truncate">
-                      {c.short}
-                    </h3>
-                    <p className="text-[10px] tracking-[0.18em] uppercase opacity-80 mt-0.5 truncate">
-                      {c.count}
-                    </p>
-                  </div>
-                  <span className="shrink-0 grid place-items-center h-8 w-8 rounded-full bg-background/90 text-foreground group-hover:-translate-y-0.5 transition">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
-          {EXTRA_TILES.map((t) => (
-            <Link
-              key={t.name}
+              key={name}
               to="/search"
-              search={{ q: t.q }}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-muted"
+              search={{ q: name }}
+              className="group min-h-32 border-r border-b border-border bg-background p-4 sm:p-5 flex flex-col justify-between hover:bg-primary hover:text-primary-foreground transition-colors"
             >
-              <img
-                src={t.img}
-                alt={t.name}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4 text-primary-foreground">
-                <h3 className="font-display text-lg sm:text-xl leading-tight">{t.name}</h3>
-                <p className="text-[10px] tracking-[0.18em] uppercase text-gold mt-0.5">
-                  The edit
-                </p>
+              <span className="text-[10px] text-muted-foreground group-hover:text-primary-foreground/60">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className="flex items-end justify-between gap-2">
+                <h3 className="font-display text-xl leading-tight">{name}</h3>
+                <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </div>
             </Link>
           ))}

@@ -5,13 +5,13 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
 import { RecentlyViewed } from "@/components/site/RecentlyViewed";
 import { InstagramSection } from "@/components/site/InstagramSection";
-import { CATEGORIES, type Product } from "@/lib/catalog";
+import type { Product } from "@/lib/catalog";
 import { listProducts } from "@/lib/products.functions";
-import heroImg from "@/assets/hero-vintage.jpg";
+import heroImg from "@/assets/hero-mens-luxury.jpg";
 import genzImg from "@/assets/banner-genz.jpg";
-import classicImg from "@/assets/banner-classic.jpg";
-import vintageImg from "@/assets/banner-vintage.jpg";
-import premiumImg from "@/assets/banner-premium.jpg";
+import classicImg from "@/assets/banner-classic-men.jpg";
+import vintageImg from "@/assets/banner-vintage-men.jpg";
+import premiumImg from "@/assets/banner-premium-men.jpg";
 
 
 export const Route = createFileRoute("/")({
@@ -31,29 +31,19 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "Style Mart — Timeless Style, Modern Elegance" },
+       { title: "Style Mart — Premium Men's Fashion" },
       {
         name: "description",
         content:
-          "Discover classic, vintage and premium fashion from trusted brands — curated collections, editor's picks and the best deals in one elegant marketplace.",
+           "Discover premium men's fashion, from sharp tailoring and vintage classics to modern streetwear, footwear, watches and accessories.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "Style Mart — Timeless Style, Modern Elegance" },
+       { property: "og:title", content: "Style Mart — Premium Men's Fashion" },
       {
         property: "og:description",
-        content: "Classic, vintage and premium fashion curated from trusted brands.",
+         content: "Classic, vintage and premium menswear curated for the modern gentleman.",
       },
       { name: "twitter:card", content: "summary_large_image" },
-      {
-        property: "og:image",
-        content:
-          "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=80",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1200&q=80",
-      },
     ],
   }),
   component: Home,
@@ -63,33 +53,33 @@ export const Route = createFileRoute("/")({
 
 function Hero() {
   return (
-    <section className="relative min-h-[88vh] sm:min-h-screen flex items-end overflow-hidden">
+    <section id="top" className="relative h-[74svh] min-h-[540px] max-h-[780px] flex items-end overflow-hidden">
       <img
         src={heroImg}
-        alt="Vintage-inspired editorial portrait in a camel wool coat and silk scarf"
+        alt="Style Mart luxury menswear editorial with a tailored black suit"
         width={1920}
         height={1280}
-        className="absolute inset-0 h-full w-full object-cover object-[70%_center]"
+        className="absolute inset-0 h-full w-full object-cover object-[68%_center]"
         loading="eager"
         fetchPriority="high"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
-      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pb-14 sm:pb-24 pt-28 text-primary-foreground">
-        <p className="eyebrow text-gold">Est. Style Mart · Curated Since Day One</p>
-        <h1 className="mt-5 font-display text-[13vw] leading-[0.95] sm:text-6xl lg:text-[5.75rem] max-w-4xl animate-fade-in">
-          Timeless Style.
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/10" />
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pb-12 sm:pb-16 pt-24 text-primary-foreground">
+        <p className="eyebrow text-gold">The Men's Edit · 2026</p>
+        <h1 className="mt-5 font-display text-5xl leading-[0.98] sm:text-6xl lg:text-7xl max-w-3xl animate-fade-in">
+          Style Mart.
           <br />
-          <em className="italic text-gold">Modern</em> Elegance.
+          <em className="italic text-gold">Menswear</em>, refined.
         </h1>
         <p className="mt-6 max-w-xl text-sm sm:text-lg text-primary-foreground/80 leading-relaxed">
-          Discover Classic, Vintage &amp; Premium Fashion from trusted brands.
+          Tailoring, streetwear and timeless accessories selected for men who dress with intention.
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-3">
           <Link
             to="/trending"
             className="group inline-flex items-center gap-2 h-12 sm:h-14 px-7 rounded-full bg-gold text-ink text-sm tracking-[0.14em] uppercase hover:bg-primary-foreground transition-colors"
           >
-            Shop Collection
+            Shop men's edit
             <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
           <Link
@@ -101,9 +91,9 @@ function Hero() {
           </Link>
         </div>
         <div className="mt-12 grid grid-cols-3 gap-6 max-w-md border-t border-primary-foreground/20 pt-6">
-          <Stat n="10k+" l="Pieces" />
-          <Stat n="120+" l="Houses" />
-          <Stat n="8" l="Stores" />
+          <Stat n="20" l="Categories" />
+          <Stat n="5" l="Style edits" />
+          <Stat n="Daily" l="New finds" />
         </div>
       </div>
     </section>
@@ -121,12 +111,12 @@ function Stat({ n, l }: { n: string; l: string }) {
 
 function Marquee() {
   const items = [
-    "Timeless craftsmanship",
-    "Vintage archives",
-    "Trusted stores only",
-    "Best price checked",
-    "Curated by stylists",
-    "Free shipping",
+    "Modern tailoring",
+    "Vintage menswear",
+    "Premium essentials",
+    "Streetwear edits",
+    "Curated for men",
+    "New finds daily",
   ];
   return (
     <div className="border-y border-border bg-secondary/50 overflow-hidden">

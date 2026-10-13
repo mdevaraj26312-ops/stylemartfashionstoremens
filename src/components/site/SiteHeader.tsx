@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Menu, Heart, X, Shield } from "lucide-react";
+import { Search, Menu, Heart, X, Shield, UserRound } from "lucide-react";
 import { CATEGORIES } from "@/lib/catalog";
 import { useWishlist } from "@/lib/user-store";
 import { supabase } from "@/integrations/supabase/client";
@@ -175,8 +175,8 @@ function WishlistLink() {
 
 }
 
-function useIsAdmin() {
-  const [userId, setUserId] = useState<string | null>(null);
+function useAdminState() {
+  const [userId, setUserId] = useState<string | null | undefined>(undefined);
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setUserId(s?.user.id ?? null));
     supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
@@ -189,11 +189,24 @@ function useIsAdmin() {
     retry: 2,
     staleTime: 0,
   });
-  return Boolean(statusQ.data?.isAdmin);
+  return { signedIn: Boolean(userId), checked: userId !== undefined, isAdmin: Boolean(statusQ.data?.isAdmin) };
 }
 
 function AdminLink() {
-  const isAdmin = useIsAdmin();
+  const { signedIn, checked, isAdmin } = useAdminState();
+  if (!checked) return null;
+  if (!signedIn) {
+    return (
+      <Link
+        to="/auth"
+        className="grid place-items-center h-9 w-9 rounded-full hover:bg-muted"
+        aria-label="Sign in"
+        title="Sign in"
+      >
+        <UserRound className="h-4 w-4" />
+      </Link>
+    );
+  }
   if (!isAdmin) return null;
   return (
     <Link
@@ -209,7 +222,15 @@ function AdminLink() {
 }
 
 function MobileAdminLink({ onNavigate }: { onNavigate: () => void }) {
-  const isAdmin = useIsAdmin();
+  const { signedIn, checked, isAdmin } = useAdminState();
+  if (!checked) return null;
+  if (!signedIn) {
+    return (
+      <Link to="/auth" onClick={onNavigate} className="py-2 text-sm border-b border-border/60 inline-flex items-center gap-2">
+        <UserRound className="h-4 w-4" /> Sign in
+      </Link>
+    );
+  }
   if (!isAdmin) return null;
   return (
     <Link

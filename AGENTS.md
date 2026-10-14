@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Scope the homepage redesign through the `modern-home` theme and the SiteLayout presentation option; shared catalog, admin and other pages retain their existing behavior and styling.

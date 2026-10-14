@@ -141,3 +141,73 @@
     display: none;
   }
 }
+
+/* Homepage-only modern menswear theme. Other pages and admin keep their palette. */
+.modern-home {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.18 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --primary: oklch(0.18 0 0);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.965 0 0);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.95 0 0);
+  --muted-foreground: oklch(0.49 0 0);
+  --accent: oklch(0.35 0 0);
+  --accent-foreground: oklch(1 0 0);
+  --gold: oklch(0.45 0 0);
+  --border: oklch(0.9 0 0);
+  --input: var(--border);
+  --ring: var(--foreground);
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --hero-wash: linear-gradient(90deg, oklch(0.93 0 0 / 60%), transparent 65%);
+  --lookbook-wash: linear-gradient(0deg, oklch(1 0 0 / 95%), oklch(1 0 0 / 0%));
+  font-family: var(--font-sans);
+  letter-spacing: 0;
+}
+.modern-home .font-display { font-family: var(--font-display); font-weight: 700; }
+.modern-home .eyebrow { letter-spacing: 0; font-weight: 600; }
+.modern-home header { background: var(--background); }
+.modern-home header .tracking-tight { letter-spacing: 0; font-weight: 800; }
+.modern-home header form > label { border-radius: 4px; background: var(--secondary); }
+.modern-home header input { min-width: 0; }
+.modern-home header nav { gap: 1.1rem; font-size: 12px; }
+.modern-home header > div:first-child span { letter-spacing: 0; }
+.modern-home .modern-hero { height: 540px; }
+.modern-home .modern-hero-image { object-position: 65% top; }
+.modern-home .modern-hero-wash { background: var(--hero-wash); }
+.modern-home .modern-section { padding-top: 56px; padding-bottom: 56px; scroll-margin-top: 180px; }
+.modern-home .modern-lookbook-caption { background: var(--lookbook-wash); }
+.modern-home article > a:first-child { border-radius: 4px; }
+.modern-home article > a:first-child img { object-fit: contain; }
+.modern-home article > a:first-child > span { border-radius: 3px; font-size: 10px; letter-spacing: 0; }
+.modern-home article > a:first-child button { opacity: 1; transform: none; }
+.modern-home article > div > p { display: none; }
+.modern-home article > div > div:first-child p { letter-spacing: 0; font-size: 10px; font-weight: 700; }
+.modern-home article > div > a:last-child { border-radius: 3px; letter-spacing: 0; font-weight: 600; height: 38px; }
+.modern-home article > div > div:last-of-type .font-display { font-size: 16px; }
+.modern-home footer .text-gold { color: var(--primary-foreground); }
+.modern-home footer .font-display { letter-spacing: 0; }
+.modern-home footer [class*="tracking-"] { letter-spacing: 0; }
+.modern-home nav[aria-label="Collections"] a { letter-spacing: 0; font-size: 9px; }
+@media (min-width: 1536px) {
+  .modern-home .modern-hero { height: 610px; }
+}
+@media (max-width: 639px) {
+  .modern-home .modern-hero { height: 390px; }
+  .modern-home .modern-hero-image { object-position: 36% center; }
+  .modern-home .modern-hero-copy { max-width: 225px; }
+  .modern-home .modern-hero-copy h1 { font-size: 40px; }
+  .modern-home .modern-hero-copy > p:nth-of-type(2) { font-size: 19px; max-width: 160px; }
+  .modern-home .modern-hero-copy > p:nth-of-type(3) { max-width: 170px; font-size: 12px; }
+  .modern-home .modern-hero-copy > p:first-child { max-width: 155px; font-size: 9px; }
+  .modern-home .modern-hero-copy > a { font-size: 11px; }
+  .modern-home { --hero-wash: linear-gradient(90deg, oklch(0.94 0 0 / 98%), oklch(0.94 0 0 / 82%) 40%, transparent 80%); }
+  .modern-home .modern-section { padding-top: 36px; padding-bottom: 36px; }
+  .modern-home .modern-product-grid article > div > a:nth-child(2) { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modern-home *, .modern-home *::before, .modern-home *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Instagram, Twitter, Facebook, Youtube } from "lucide-react";
 import { CATEGORIES } from "@/lib/catalog";
 
-export function SiteFooter() {
+export function SiteFooter({ modern = false }: { modern?: boolean }) {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-16 pb-10">
@@ -84,8 +84,8 @@ export function SiteFooter() {
             partners.
           </p>
           <div className="flex items-center gap-3 text-[10px] tracking-[0.22em] uppercase text-primary-foreground/60">
-            <span>Classic</span><span className="opacity-40">·</span>
-            <span>Vintage</span><span className="opacity-40">·</span>
+            <span>{modern ? "Modern" : "Classic"}</span><span className="opacity-40">·</span>
+            <span>{modern ? "Everyday" : "Vintage"}</span><span className="opacity-40">·</span>
             <span>Premium</span>
           </div>
         </div>

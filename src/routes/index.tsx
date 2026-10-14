@@ -1,18 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowUpRight, ArrowRight, Star, Quote, Mail, Sparkles } from "lucide-react";
+import { ArrowUpRight, ArrowRight, Mail, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
 import { RecentlyViewed } from "@/components/site/RecentlyViewed";
-import { InstagramSection } from "@/components/site/InstagramSection";
+import { Button } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog";
 import { listProducts } from "@/lib/products.functions";
-import heroImg from "@/assets/hero-mens-luxury.jpg";
-import genzImg from "@/assets/banner-genz.jpg";
-import classicImg from "@/assets/banner-classic-men.jpg";
-import vintageImg from "@/assets/banner-vintage-men.jpg";
-import premiumImg from "@/assets/banner-premium-men.jpg";
-
+import heroImg from "@/assets/modern-mens-campaign.jpg";
+import streetImg from "@/assets/modern-streetwear.jpg";
+import essentialsImg from "@/assets/modern-essentials.jpg";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
@@ -31,188 +28,16 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-       { title: "Style Mart — Premium Men's Fashion" },
-      {
-        name: "description",
-        content:
-           "Discover premium men's fashion, from sharp tailoring and vintage classics to modern streetwear, footwear, watches and accessories.",
-      },
+      { title: "Style Mart — Modern Men's Fashion & Everyday Essentials" },
+      { name: "description", content: "Discover modern men's fashion at Style Mart. Shop streetwear, premium everyday essentials, footwear and accessories from your favourite brands." },
       { property: "og:type", content: "website" },
-       { property: "og:title", content: "Style Mart — Premium Men's Fashion" },
-      {
-        property: "og:description",
-         content: "Classic, vintage and premium menswear curated for the modern gentleman.",
-      },
+      { property: "og:title", content: "Style Mart — Modern Men's Fashion & Everyday Essentials" },
+      { property: "og:description", content: "A fresh perspective on menswear. Discover contemporary clothing, streetwear, footwear and accessories." },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Home,
 });
-
-/* ---------------------------------- Hero ---------------------------------- */
-
-function Hero() {
-  return (
-    <section id="top" className="relative h-[74svh] min-h-[540px] max-h-[780px] flex items-end overflow-hidden">
-      <img
-        src={heroImg}
-        alt="Style Mart luxury menswear editorial with a tailored black suit"
-        width={1920}
-        height={1280}
-        className="absolute inset-0 h-full w-full object-cover object-[68%_center]"
-        loading="eager"
-        fetchPriority="high"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/10" />
-      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 pb-12 sm:pb-16 pt-24 text-primary-foreground">
-        <p className="eyebrow text-gold">The Men's Edit · 2026</p>
-        <h1 className="mt-5 font-display text-5xl leading-[0.98] sm:text-6xl lg:text-7xl max-w-3xl animate-fade-in">
-          Style Mart.
-          <br />
-          <em className="italic text-gold">Menswear</em>, refined.
-        </h1>
-        <p className="mt-6 max-w-xl text-sm sm:text-lg text-primary-foreground/80 leading-relaxed">
-          Tailoring, streetwear and timeless accessories selected for men who dress with intention.
-        </p>
-        <div className="mt-9 flex flex-wrap items-center gap-3">
-          <Link
-            to="/trending"
-            className="group inline-flex items-center gap-2 h-12 sm:h-14 px-7 rounded-full bg-gold text-ink text-sm tracking-[0.14em] uppercase hover:bg-primary-foreground transition-colors"
-          >
-            Shop men's edit
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </Link>
-          <Link
-            to="/"
-            hash="brands"
-            className="inline-flex items-center gap-2 h-12 sm:h-14 px-7 rounded-full border border-primary-foreground/50 text-sm tracking-[0.14em] uppercase hover:bg-primary-foreground hover:text-ink transition-colors"
-          >
-            Explore Brands
-          </Link>
-        </div>
-        <div className="mt-12 grid grid-cols-3 gap-6 max-w-md border-t border-primary-foreground/20 pt-6">
-          <Stat n="20" l="Categories" />
-          <Stat n="5" l="Style edits" />
-          <Stat n="Daily" l="New finds" />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Stat({ n, l }: { n: string; l: string }) {
-  return (
-    <div>
-      <div className="font-display text-2xl sm:text-3xl">{n}</div>
-      <div className="text-[10px] sm:text-[11px] tracking-[0.2em] uppercase opacity-70 mt-1">{l}</div>
-    </div>
-  );
-}
-
-function Marquee() {
-  const items = [
-    "Modern tailoring",
-    "Vintage menswear",
-    "Premium essentials",
-    "Streetwear edits",
-    "Curated for men",
-    "New finds daily",
-  ];
-  return (
-    <div className="border-y border-border bg-secondary/50 overflow-hidden">
-      <div className="flex gap-12 py-3 whitespace-nowrap animate-[marquee_32s_linear_infinite] text-xs tracking-[0.22em] uppercase text-muted-foreground">
-        {Array.from({ length: 3 }).flatMap((_, i) =>
-          items.map((t) => (
-            <span key={`${i}-${t}`} className="flex items-center gap-12">
-              <span>{t}</span>
-              <span className="text-gold">✦</span>
-            </span>
-          )),
-        )}
-      </div>
-      <style>{`@keyframes marquee { to { transform: translateX(-50%); } }`}</style>
-    </div>
-  );
-}
-
-/* ------------------------------- Collections ------------------------------ */
-
-type Collection = { title: string; blurb: string; img: string; q: string };
-
-const COLLECTIONS: Collection[] = [
-  {
-    title: "Gen Z",
-    blurb: "Relaxed denim, graphic layers and street-led energy.",
-    img: genzImg,
-    q: "gen z",
-  },
-  {
-    title: "Classic Collection",
-    blurb: "Tailored staples that never date.",
-    img: classicImg,
-    q: "classic",
-  },
-  {
-    title: "Vintage Collection",
-    blurb: "Archive silhouettes, revived.",
-    img: vintageImg,
-    q: "vintage",
-  },
-  {
-    title: "Premium Collection",
-    blurb: "Elevated fabrics and finishing.",
-    img: premiumImg,
-    q: "premium",
-  },
-  {
-    title: "Luxury",
-    blurb: "Black tie, fine leather and considered detail.",
-    img: heroImg,
-    q: "luxury",
-  },
-];
-
-function FeaturedCollections() {
-  return (
-    <section id="collections" className="py-14 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
-        <p className="eyebrow">Shop by style</p>
-        <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          Five ways to dress with <em className="italic text-accent">character</em>.
-        </h2>
-      </div>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {COLLECTIONS.map((c, i) => (
-          <Link
-            key={c.title}
-            to="/search"
-            search={{ q: c.q }}
-            className={`group relative overflow-hidden rounded-lg bg-muted ${
-              i === 0 ? "lg:col-span-2 aspect-[16/9]" : "aspect-[4/3]"
-            }`}
-          >
-            <img
-              src={c.img}
-              alt={c.title}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7 text-primary-foreground">
-              <h3 className="font-display text-2xl sm:text-3xl leading-tight">{c.title}</h3>
-              <p className="mt-1 text-xs sm:text-sm text-primary-foreground/80">{c.blurb}</p>
-              <span className="mt-3 inline-flex items-center gap-1.5 text-[11px] tracking-[0.18em] uppercase text-gold">
-                Explore <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------- Categories ------------------------------- */
 
 const MEN_CATEGORIES = [
   "T-Shirts", "Shirts", "Polos", "Jeans", "Trousers", "Cargo", "Hoodies", "Jackets",
@@ -220,474 +45,131 @@ const MEN_CATEGORIES = [
   "Belts", "Grooming", "Accessories", "Luxury",
 ] as const;
 
+function Hero() {
+  return (
+    <section id="top" className="modern-hero relative overflow-hidden bg-secondary">
+      <img src={heroImg} alt="Contemporary men's black and grey casualwear campaign" width={1920} height={1024} loading="eager" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover modern-hero-image" />
+      <div className="modern-hero-wash absolute inset-0" />
+      <div className="relative mx-auto flex h-full max-w-7xl items-center px-5 sm:px-8">
+        <div className="modern-hero-copy max-w-lg">
+          <p className="text-xs font-semibold uppercase">The new menswear perspective</p>
+          <h1 className="mt-5 text-5xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl">Style Mart<span className="text-muted-foreground">.</span></h1>
+          <p className="mt-4 text-2xl font-semibold sm:text-3xl">Your style. Your everyday.</p>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground sm:text-base">Fresh silhouettes. Better essentials. Discover a wardrobe that moves with you.</p>
+          <Button asChild size="lg" className="mt-7 h-12 rounded-sm px-6 shadow-none">
+            <Link to="/new-arrivals">Shop new arrivals <ArrowUpRight /></Link>
+          </Button>
+          <Link to="/trending" className="mt-5 flex w-fit items-center gap-2 text-xs font-semibold sm:mt-6">Explore the men's edit <ArrowRight className="h-4 w-4" /></Link>
+        </div>
+      </div>
+      <span className="absolute bottom-6 right-8 hidden text-[10px] font-semibold uppercase sm:block">Style Mart / The everyday collection</span>
+    </section>
+  );
+}
+
+function SectionTitle({ kicker, title, to }: { kicker: string; title: string; to?: "/trending" | "/new-arrivals" | "/deals" }) {
+  return <div className="mb-7 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
+    <div className="min-w-0"><p className="text-[11px] font-semibold uppercase text-muted-foreground">{kicker}</p><h2 className="mt-2 text-2xl font-bold leading-tight sm:text-3xl">{title}</h2></div>
+    {to && <Link to={to} className="flex shrink-0 items-center gap-2 border-b border-foreground pb-1 text-xs font-semibold">View all <ArrowUpRight className="h-4 w-4" /></Link>}
+  </div>;
+}
+
+function ProductRail({ id, kicker, title, to, products, deal = false }: { id: string; kicker: string; title: string; to: "/trending" | "/new-arrivals" | "/deals"; products: Product[]; deal?: boolean }) {
+  if (!products.length) return null;
+  return <section id={id} className="modern-section mx-auto max-w-7xl px-5 sm:px-8">
+    <SectionTitle kicker={kicker} title={title} to={to} />
+    <div className="modern-product-grid grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+      {products.slice(0, 8).map(p => <ProductCard key={p.slug} p={p} deal={deal} />)}
+    </div>
+  </section>;
+}
+
 function Categories() {
-  return (
-    <section id="categories" className="py-14 sm:py-24 bg-secondary/40">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-8">
-        <p className="eyebrow">The men's wardrobe</p>
-        <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          Every essential, considered.
-        </h2>
+  return <section id="categories" className="border-b border-border">
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10">
+      <div className="mb-5 flex items-center justify-between"><h2 className="text-lg font-bold">Find your next essential</h2><span className="hidden text-xs text-muted-foreground sm:block">The men's wardrobe</span></div>
+      <div className="no-scrollbar flex gap-2 overflow-x-auto pb-2">
+        {MEN_CATEGORIES.map(name => <Button key={name} asChild variant="outline" className="h-10 shrink-0 rounded-sm shadow-none"><Link to="/search" search={{ q: name }}>{name}</Link></Button>)}
       </div>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 border-l border-t border-border">
-          {MEN_CATEGORIES.map((name, index) => (
-            <Link
-              key={name}
-              to="/search"
-              search={{ q: name }}
-              className="group min-h-32 border-r border-b border-border bg-background p-4 sm:p-5 flex flex-col justify-between hover:bg-primary hover:text-primary-foreground transition-colors"
-            >
-              <span className="text-[10px] text-muted-foreground group-hover:text-primary-foreground/60">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <div className="flex items-end justify-between gap-2">
-                <h3 className="font-display text-xl leading-tight">{name}</h3>
-                <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* --------------------------------- Rails ---------------------------------- */
-
-function SectionHead({
-  eyebrow,
-  title,
-  to,
-  cta = "View all",
-}: {
-  eyebrow: string;
-  title: string;
-  to: "/trending" | "/new-arrivals" | "/deals";
-  cta?: string;
-}) {
-  return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 pb-6 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-4">
-      <div className="min-w-0">
-        <p className="eyebrow">{eyebrow}</p>
-        <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          {title}
-        </h2>
-      </div>
-      <Link
-        to={to}
-        className="shrink-0 inline-flex items-center gap-1.5 text-sm border-b border-foreground/40 hover:border-accent hover:text-accent transition-colors pb-1"
-      >
-        {cta} <ArrowRight className="h-4 w-4" />
-      </Link>
     </div>
-  );
+  </section>;
 }
 
-function ProductRail({
-  id,
-  eyebrow,
-  title,
-  cta,
-  to,
-  products,
-  deal = false,
-  tinted = false,
-}: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  cta?: string;
-  to: "/trending" | "/new-arrivals" | "/deals";
-  products: Product[];
-  deal?: boolean;
-  tinted?: boolean;
-}) {
-  if (products.length === 0) return null;
-  return (
-    <section id={id} className={`py-14 sm:py-20 ${tinted ? "bg-secondary/50" : ""}`}>
-      <SectionHead eyebrow={eyebrow} title={title} cta={cta} to={to} />
-      <div className="mx-auto max-w-7xl">
-        <div className="sm:hidden no-scrollbar overflow-x-auto pl-4 pr-4">
-          <div className="flex gap-4 w-max">
-            {products.map((p) => (
-              <div key={p.slug} className="w-[62vw] max-w-[260px]">
-                <ProductCard p={p} deal={deal} />
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="hidden sm:grid px-6 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-          {products.map((p) => (
-            <ProductCard key={p.slug} p={p} deal={deal} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function EmptyState() {
-  return (
-    <section className="py-14 sm:py-20">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
-        <p className="eyebrow">Coming soon</p>
-        <h2 className="mt-2 font-display text-3xl sm:text-4xl">The next edit lands shortly.</h2>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Our editors are curating the next drop. Check back soon for fresh picks across every
-          category.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------ Editor's picks ----------------------------- */
-
-function EditorsPicks({ products }: { products: Product[] }) {
-  if (products.length === 0) return null;
-  const [lead, ...rest] = products.slice(0, 5);
-  return (
-    <section id="editors" className="py-14 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="pb-8">
-          <p className="eyebrow">Editor's picks</p>
-          <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-            Chosen by our <em className="italic text-accent">stylists</em>.
-          </h2>
-        </div>
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr] items-stretch">
-          <div className="relative overflow-hidden rounded-3xl bg-muted min-h-[320px]">
-            <img
-              src={lead.img}
-              alt={lead.name}
-              loading="lazy"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 text-primary-foreground">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-gold/95 text-ink px-3 py-1 text-[10px] tracking-[0.18em] uppercase">
-                <Sparkles className="h-3 w-3" /> Pick of the week
-              </span>
-              <h3 className="mt-3 font-display text-2xl sm:text-3xl leading-tight max-w-lg">
-                {lead.name}
-              </h3>
-              <Link
-                to="/product/$slug"
-                params={{ slug: lead.slug }}
-                className="mt-4 inline-flex items-center gap-2 h-11 px-6 rounded-full bg-primary-foreground text-ink text-xs tracking-[0.16em] uppercase hover:bg-gold transition"
-              >
-                View piece <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-5">
-            {rest.map((p) => (
-              <ProductCard key={p.slug} p={p} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------ Premium brands ----------------------------- */
-
-function PremiumBrands({ products }: { products: Product[] }) {
-  const brands = useMemo(() => {
-    const seen = new Map<string, string>();
-    for (const p of products) {
-      if (p.brand && !seen.has(p.brand)) seen.set(p.brand, p.slug);
-    }
-    const list = Array.from(seen.keys());
-    return list.length
-      ? list.slice(0, 12)
-      : ["Zara", "H&M", "Levi's", "Raymond", "Fabindia", "Titan", "Tanishq", "Clarks"];
-  }, [products]);
-
-  return (
-    <section id="brands" className="py-14 sm:py-24 bg-primary text-primary-foreground">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="pb-8">
-          <p className="eyebrow text-primary-foreground/60">Premium brands</p>
-          <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-            Houses we <em className="italic text-gold">trust</em>.
-          </h2>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
-          {brands.map((b) => (
-            <Link
-              key={b}
-              to="/search"
-              search={{ q: b }}
-              className="group grid place-items-center h-24 rounded-2xl border border-primary-foreground/15 hover:border-gold hover:bg-primary-foreground/5 transition-colors px-3"
-            >
-              <span className="font-display text-lg sm:text-xl text-center truncate w-full group-hover:text-gold transition-colors">
-                {b}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------ Style banners ------------------------------ */
-
-const STYLE_BANNERS = [
-  {
-    id: "gen-z",
-    img: genzImg,
-    eyebrow: "Gen Z",
-    title: "Bold, playful, unmistakably now.",
-    blurb:
-      "Statement silhouettes, street-ready layers and colour that refuses to whisper — the edit for a new generation.",
-    cta: "Shop Gen Z",
-    q: "gen z",
-  },
-  {
-    id: "classic",
-    img: classicImg,
-    eyebrow: "Classic",
-    title: "Tailoring that never dates.",
-    blurb:
-      "Crisp shirting, trench coats and quiet tailoring. Considered menswear designed to stay in rotation for decades.",
-    cta: "Shop classic",
-    q: "classic",
-  },
-  {
-    id: "vintage",
-    img: vintageImg,
-    eyebrow: "Vintage",
-    title: "Pieces with a past, made for now.",
-    blurb:
-      "Corduroy blazers, knit polos, heritage denim and gold-toned watches — the gentleman's archive, warmly reimagined.",
-    cta: "Shop vintage",
-    q: "vintage",
-  },
-  {
-    id: "premium",
-    img: premiumImg,
-    eyebrow: "Premium",
-    title: "The house of gold and ink.",
-    blurb:
-      "Our most refined menswear: elevated fabrics, precise finishing and the kind of detail you only notice up close.",
-    cta: "Shop premium",
-    q: "premium",
-  },
-] as const;
-
-function StyleBanners() {
-  return (
-    <div className="bg-background">
-      {STYLE_BANNERS.map((b, i) => (
-        <section
-          key={b.id}
-          id={b.id}
-          className={`py-10 sm:py-16 scroll-mt-24 ${i % 2 === 1 ? "bg-secondary/40" : ""}`}
-        >
-          <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="group relative overflow-hidden rounded-lg bg-secondary shadow-[0_20px_60px_-30px_rgba(0,0,0,0.45)]">
-              <div className={`grid lg:grid-cols-2 ${i % 2 === 1 ? "lg:[direction:rtl]" : ""}`}>
-                <div className="p-8 sm:p-12 lg:p-16 flex flex-col justify-center min-h-[320px] [direction:ltr]">
-                  <p className="eyebrow">{b.eyebrow}</p>
-                  <h2 className="mt-3 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-                    {b.title}
-                  </h2>
-                  <p className="mt-4 text-sm text-muted-foreground max-w-md leading-relaxed">
-                    {b.blurb}
-                  </p>
-                  <Link
-                    to="/search"
-                    search={{ q: b.q }}
-                    className="mt-7 inline-flex w-fit items-center gap-2 h-12 px-6 rounded-full bg-primary text-primary-foreground text-xs tracking-[0.16em] uppercase hover:bg-accent transition-all duration-300 hover:gap-3"
-                  >
-                    {b.cta} <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-                <div className="relative min-h-[300px] lg:min-h-[440px] overflow-hidden [direction:ltr]">
-                  <img
-                    src={b.img}
-                    alt={`${b.eyebrow} fashion editorial`}
-                    width={1536}
-                    height={1024}
-                    loading="lazy"
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 to-transparent lg:bg-gradient-to-r lg:from-secondary/60 lg:to-transparent" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      ))}
-    </div>
-  );
-}
-
-
-/* --------------------------------- Reviews --------------------------------- */
-
-const REVIEWS = [
-  {
-    name: "Arjun R.",
-    city: "Bengaluru",
-    text: "Style Mart is the only place I browse before buying. The vintage edit is genuinely well curated.",
-  },
-  {
-    name: "Rohit M.",
-    city: "Mumbai",
-    text: "Found a camel coat at half the price I'd seen elsewhere. The links took me straight to checkout.",
-  },
-  {
-    name: "Pranav S.",
-    city: "Delhi",
-    text: "It feels like a luxury boutique but the prices are from stores I already trust. Beautifully done.",
-  },
+const EDITS = [
+  { id: "gen-z", title: "Street ready", label: "Relaxed fits. Fresh energy.", img: streetImg, q: "gen z", number: "01" },
+  { id: "classic", title: "Everyday elevated", label: "Essentials. Anything but basic.", img: essentialsImg, q: "Shirts", number: "02" },
+  { id: "premium", title: "The premium edit", label: "Considered details. Effortless style.", img: heroImg, q: "premium", number: "03" },
 ];
 
-function Reviews() {
-  return (
-    <section className="py-14 sm:py-24 bg-secondary/50">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="pb-8">
-          <p className="eyebrow">Customer reviews</p>
-          <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-            Loved by well-dressed people.
-          </h2>
+function StyleEdits() {
+  return <section id="collections" className="modern-section mx-auto max-w-7xl px-5 sm:px-8">
+    <SectionTitle kicker="Shop by mood" title="Make it your own." />
+    <div className="grid gap-6 sm:grid-cols-3">
+      {EDITS.map(edit => <Link id={edit.id} key={edit.id} to="/search" search={{ q: edit.q }} className="group min-w-0 scroll-mt-48">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted">
+          <img src={edit.img} alt={edit.title + " men's fashion edit"} loading="lazy" width={1024} height={1280} className={`h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105 ${edit.id === "premium" ? "object-[72%_center]" : ""}`} />
+          <span className="absolute left-4 top-4 bg-background px-2 py-1 text-[10px] font-semibold">EDIT / {edit.number}</span>
+          <span className="absolute bottom-4 right-4 grid h-10 w-10 place-items-center rounded-full bg-background text-foreground"><ArrowUpRight className="h-5 w-5" /></span>
         </div>
-        <div className="grid gap-4 sm:gap-6 md:grid-cols-3">
-          {REVIEWS.map((r) => (
-            <figure
-              key={r.name}
-            className="rounded-lg bg-card border border-border p-6 sm:p-8 flex flex-col"
-            >
-              <Quote className="h-6 w-6 text-gold" />
-              <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-foreground/85">
-                “{r.text}”
-              </blockquote>
-              <div className="mt-5 flex items-center gap-1 text-gold">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-3.5 w-3.5 fill-current" />
-                ))}
-              </div>
-              <figcaption className="mt-3 text-[11px] tracking-[0.18em] uppercase text-muted-foreground">
-                {r.name} · {r.city}
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+        <h3 className="mt-4 text-xl font-bold">{edit.title}</h3><p className="mt-1 text-sm text-muted-foreground">{edit.label}</p>
+      </Link>)}
+    </div>
+  </section>;
 }
 
-/* -------------------------------- Newsletter ------------------------------- */
+function Brands({ products }: { products: Product[] }) {
+  const brands = useMemo(() => Array.from(new Set(products.map(p => p.brand).filter(Boolean))).slice(0, 8), [products]);
+  if (!brands.length) return null;
+  return <section id="brands" className="border-y border-border bg-secondary">
+    <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8"><p className="text-center text-[11px] font-semibold uppercase text-muted-foreground">Your favourites. All in one place.</p>
+      <div className="mt-7 flex flex-wrap items-center justify-center gap-x-10 gap-y-5 sm:gap-x-16">{brands.map(b => <Link key={b} to="/search" search={{ q: b }} className="max-w-full truncate text-xl font-extrabold transition-opacity hover:opacity-60 sm:text-2xl">{b}</Link>)}</div>
+    </div>
+  </section>;
+}
+
+function Lookbook() {
+  return <section id="lookbook" className="modern-section mx-auto max-w-7xl px-5 sm:px-8">
+    <SectionTitle kicker="The style journal" title="Less effort. More style." />
+    <Link to="/search" search={{ q: "Shirts" }} className="group relative block overflow-hidden bg-secondary">
+      <img src={heroImg} alt="Modern relaxed men's outfits in monochrome" width={1920} height={1024} loading="lazy" className="aspect-[4/3] w-full object-cover object-[70%_center] sm:aspect-[21/9]" />
+      <div className="modern-lookbook-caption absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5 sm:p-10">
+        <div><p className="text-[10px] font-semibold uppercase text-muted-foreground">Wear it your way</p><h3 className="mt-2 text-2xl font-bold sm:text-4xl">The everyday uniform.</h3></div>
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><ArrowUpRight className="h-5 w-5" /></span>
+      </div>
+    </Link>
+  </section>;
+}
 
 function Newsletter() {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
-  return (
-    <section className="py-14 sm:py-24">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
-        <p className="eyebrow">The Style Journal</p>
-        <h2 className="mt-2 font-display text-3xl sm:text-4xl lg:text-5xl leading-tight">
-          Weekly edits, quietly delivered.
-        </h2>
-        <p className="mt-3 text-sm text-muted-foreground max-w-lg mx-auto">
-          New arrivals, archive finds and price drops — one considered email a week.
-        </p>
-        {done ? (
-          <p className="mt-7 text-sm text-accent">Thank you — you're on the list.</p>
-        ) : (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (email.trim()) setDone(true);
-            }}
-            className="mt-7 grid gap-3 sm:flex sm:items-center sm:justify-center"
-          >
-            <label className="flex items-center gap-3 h-12 rounded-full border border-border bg-card px-5 sm:w-96 focus-within:border-accent transition">
-              <Mail className="h-4 w-4 text-muted-foreground shrink-0" />
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@email.com"
-                className="min-w-0 flex-1 bg-transparent outline-none text-sm"
-              />
-            </label>
-            <button
-              type="submit"
-              className="h-12 px-7 rounded-full bg-primary text-primary-foreground text-xs tracking-[0.18em] uppercase hover:bg-accent transition"
-            >
-              Subscribe
-            </button>
-          </form>
-        )}
-      </div>
-    </section>
-  );
+  return <section className="border-t border-border bg-secondary">
+    <div className="mx-auto grid max-w-7xl gap-7 px-5 py-12 sm:px-8 lg:grid-cols-2 lg:items-center">
+      <div><p className="text-[11px] font-semibold uppercase text-muted-foreground">Stay in the loop</p><h2 className="mt-2 text-2xl font-bold sm:text-3xl">Good style starts here.</h2><p className="mt-3 text-sm text-muted-foreground">New drops, fresh inspiration and standout finds.</p></div>
+      {done ? <p className="text-sm">Thank you — you're on the list.</p> : <form onSubmit={e => { e.preventDefault(); if (email.trim()) setDone(true); }} className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
+        <label className="flex h-12 min-w-0 items-center gap-3 rounded-sm border border-border bg-background px-4"><Mail className="h-4 w-4 shrink-0 text-muted-foreground" /><input aria-label="Email address" type="email" required value={email} onChange={e => setEmail(e.target.value)} placeholder="Your email address" className="w-full min-w-0 bg-transparent text-sm outline-none" /></label>
+        <Button type="submit" aria-label="Subscribe" className="h-12 rounded-sm px-4 shadow-none"><Plus className="sm:hidden" /><span className="hidden sm:inline">Sign me up</span><ArrowRight className="hidden sm:block" /></Button>
+      </form>}
+    </div>
+  </section>;
 }
-
-/* ---------------------------------- Page ----------------------------------- */
 
 function Home() {
   const { trending, fresh, sale, best } = Route.useLoaderData();
   const hasAny = trending.length + fresh.length + sale.length + best.length > 0;
-
-  return (
-    <SiteLayout>
-      <Hero />
-      <Marquee />
-      <FeaturedCollections />
-      <Categories />
-      {!hasAny && <EmptyState />}
-      <ProductRail
-        id="trending"
-        eyebrow="Trending this week"
-        title="What everyone is wearing."
-        cta="View trending"
-        to="/trending"
-        products={trending}
-      />
-      <ProductRail
-        id="new"
-        eyebrow="New arrivals"
-        title="Freshly picked this week."
-        cta="See all new"
-        to="/new-arrivals"
-        products={fresh}
-        tinted
-      />
-      <EditorsPicks products={best.length ? best : trending} />
-      <PremiumBrands products={[...best, ...trending, ...fresh, ...sale]} />
-      <StyleBanners />
-      <ProductRail
-        id="best-sellers"
-        eyebrow="Best sellers"
-        title="Highest rated, most loved."
-        cta="Browse all"
-        to="/trending"
-        products={best}
-        tinted
-      />
-      <ProductRail
-        id="sale"
-        eyebrow="Featured deals"
-        title="Prices we couldn't ignore."
-        cta="Shop the sale"
-        to="/deals"
-        products={sale}
-        deal
-      />
-      <Reviews />
-      <RecentlyViewed />
-      <Newsletter />
-      <InstagramSection />
-    </SiteLayout>
-  );
+  return <SiteLayout modern>
+    <Hero />
+    <Categories />
+    <ProductRail id="trending" kicker="On everyone's radar" title="Trending now" to="/trending" products={trending} />
+    <StyleEdits />
+    <ProductRail id="vintage" kicker="Just landed" title="New in. Next up." to="/new-arrivals" products={fresh} />
+    {!fresh.length && <div id="vintage" />}
+    {!hasAny && <div className="px-5 py-12 text-center"><h2 className="text-2xl font-bold">A fresh edit is on its way.</h2><p className="mt-3 text-sm text-muted-foreground">Discover the men's wardrobe by category.</p></div>}
+    <Brands products={[...best, ...trending, ...fresh, ...sale]} />
+    <ProductRail id="editors" kicker="The curated selection" title="Editor's picks" to="/trending" products={best.length ? best : trending} />
+    <Lookbook />
+    <ProductRail id="sale" kicker="Great finds. Better prices." title="Worth a closer look" to="/deals" products={sale} deal />
+    <RecentlyViewed />
+    <Newsletter />
+  </SiteLayout>;
 }

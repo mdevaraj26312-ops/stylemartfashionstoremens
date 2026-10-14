@@ -1,5 +1,6 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { Home, Sparkles, Crown, Gem, Watch } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const ITEMS = [
   { id: "top", label: "Home", Icon: Home },
@@ -9,7 +10,9 @@ const ITEMS = [
   { id: "premium", label: "Premium", Icon: Crown },
 ] as const;
 
-export function BottomNav() {
+export function BottomNav({ modern = false }: { modern?: boolean }) {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const hash = useRouterState({ select: (s) => s.location.hash });
   const navigate = useNavigate();
@@ -33,7 +36,8 @@ export function BottomNav() {
     >
       <ul className="grid grid-cols-5">
         {ITEMS.map(({ id, label, Icon }) => {
-          const active = onHome && (hash === id || (id === "top" && !hash));
+          // URL fragments are not sent to SSR; apply their active state after hydration.
+          const active = hydrated && onHome && (hash === id || (id === "top" && !hash));
           return (
             <li key={id}>
               <Link
@@ -45,7 +49,7 @@ export function BottomNav() {
                 }`}
               >
                 <Icon className={`h-[18px] w-[18px] transition-transform ${active ? "scale-110" : ""}`} />
-                {label}
+                {modern ? ({ top: "Home", "gen-z": "Street", classic: "Everyday", vintage: "New", premium: "Premium" }[id]) : label}
               </Link>
             </li>
           );

@@ -9,7 +9,7 @@ const ITEMS = [
   { id: "premium", label: "Premium", Icon: Crown },
 ] as const;
 
-export function BottomNav() {
+export function BottomNav({ modern = false }: { modern?: boolean }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const hash = useRouterState({ select: (s) => s.location.hash });
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export function BottomNav() {
                 }`}
               >
                 <Icon className={`h-[18px] w-[18px] transition-transform ${active ? "scale-110" : ""}`} />
-                {label}
+                {modern ? ({ top: "Home", "gen-z": "Street", classic: "Everyday", vintage: "New", premium: "Premium" }[id]) : label}
               </Link>
             </li>
           );

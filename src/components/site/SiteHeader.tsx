@@ -27,7 +27,7 @@ function Logo() {
   );
 }
 
-function AnnouncementBar() {
+function AnnouncementBar({ modern = false }: { modern?: boolean }) {
   return (
     <div className="bg-primary text-primary-foreground text-[11px] sm:text-xs">
       <div className="mx-auto max-w-7xl px-4 py-2 flex items-center justify-center gap-6 overflow-hidden">
@@ -40,14 +40,14 @@ function AnnouncementBar() {
         </span>
         <span className="hidden md:inline opacity-60">·</span>
         <span className="hidden md:inline tracking-[0.2em] uppercase whitespace-nowrap">
-          Classic · Vintage · Premium edits
+           {modern ? "Contemporary menswear · Everyday essentials" : "Classic · Vintage · Premium edits"}
         </span>
       </div>
     </div>
   );
 }
 
-export function SiteHeader() {
+export function SiteHeader({ modern = false }: { modern?: boolean }) {
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 bg-background/85 backdrop-blur border-b border-border">
-      <AnnouncementBar />
+      <AnnouncementBar modern={modern} />
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 h-16">
           <div className="flex items-center gap-2">

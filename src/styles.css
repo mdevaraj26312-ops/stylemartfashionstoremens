@@ -176,7 +176,7 @@
 .modern-home header nav { gap: 1.1rem; font-size: 12px; }
 .modern-home header > div:first-child span { letter-spacing: 0; }
 .modern-home .modern-hero { height: 540px; }
-.modern-home .modern-hero-image { object-position: 65% center; }
+.modern-home .modern-hero-image { object-position: 65% top; }
 .modern-home .modern-hero-wash { background: var(--hero-wash); }
 .modern-home .modern-section { padding-top: 56px; padding-bottom: 56px; scroll-margin-top: 180px; }
 .modern-home .modern-lookbook-caption { background: var(--lookbook-wash); }
@@ -197,7 +197,7 @@
 }
 @media (max-width: 639px) {
   .modern-home .modern-hero { height: 390px; }
-  .modern-home .modern-hero-image { object-position: 64% center; }
+  .modern-home .modern-hero-image { object-position: 36% center; }
   .modern-home .modern-hero-copy { max-width: 225px; }
   .modern-home .modern-hero-copy h1 { font-size: 40px; }
   .modern-home .modern-hero-copy > p:nth-of-type(2) { font-size: 19px; max-width: 160px; }

@@ -1,5 +1,6 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { Home, Sparkles, Crown, Gem, Watch } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const ITEMS = [
   { id: "top", label: "Home", Icon: Home },
@@ -10,6 +11,8 @@ const ITEMS = [
 ] as const;
 
 export function BottomNav({ modern = false }: { modern?: boolean }) {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const hash = useRouterState({ select: (s) => s.location.hash });
   const navigate = useNavigate();
@@ -33,7 +36,8 @@ export function BottomNav({ modern = false }: { modern?: boolean }) {
     >
       <ul className="grid grid-cols-5">
         {ITEMS.map(({ id, label, Icon }) => {
-          const active = onHome && (hash === id || (id === "top" && !hash));
+          // URL fragments are not sent to SSR; apply their active state after hydration.
+          const active = hydrated && onHome && (hash === id || (id === "top" && !hash));
           return (
             <li key={id}>
               <Link

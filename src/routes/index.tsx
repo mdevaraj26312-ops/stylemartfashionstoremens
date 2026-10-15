@@ -11,6 +11,15 @@ import heroImg from "@/assets/modern-mens-campaign.jpg";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
+    const PAGE = 100;
+    const first = await listProducts({ data: { sort: "newest", page: 1, pageSize: PAGE } });
+    const pageCount = Math.ceil(first.total / PAGE);
+    const rest = await Promise.all(
+      Array.from({ length: Math.max(0, pageCount - 1) }, (_, i) =>
+        listProducts({ data: { sort: "newest", page: i + 2, pageSize: PAGE } }),
+      ),
+    );
+    const all = [first, ...rest].flatMap((r) => r.items);
     const [trending, fresh, sale, best] = await Promise.all([
       listProducts({ data: { flag: "trending", page: 1, pageSize: 10 } }),
       listProducts({ data: { flag: "new", sort: "newest", page: 1, pageSize: 10 } }),
@@ -22,6 +31,7 @@ export const Route = createFileRoute("/")({
       fresh: fresh.items,
       sale: sale.items,
       best: best.items,
+      all,
     };
   },
   head: () => ({
@@ -82,6 +92,16 @@ function ProductRail({ id, kicker, title, to, products, deal = false }: { id: st
   </section>;
 }
 
+function AllProducts({ products }: { products: Product[] }) {
+  if (!products.length) return null;
+  return <section id="all-products" className="modern-section scroll-mt-48 mx-auto max-w-7xl px-5 sm:px-8">
+    <SectionTitle kicker="The complete catalogue" title="All products" />
+    <div className="modern-product-grid grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
+      {products.map(p => <ProductCard key={p.slug} p={p} />)}
+    </div>
+  </section>;
+}
+
 function Categories() {
   return <section id="classic" className="scroll-mt-48 border-b border-border">
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10">
@@ -120,7 +140,8 @@ function Newsletter() {
 }
 
 function Home() {
-  const { trending, fresh, sale, best } = Route.useLoaderData();
+  // Defaults guard against stale cached loader data (e.g. mid-HMR) missing newer fields.
+  const { trending = [], fresh = [], sale = [], best = [], all = [] } = Route.useLoaderData();
   const hasAny = trending.length + fresh.length + sale.length + best.length > 0;
   return <SiteLayout modern>
     <Hero />
@@ -132,6 +153,7 @@ function Home() {
     <Brands products={[...best, ...trending, ...fresh, ...sale]} />
     <ProductRail id="premium" kicker="The curated selection" title="Editor's picks" to="/trending" products={best.length ? best : trending} />
     <ProductRail id="sale" kicker="Great finds. Better prices." title="Worth a closer look" to="/deals" products={sale} deal />
+    <AllProducts products={all} />
     <RecentlyViewed />
     <Newsletter />
   </SiteLayout>;

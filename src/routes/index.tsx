@@ -8,8 +8,6 @@ import { Button } from "@/components/ui/button";
 import type { Product } from "@/lib/catalog";
 import { listProducts } from "@/lib/products.functions";
 import heroImg from "@/assets/modern-mens-campaign.jpg";
-import streetImg from "@/assets/modern-streetwear.jpg";
-import essentialsImg from "@/assets/modern-essentials.jpg";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
@@ -76,7 +74,7 @@ function SectionTitle({ kicker, title, to }: { kicker: string; title: string; to
 
 function ProductRail({ id, kicker, title, to, products, deal = false }: { id: string; kicker: string; title: string; to: "/trending" | "/new-arrivals" | "/deals"; products: Product[]; deal?: boolean }) {
   if (!products.length) return null;
-  return <section id={id} className="modern-section mx-auto max-w-7xl px-5 sm:px-8">
+  return <section id={id} className="modern-section scroll-mt-48 mx-auto max-w-7xl px-5 sm:px-8">
     <SectionTitle kicker={kicker} title={title} to={to} />
     <div className="modern-product-grid grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4">
       {products.slice(0, 8).map(p => <ProductCard key={p.slug} p={p} deal={deal} />)}
@@ -85,7 +83,7 @@ function ProductRail({ id, kicker, title, to, products, deal = false }: { id: st
 }
 
 function Categories() {
-  return <section id="categories" className="border-b border-border">
+  return <section id="classic" className="scroll-mt-48 border-b border-border">
     <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10">
       <div className="mb-5 flex items-center justify-between"><h2 className="text-lg font-bold">Find your next essential</h2><span className="hidden text-xs text-muted-foreground sm:block">The men's wardrobe</span></div>
       <div className="no-scrollbar flex gap-2 overflow-x-auto pb-2">
@@ -95,27 +93,6 @@ function Categories() {
   </section>;
 }
 
-const EDITS = [
-  { id: "gen-z", title: "Street ready", label: "Relaxed fits. Fresh energy.", img: streetImg, q: "gen z", number: "01" },
-  { id: "classic", title: "Everyday elevated", label: "Essentials. Anything but basic.", img: essentialsImg, q: "Shirts", number: "02" },
-  { id: "premium", title: "The premium edit", label: "Considered details. Effortless style.", img: heroImg, q: "premium", number: "03" },
-];
-
-function StyleEdits() {
-  return <section id="collections" className="modern-section mx-auto max-w-7xl px-5 sm:px-8">
-    <SectionTitle kicker="Shop by mood" title="Make it your own." />
-    <div className="grid gap-6 sm:grid-cols-3">
-      {EDITS.map(edit => <Link id={edit.id} key={edit.id} to="/search" search={{ q: edit.q }} className="group min-w-0 scroll-mt-48">
-        <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted">
-          <img src={edit.img} alt={edit.title + " men's fashion edit"} loading="lazy" width={1024} height={1280} className={`h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105 ${edit.id === "premium" ? "object-[72%_center]" : ""}`} />
-          <span className="absolute left-4 top-4 bg-background px-2 py-1 text-[10px] font-semibold">EDIT / {edit.number}</span>
-          <span className="absolute bottom-4 right-4 grid h-10 w-10 place-items-center rounded-full bg-background text-foreground"><ArrowUpRight className="h-5 w-5" /></span>
-        </div>
-        <h3 className="mt-4 text-xl font-bold">{edit.title}</h3><p className="mt-1 text-sm text-muted-foreground">{edit.label}</p>
-      </Link>)}
-    </div>
-  </section>;
-}
 
 function Brands({ products }: { products: Product[] }) {
   const brands = useMemo(() => Array.from(new Set(products.map(p => p.brand).filter(Boolean))).slice(0, 8), [products]);
@@ -127,18 +104,6 @@ function Brands({ products }: { products: Product[] }) {
   </section>;
 }
 
-function Lookbook() {
-  return <section id="lookbook" className="modern-section mx-auto max-w-7xl px-5 sm:px-8">
-    <SectionTitle kicker="The style journal" title="Less effort. More style." />
-    <Link to="/search" search={{ q: "Shirts" }} className="group relative block overflow-hidden bg-secondary">
-      <img src={heroImg} alt="Modern relaxed men's outfits in monochrome" width={1920} height={1024} loading="lazy" className="aspect-[4/3] w-full object-cover object-[70%_center] sm:aspect-[21/9]" />
-      <div className="modern-lookbook-caption absolute bottom-0 left-0 right-0 flex items-end justify-between gap-4 p-5 sm:p-10">
-        <div><p className="text-[10px] font-semibold uppercase text-muted-foreground">Wear it your way</p><h3 className="mt-2 text-2xl font-bold sm:text-4xl">The everyday uniform.</h3></div>
-        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><ArrowUpRight className="h-5 w-5" /></span>
-      </div>
-    </Link>
-  </section>;
-}
 
 function Newsletter() {
   const [email, setEmail] = useState("");
@@ -160,14 +125,12 @@ function Home() {
   return <SiteLayout modern>
     <Hero />
     <Categories />
-    <ProductRail id="trending" kicker="On everyone's radar" title="Trending now" to="/trending" products={trending} />
-    <StyleEdits />
+    <ProductRail id="gen-z" kicker="On everyone's radar" title="Trending now" to="/trending" products={trending} />
     <ProductRail id="vintage" kicker="Just landed" title="New in. Next up." to="/new-arrivals" products={fresh} />
     {!fresh.length && <div id="vintage" />}
     {!hasAny && <div className="px-5 py-12 text-center"><h2 className="text-2xl font-bold">A fresh edit is on its way.</h2><p className="mt-3 text-sm text-muted-foreground">Discover the men's wardrobe by category.</p></div>}
     <Brands products={[...best, ...trending, ...fresh, ...sale]} />
-    <ProductRail id="editors" kicker="The curated selection" title="Editor's picks" to="/trending" products={best.length ? best : trending} />
-    <Lookbook />
+    <ProductRail id="premium" kicker="The curated selection" title="Editor's picks" to="/trending" products={best.length ? best : trending} />
     <ProductRail id="sale" kicker="Great finds. Better prices." title="Worth a closer look" to="/deals" products={sale} deal />
     <RecentlyViewed />
     <Newsletter />

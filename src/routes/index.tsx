@@ -11,17 +11,21 @@ import heroImg from "@/assets/modern-mens-campaign.jpg";
 
 export const Route = createFileRoute("/")({
   loader: async () => {
-    const [trending, fresh, sale, best] = await Promise.all([
-      listProducts({ data: { flag: "trending", page: 1, pageSize: 10 } }),
-      listProducts({ data: { flag: "new", sort: "newest", page: 1, pageSize: 10 } }),
-      listProducts({ data: { flag: "deal", page: 1, pageSize: 10 } }),
-      listProducts({ data: { sort: "rating", page: 1, pageSize: 10 } }),
-    ]);
+    const PAGE = 100;
+    const first = await listProducts({ data: { sort: "newest", page: 1, pageSize: PAGE } });
+    const pageCount = Math.ceil(first.total / PAGE);
+    const rest = await Promise.all(
+      Array.from({ length: Math.max(0, pageCount - 1) }, (_, i) =>
+        listProducts({ data: { sort: "newest", page: i + 2, pageSize: PAGE } }),
+      ),
+    );
+    const all = [first, ...rest].flatMap((r) => r.items);
     return {
-      trending: trending.items,
-      fresh: fresh.items,
-      sale: sale.items,
-      best: best.items,
+      trending: first.items, // newest first, so fresh imports surface here automatically
+      fresh: all.filter((p) => p.newArrival),
+      sale: all.filter((p) => p.deal),
+      best: all,
+      all,
     };
   },
   head: () => ({

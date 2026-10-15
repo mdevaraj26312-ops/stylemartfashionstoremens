@@ -20,11 +20,17 @@ export const Route = createFileRoute("/")({
       ),
     );
     const all = [first, ...rest].flatMap((r) => r.items);
+    const [trending, fresh, sale, best] = await Promise.all([
+      listProducts({ data: { flag: "trending", page: 1, pageSize: 10 } }),
+      listProducts({ data: { flag: "new", sort: "newest", page: 1, pageSize: 10 } }),
+      listProducts({ data: { flag: "deal", page: 1, pageSize: 10 } }),
+      listProducts({ data: { sort: "rating", page: 1, pageSize: 10 } }),
+    ]);
     return {
-      trending: first.items, // newest first, so fresh imports surface here automatically
-      fresh: all.filter((p) => p.newArrival),
-      sale: all.filter((p) => p.deal),
-      best: all,
+      trending: trending.items,
+      fresh: fresh.items,
+      sale: sale.items,
+      best: best.items,
       all,
     };
   },

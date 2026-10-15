@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, ArrowRight, Mail, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
 import { RecentlyViewed } from "@/components/site/RecentlyViewed";
@@ -20,14 +20,12 @@ export const Route = createFileRoute("/")({
       ),
     );
     const all = [first, ...rest].flatMap((r) => r.items);
-    const [trending, fresh, sale, best] = await Promise.all([
-      listProducts({ data: { flag: "trending", page: 1, pageSize: 10 } }),
+    const [fresh, sale, best] = await Promise.all([
       listProducts({ data: { flag: "new", sort: "newest", page: 1, pageSize: 10 } }),
       listProducts({ data: { flag: "deal", page: 1, pageSize: 10 } }),
       listProducts({ data: { sort: "rating", page: 1, pageSize: 10 } }),
     ]);
     return {
-      trending: trending.items,
       fresh: fresh.items,
       sale: sale.items,
       best: best.items,
@@ -114,17 +112,6 @@ function Categories() {
 }
 
 
-function Brands({ products }: { products: Product[] }) {
-  const brands = useMemo(() => Array.from(new Set(products.map(p => p.brand).filter(Boolean))).slice(0, 8), [products]);
-  if (!brands.length) return null;
-  return <section id="brands" className="border-y border-border bg-secondary">
-    <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8"><p className="text-center text-[11px] font-semibold uppercase text-muted-foreground">Your favourites. All in one place.</p>
-      <div className="mt-7 flex flex-wrap items-center justify-center gap-x-10 gap-y-5 sm:gap-x-16">{brands.map(b => <Link key={b} to="/search" search={{ q: b }} className="max-w-full truncate text-xl font-extrabold transition-opacity hover:opacity-60 sm:text-2xl">{b}</Link>)}</div>
-    </div>
-  </section>;
-}
-
-
 function Newsletter() {
   const [email, setEmail] = useState("");
   const [done, setDone] = useState(false);
@@ -141,18 +128,17 @@ function Newsletter() {
 
 function Home() {
   // Defaults guard against stale cached loader data (e.g. mid-HMR) missing newer fields.
-  const { trending = [], fresh = [], sale = [], best = [], all = [] } = Route.useLoaderData();
-  const hasAny = trending.length + fresh.length + sale.length + best.length > 0;
+  const { fresh = [], sale = [], best = [], all = [] } = Route.useLoaderData();
+  const hasAny = fresh.length + sale.length + best.length > 0;
   return <SiteLayout modern>
     <Hero />
     <Categories />
-    <ProductRail id="gen-z" kicker="On everyone's radar" title="Trending now" to="/trending" products={trending} />
     <ProductRail id="vintage" kicker="Just landed" title="New in. Next up." to="/new-arrivals" products={fresh} />
     {!fresh.length && <div id="vintage" />}
     {!hasAny && <div className="px-5 py-12 text-center"><h2 className="text-2xl font-bold">A fresh edit is on its way.</h2><p className="mt-3 text-sm text-muted-foreground">Discover the men's wardrobe by category.</p></div>}
-    <Brands products={[...best, ...trending, ...fresh, ...sale]} />
-    <ProductRail id="premium" kicker="The curated selection" title="Editor's picks" to="/trending" products={best.length ? best : trending} />
+    <ProductRail id="premium" kicker="The curated selection" title="Editor's picks" to="/trending" products={best.length ? best : fresh} />
     <ProductRail id="sale" kicker="Great finds. Better prices." title="Worth a closer look" to="/deals" products={sale} deal />
+    <span id="gen-z" className="scroll-mt-48" />
     <AllProducts products={all} />
     <RecentlyViewed />
     <Newsletter />

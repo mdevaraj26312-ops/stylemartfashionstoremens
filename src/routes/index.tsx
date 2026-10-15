@@ -140,7 +140,8 @@ function Newsletter() {
 }
 
 function Home() {
-  const { trending, fresh, sale, best, all } = Route.useLoaderData();
+  // Defaults guard against stale cached loader data (e.g. mid-HMR) missing newer fields.
+  const { trending = [], fresh = [], sale = [], best = [], all = [] } = Route.useLoaderData();
   const hasAny = trending.length + fresh.length + sale.length + best.length > 0;
   return <SiteLayout modern>
     <Hero />

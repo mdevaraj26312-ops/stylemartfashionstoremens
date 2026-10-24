@@ -77,6 +77,51 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_sources: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          kind: string
+          last_sync_at: string | null
+          last_sync_error: string | null
+          last_sync_status: string
+          marketplace: string | null
+          name: string
+          slug: string
+          sync_interval_minutes: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          kind?: string
+          last_sync_at?: string | null
+          last_sync_error?: string | null
+          last_sync_status?: string
+          marketplace?: string | null
+          name: string
+          slug: string
+          sync_interval_minutes?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          kind?: string
+          last_sync_at?: string | null
+          last_sync_error?: string | null
+          last_sync_status?: string
+          marketplace?: string | null
+          name?: string
+          slug?: string
+          sync_interval_minutes?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       brands: {
         Row: {
           created_at: string
@@ -298,6 +343,45 @@ export type Database = {
           id?: string
           name?: string
           slug?: string
+        }
+        Relationships: []
+      }
+      sync_runs: {
+        Row: {
+          detail: Json
+          error: string | null
+          finished_at: string | null
+          hidden: number
+          id: string
+          imported: number
+          source_slug: string
+          started_at: string
+          status: string
+          updated: number
+        }
+        Insert: {
+          detail?: Json
+          error?: string | null
+          finished_at?: string | null
+          hidden?: number
+          id?: string
+          imported?: number
+          source_slug: string
+          started_at?: string
+          status: string
+          updated?: number
+        }
+        Update: {
+          detail?: Json
+          error?: string | null
+          finished_at?: string | null
+          hidden?: number
+          id?: string
+          imported?: number
+          source_slug?: string
+          started_at?: string
+          status?: string
+          updated?: number
         }
         Relationships: []
       }

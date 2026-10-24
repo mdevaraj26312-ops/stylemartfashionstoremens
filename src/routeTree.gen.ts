@@ -24,9 +24,11 @@ import { Route as AdminBrandsRouteImport } from './routes/admin.brands'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminSourcesRouteImport } from './routes/admin.sources'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as GoIdRouteImport } from './routes/go.$id'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as ApiPublicHooksSyncProductsRouteImport } from './routes/api/public/hooks/sync-products'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -103,6 +105,11 @@ const AdminSettingsRoute = AdminSettingsRouteImport.update({
   path: '/admin/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSourcesRoute = AdminSourcesRouteImport.update({
+  id: '/admin/sources',
+  path: '/admin/sources',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/category/$slug',
   path: '/category/$slug',
@@ -118,6 +125,12 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksSyncProductsRoute =
+  ApiPublicHooksSyncProductsRouteImport.update({
+    id: '/api/public/hooks/sync-products',
+    path: '/api/public/hooks/sync-products',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -134,10 +147,12 @@ export interface FileRoutesByFullPath {
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sources': typeof AdminSourcesRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/hooks/sync-products': typeof ApiPublicHooksSyncProductsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -154,10 +169,12 @@ export interface FileRoutesByTo {
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sources': typeof AdminSourcesRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/api/public/hooks/sync-products': typeof ApiPublicHooksSyncProductsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -175,10 +192,12 @@ export interface FileRoutesById {
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/settings': typeof AdminSettingsRoute
+  '/admin/sources': typeof AdminSourcesRoute
   '/category/$slug': typeof CategorySlugRoute
   '/go/$id': typeof GoIdRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/hooks/sync-products': typeof ApiPublicHooksSyncProductsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -197,10 +216,12 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/products'
     | '/admin/settings'
+    | '/admin/sources'
     | '/category/$slug'
     | '/go/$id'
     | '/product/$slug'
     | '/admin/'
+    | '/api/public/hooks/sync-products'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -217,10 +238,12 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/products'
     | '/admin/settings'
+    | '/admin/sources'
     | '/category/$slug'
     | '/go/$id'
     | '/product/$slug'
     | '/admin'
+    | '/api/public/hooks/sync-products'
   id:
     | '__root__'
     | '/'
@@ -237,10 +260,12 @@ export interface FileRouteTypes {
     | '/admin/categories'
     | '/admin/products'
     | '/admin/settings'
+    | '/admin/sources'
     | '/category/$slug'
     | '/go/$id'
     | '/product/$slug'
     | '/admin/'
+    | '/api/public/hooks/sync-products'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -258,10 +283,12 @@ export interface RootRouteChildren {
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminProductsRoute: typeof AdminProductsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminSourcesRoute: typeof AdminSourcesRoute
   CategorySlugRoute: typeof CategorySlugRoute
   GoIdRoute: typeof GoIdRoute
   ProductSlugRoute: typeof ProductSlugRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  ApiPublicHooksSyncProductsRoute: typeof ApiPublicHooksSyncProductsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -371,6 +398,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/sources': {
+      id: '/admin/sources'
+      path: '/admin/sources'
+      fullPath: '/admin/sources'
+      preLoaderRoute: typeof AdminSourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/category/$slug'
@@ -392,6 +426,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/sync-products': {
+      id: '/api/public/hooks/sync-products'
+      path: '/api/public/hooks/sync-products'
+      fullPath: '/api/public/hooks/sync-products'
+      preLoaderRoute: typeof ApiPublicHooksSyncProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -410,10 +451,12 @@ const rootRouteChildren: RootRouteChildren = {
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminProductsRoute: AdminProductsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
+  AdminSourcesRoute: AdminSourcesRoute,
   CategorySlugRoute: CategorySlugRoute,
   GoIdRoute: GoIdRoute,
   ProductSlugRoute: ProductSlugRoute,
   AdminIndexRoute: AdminIndexRoute,
+  ApiPublicHooksSyncProductsRoute: ApiPublicHooksSyncProductsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

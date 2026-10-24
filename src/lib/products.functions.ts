@@ -64,7 +64,12 @@ export const listProducts = createServerFn({ method: "GET" })
     const from = (data.page - 1) * data.pageSize;
     const to = from + data.pageSize - 1;
 
-    let q = supabase.from("products").select(sel("*"), { count: "exact" }).not("category", "in", '("women","kids")');
+    let q = supabase
+      .from("products")
+      .select(sel("*"), { count: "exact" })
+      .not("category", "in", '("women","kids")')
+      // Items the partner reports as unavailable are hidden from the storefront.
+      .neq("availability", "out_of_stock");
     if (data.category) q = q.eq("category", data.category as never);
     if (data.source) q = q.eq("source", data.source as never);
     if (data.maxPrice) q = q.lte("price", data.maxPrice);

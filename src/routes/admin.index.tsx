@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Package, Upload, LinkIcon, Layers, Tag, Settings } from "lucide-react";
+import { Package, Upload, LinkIcon, Layers, Tag, Settings, RefreshCw } from "lucide-react";
 import { AdminPage } from "@/components/site/AdminShell";
 
 export const Route = createFileRoute("/admin/")({
@@ -17,6 +17,7 @@ type TargetPath =
   | "/admin/products"
   | "/admin/categories"
   | "/admin/brands"
+  | "/admin/sources"
   | "/admin/settings";
 
 const MODULES: { to: TargetPath; icon: React.ReactNode; title: string; desc: string }[] = [
@@ -49,6 +50,12 @@ const MODULES: { to: TargetPath; icon: React.ReactNode; title: string; desc: str
     icon: <Tag className="h-5 w-5" />,
     title: "Brands",
     desc: "Curate the fashion houses shown on the storefront.",
+  },
+  {
+    to: "/admin/sources",
+    icon: <RefreshCw className="h-5 w-5" />,
+    title: "Affiliate sources",
+    desc: "Partner connections, automatic syncing and import stats.",
   },
   {
     to: "/admin/settings",

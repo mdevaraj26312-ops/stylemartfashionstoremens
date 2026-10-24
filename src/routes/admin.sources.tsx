@@ -78,7 +78,7 @@ function SourceCard({
 }) {
   const external = s.kind === "external";
   const status = external
-    ? { label: s.is_active ? "Connected" : "Authorization required", tone: (s.is_active ? "ok" : "off") as const }
+    ? { label: s.is_active ? "Connected" : "Authorization required", tone: (s.is_active ? "ok" : "off") as "ok" | "off" }
     : s.last_sync_status === "needs_setup"
       ? { label: "Needs setup", tone: "warn" as const }
       : s.last_sync_status === "error"

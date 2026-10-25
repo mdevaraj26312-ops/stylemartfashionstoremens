@@ -261,7 +261,7 @@ function AdminDashboard() {
         <div className="mt-8 rounded-lg border border-border bg-card p-5 sm:p-7">
           <h2 className="font-display text-2xl">Bulk import (CSV)</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-             Required columns: <b>title, category, price, affiliate_url</b>. Optional: brand (defaults to "Generic"), source, original_price, image_url (a placeholder is used if empty), description, rating, reviews_count, is_trending, is_new_arrival, is_deal, slug. Category must be one of: men, footwear, bags, watches, jewellery, accessories.
+             Required columns: <b>title, category, price, affiliate_url</b>. Optional: brand (defaults to "Generic"), source, original_price, image_url (a neutral placeholder is used if empty), description, rating, reviews_count, is_trending, is_new_arrival, is_deal, slug. Category must be one of: men, footwear, bags, watches, jewellery, accessories. Column names are matched flexibly — Product Title / Name, Selling Price, MRP, Link / Product URL, Image all work. Your CSV data is shown as-is; the automatic fetch only fills missing details and never overwrites correct values.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
             <input
@@ -518,6 +518,27 @@ function isValidUrl(v: string): boolean {
 }
 
 /* --------- CSV parser (RFC 4180 subset, handles quoted fields) --------- */
+
+// Column names are matched flexibly so real-world affiliate exports import
+// without manual renaming. First alias in each list is the canonical name.
+const COLUMN_ALIASES: string[][] = [
+  ["title", "product title", "product name", "name", "item name"],
+  ["category", "product category", "product type", "type"],
+  ["price", "selling price", "sale price", "current price", "our price", "sp"],
+  ["original_price", "original price", "mrp", "list price", "was price", "strike price", "striked price"],
+  ["affiliate_url", "affiliate url", "affiliate link", "url", "link", "product url", "product link", "buy url", "buy link", "product page"],
+  ["image_url", "image url", "image", "img", "image link", "product image", "thumbnail", "image link", "picture", "photo"],
+  ["brand", "brand name", "manufacturer", "make"],
+  ["source", "store", "marketplace", "platform", "site"],
+  ["description", "product description", "details", "about", "about product"],
+  ["rating", "star rating", "stars", "star ratings"],
+  ["reviews_count", "reviews count", "reviews", "number of reviews", "review count", "ratings count"],
+  ["slug", "product slug", "handle"],
+  ["is_trending", "trending", "is trending"],
+  ["is_new_arrival", "new arrival", "is new arrival", "new"],
+  ["is_deal", "deal", "is deal", "best deal"],
+];
+
 function parseCsv(text: string): DraftProduct[] {
   const rows: string[][] = [];
   let cur: string[] = [];
@@ -543,7 +564,22 @@ function parseCsv(text: string): DraftProduct[] {
 
   const header = rows.shift();
   if (!header) throw new Error("The CSV file is empty.");
-  const idx = (name: string) => header.findIndex((h) => h.trim().toLowerCase() === name);
+
+  const norm = (s: string) =>
+    s
+      .trim()
+      .toLowerCase()
+      .replace(/[\s_-]+/g, " ")
+      .replace(/[^a-z0-9 ]/g, "")
+      .trim();
+  const idxMap = new Map<string, number>();
+  header.forEach((h, i) => {
+    const n = norm(h);
+    const entry = COLUMN_ALIASES.find((names) => names.includes(n));
+    const canonical = entry?.[0];
+    if (canonical && !idxMap.has(canonical)) idxMap.set(canonical, i);
+  });
+  const idx = (name: string) => idxMap.get(name) ?? -1;
 
   const required = ["title", "category", "price", "affiliate_url"];
   const missing = required.filter((r) => idx(r) < 0);

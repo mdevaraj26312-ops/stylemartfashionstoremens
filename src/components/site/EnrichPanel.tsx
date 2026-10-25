@@ -66,9 +66,10 @@ export function EnrichPanel({ autoRunToken }: { autoRunToken?: number }) {
     <div className="mt-10 rounded-lg border border-border bg-card p-5 sm:p-7">
       <h2 className="font-display text-2xl">Auto-fetch real product data</h2>
       <p className="mt-1 text-sm text-muted-foreground">
-        Visits each product's affiliate link and pulls the real title, brand, price, original price,
-        image and description into the database. Affiliate links are never changed. This runs
-        automatically after every CSV import.
+        Visits each product's affiliate link and fills in any missing real title, brand,
+        price, image and description. Data that is already correct — including everything
+        from your CSV — is never overwritten, and promotional banner content is rejected.
+        Affiliate links are never changed. This runs automatically after every CSV import.
       </p>
 
       {stats && (

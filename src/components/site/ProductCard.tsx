@@ -69,15 +69,25 @@ export function ProductCard({ p, deal = false }: { p: Product; deal?: boolean })
         >
           {p.name}
         </Link>
-        <p className="mt-1 text-xs text-muted-foreground line-clamp-2 min-h-[2rem]">
-          {p.description}
-        </p>
+        {p.description ? (
+          <p className="mt-1 text-xs text-muted-foreground line-clamp-2 min-h-[2rem]">
+            {p.description}
+          </p>
+        ) : (
+          <div className="mt-1 min-h-[2rem]" />
+        )}
         <div className="mt-1.5 flex items-baseline gap-2">
-          <span className="font-display text-lg">{inr(p.price)}</span>
-          {p.original > p.price && (
-            <span className="text-xs text-muted-foreground line-through">
-              {inr(p.original)}
-            </span>
+          {p.price > 0 ? (
+            <>
+              <span className="font-display text-lg">{inr(p.price)}</span>
+              {p.original > p.price && (
+                <span className="text-xs text-muted-foreground line-through">
+                  {inr(p.original)}
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="text-sm text-muted-foreground">Price unavailable</span>
           )}
         </div>
         <a

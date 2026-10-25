@@ -108,19 +108,29 @@ function ProductPage() {
             </div>
 
             <div className="mt-6 flex items-baseline gap-3">
-              <span className="font-display text-4xl">{inr(p.price)}</span>
-              {p.original > p.price && (
+              {p.price > 0 ? (
+                <span className="font-display text-4xl">{inr(p.price)}</span>
+              ) : (
+                <span className="text-lg text-muted-foreground">
+                  See the live price at the partner store
+                </span>
+              )}
+              {p.price > 0 && p.original > p.price && (
                 <span className="text-sm text-muted-foreground line-through">{inr(p.original)}</span>
               )}
-              {pct > 0 && (
+              {p.price > 0 && pct > 0 && (
                 <span className="text-sm font-medium text-destructive">Save {pct}%</span>
               )}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
-              Inclusive of all taxes · Price checked today
+              {p.price > 0
+                ? "Inclusive of all taxes · Price checked today"
+                : "Live price, offers and availability are shown at the partner store"}
             </p>
 
-            <p className="mt-6 text-sm text-foreground/85 leading-relaxed">{p.description}</p>
+            {p.description && (
+              <p className="mt-6 text-sm text-foreground/85 leading-relaxed">{p.description}</p>
+            )}
 
             <div className="mt-8 grid gap-3">
               <a

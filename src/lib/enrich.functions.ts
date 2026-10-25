@@ -131,9 +131,11 @@ export const adminEnrichStats = createServerFn({ method: "GET" })
   });
 
 /**
- * Scrapes a batch of products from their affiliate URLs and writes the real
- * title / brand / price / image / description back to the database.
- * The affiliate URL itself is never modified.
+ * Visits each product's affiliate URL and fills in any MISSING real title /
+ * brand / price / image / description. Data that is already correct — in
+ * particular everything imported from a CSV — is never overwritten, and any
+ * scraped value that looks like a promotional banner is rejected. The
+ * affiliate URL itself is never modified.
  */
 export const adminEnrichBatch = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -152,7 +154,9 @@ export const adminEnrichBatch = createServerFn({ method: "POST" })
 
     let query = supabaseAdmin
       .from("products")
-      .select("id, slug, affiliate_url")
+      .select(
+        "id, slug, affiliate_url, title, brand, price, original_price, image_url, description",
+      )
       .not("affiliate_url", "is", null);
 
     if (data.slugs?.length) {
@@ -173,28 +177,87 @@ export const adminEnrichBatch = createServerFn({ method: "POST" })
       try {
         const s = await scrapeProduct(row.affiliate_url as string);
 
+        // A scrape whose title is a promo banner (deal copy, nav content)
+        // means nothing on that page is trustworthy — fail without touching
+        // the stored product data.
+        const scrapedTitle = clean(s.title, 200) ?? "";
+        if (!scrapedTitle || isJunkTitle(scrapedTitle)) {
+          throw new Error(
+            "Could not read real product details from this link — the page showed a promotional banner or category page instead of a single product. Stored data was left unchanged.",
+          );
+        }
+
+        // Fill-only-missing: never overwrite data that is already correct
+        // (e.g. imported from a CSV). A field is filled only when its current
+        // value is empty, a known-junk scrape, or the neutral placeholder.
         const price = toNumber(s.price);
         const original = toNumber(s.original_price);
+        const curTitle = clean(row.title, 200) ?? "";
+        const curBrand = clean(row.brand, 100) ?? "";
+        const curDescription = clean(row.description, 2000) ?? "";
+        const curImage = clean(row.image_url, 1000) ?? "";
+        const curPrice = Number(row.price) || 0;
+        const curOriginal = Number(row.original_price) || 0;
+
         const patch: Record<string, unknown> = {
           enriched_at: new Date().toISOString(),
           enrich_status: "done",
           enrich_error: null,
         };
+        let changed = false;
 
-        const title = clean(s.title, 200);
-        if (title) patch.title = title;
-        const brand = clean(s.brand, 100);
-        if (brand) patch.brand = brand;
-        const description = clean(s.description, 2000);
-        if (description) patch.description = description;
-        const image = clean(s.image_url, 1000);
-        if (image && /^https?:\/\//i.test(image)) patch.image_url = image;
-        if (price) patch.price = price;
-        if (original && price) patch.original_price = Math.max(original, price);
-        else if (price) patch.original_price = price;
-        if (price && patch.original_price) {
+        if (isJunkTitle(curTitle)) {
+          patch.title = scrapedTitle;
+          changed = true;
+        }
+
+        const scrapedBrand = clean(s.brand, 100);
+        if (
+          scrapedBrand &&
+          !isJunkBrand(scrapedBrand) &&
+          (!curBrand || isJunkBrand(curBrand) || curBrand.toLowerCase() === "generic")
+        ) {
+          patch.brand = scrapedBrand;
+          changed = true;
+        }
+
+        const scrapedDescription = clean(s.description, 2000);
+        if (
+          scrapedDescription &&
+          !isJunkDescription(scrapedDescription) &&
+          (!curDescription || isJunkDescription(curDescription))
+        ) {
+          patch.description = scrapedDescription;
+          changed = true;
+        }
+
+        const scrapedImage = clean(s.image_url, 1000);
+        if (
+          scrapedImage &&
+          /^https?:\/\//i.test(scrapedImage) &&
+          !isJunkImage(scrapedImage) &&
+          (!curImage || isJunkImage(curImage) || isPlaceholderImage(curImage))
+        ) {
+          patch.image_url = scrapedImage;
+          changed = true;
+        }
+
+        if (curPrice <= 0 && price) {
+          patch.price = price;
+          patch.original_price = original && original > price ? original : price;
           const op = patch.original_price as number;
           patch.discount_pct = op > price ? Math.round(((op - price) / op) * 100) : 0;
+          changed = true;
+        }
+
+        if (!changed) {
+          // Nothing needed filling — mark done so it is not reprocessed.
+          await supabaseAdmin
+            .from("products")
+            .update(patch as never)
+            .eq("id", row.id);
+          updated += 1;
+          continue;
         }
 
         const { error: upErr } = await supabaseAdmin.from("products").update(patch as never).eq("id", row.id);

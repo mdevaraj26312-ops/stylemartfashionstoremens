@@ -1,6 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import {
+  isJunkBrand,
+  isJunkDescription,
+  isJunkImage,
+  isJunkTitle,
+  isPlaceholderImage,
+} from "./enrich-validate";
 
 const GATEWAY = "https://connector-gateway.lovable.dev/firecrawl/v2";
 

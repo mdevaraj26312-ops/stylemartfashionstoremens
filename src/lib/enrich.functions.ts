@@ -68,6 +68,9 @@ async function scrapeProduct(url: string): Promise<Scraped> {
       url,
       onlyMainContent: true,
       formats: [{ type: "json", schema: EXTRACT_SCHEMA }],
+      // Amazon serves a raw promo-banner shell until the page finishes
+      // rendering — wait so the real product markup is captured.
+      actions: [{ type: "wait", milliseconds: 3000 }],
     }),
   });
 

@@ -36,6 +36,7 @@ describe("enrich-validate", () => {
     expect(isJunkImage("https://m.media-amazon.com/images/G/31/gno/sprites/nav-sprite-global-1x-reorg-privacy._CB546381437_.png")).toBe(true);
     expect(isJunkImage("https://fls-eu.amazon.in/1/batch/1/OP/A21TJRUUN4KGV:525$uedata=s:%2Frd%2Fuedata%3Fstaticb:0")).toBe(true);
     expect(isJunkImage("https://m.media-amazon.com/images/I/21SMN28tDUL._QL80_._FMpng_.png?aicid=homepage-card-logo")).toBe(true);
+    expect(isJunkImage("https://m.media-amazon.com/images/I/21UzcXAnDVL._AIweblab1431263,T1_SF693,118.5_QL80_._FMpng_.png")).toBe(true);
     expect(isJunkImage("https://m.media-amazon.com/images/I/615xtmWrSCL._SY741_.jpg")).toBe(false);
     expect(isJunkImage("https://example.com/product/shirt-front.jpg")).toBe(false);
   });

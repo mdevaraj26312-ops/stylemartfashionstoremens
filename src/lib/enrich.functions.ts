@@ -68,6 +68,9 @@ async function scrapeProduct(url: string): Promise<Scraped> {
       url,
       onlyMainContent: true,
       formats: [{ type: "json", schema: EXTRACT_SCHEMA }],
+      // Amazon serves a raw promo-banner shell until the page finishes
+      // rendering — wait so the real product markup is captured.
+      actions: [{ type: "wait", milliseconds: 3000 }],
     }),
   });
 
@@ -206,7 +209,9 @@ export const adminEnrichBatch = createServerFn({ method: "POST" })
         };
         let changed = false;
 
-        if (isJunkTitle(curTitle)) {
+        // Also fill a completely empty title (e.g. a repaired row whose only
+        // honest data is its slug).
+        if (!curTitle || isJunkTitle(curTitle)) {
           patch.title = scrapedTitle;
           changed = true;
         }

@@ -206,7 +206,9 @@ export const adminEnrichBatch = createServerFn({ method: "POST" })
         };
         let changed = false;
 
-        if (isJunkTitle(curTitle)) {
+        // Also fill a completely empty title (e.g. a repaired row whose only
+        // honest data is its slug).
+        if (!curTitle || isJunkTitle(curTitle)) {
           patch.title = scrapedTitle;
           changed = true;
         }

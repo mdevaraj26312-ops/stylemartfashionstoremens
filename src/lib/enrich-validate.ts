@@ -10,7 +10,7 @@ const JUNK_BRAND_RE =
   /^(amazon|unknown|various|not specified|n\/a|na|brand|generic|seller)$|& more/i;
 
 const JUNK_IMAGE_RE =
-  /nav-sprite|gno\/sprites|fls-eu\.amazon|uedata|aicid=homepage|homepage-card|beacon|transparent-pixel/i;
+  /nav-sprite|gno\/sprites|fls-eu\.amazon|uedata|aicid=homepage|homepage-card|beacon|transparent-pixel|aiweblab/i;
 
 const JUNK_DESCRIPTION_RE =
   /great deals|great prices|resistance bands|yoga mats|string lights|deal of the day|shop early deals|check amazon/i;

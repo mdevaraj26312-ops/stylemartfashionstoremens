@@ -8,6 +8,13 @@
       "when": 1792844072373,
       "tag": "0000_affiliate_sources_and_sync_runs",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792987558263,
+      "tag": "0001_repair_junk_enrichment_data",
+      "breakpoints": true
     }
   ]
 }

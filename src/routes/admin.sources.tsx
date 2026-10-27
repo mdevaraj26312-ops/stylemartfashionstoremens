@@ -167,6 +167,8 @@ function AdminSourcesPage() {
   };
 
   const lastResult = sync.data?.results?.[0];
+  const summary = sync.data?.summary;
+  const lastSaved = lastResult ? lastResult.imported + lastResult.updated : 0;
 
   return (
     <AdminPage

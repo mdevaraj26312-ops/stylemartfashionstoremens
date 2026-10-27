@@ -211,7 +211,15 @@ async function runPaapiSource(db: AdminDb, slug: string): Promise<SyncSourceResu
       .eq("slug", slug);
     if (srcErr) throw new Error(srcErr.message);
 
-    return { slug, status, imported, updated: rows.length - imported, hidden, errors: searchErrors };
+    return {
+      slug,
+      status,
+      imported,
+      updated: rows.length - imported,
+      hidden,
+      fetched,
+      errors: searchErrors,
+    };
   } catch (e) {
     const msg = (e as Error).message.slice(0, 2000);
     await recordRun(db, slug, "error", startedAt, { imported: 0, updated: 0, hidden: 0 }, msg, {});
@@ -219,6 +227,6 @@ async function runPaapiSource(db: AdminDb, slug: string): Promise<SyncSourceResu
       .from("affiliate_sources")
       .update({ last_sync_at: new Date().toISOString(), last_sync_status: "error", last_sync_error: msg })
       .eq("slug", slug);
-    return { slug, status: "error", imported: 0, updated: 0, hidden: 0, errors: [msg] };
+    return { slug, status: "error", imported: 0, updated: 0, hidden: 0, fetched: 0, errors: [msg] };
   }
 }

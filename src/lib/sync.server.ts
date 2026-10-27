@@ -10,8 +10,31 @@ export type SyncSourceResult = {
   imported: number;
   updated: number;
   hidden: number;
+  /** Items the source API actually returned, before filtering. */
+  fetched: number;
   errors: string[];
 };
+
+export type SyncSummary = {
+  fetched: number;
+  saved: number;
+  skipped: number;
+  failed: number;
+};
+
+/** Actual counts across sources — never report success when saved is 0. */
+export function summarizeSync(results: SyncSourceResult[]): SyncSummary {
+  const summary: SyncSummary = { fetched: 0, saved: 0, skipped: 0, failed: 0 };
+  for (const r of results) {
+    if (r.status === "skipped") summary.skipped += 1;
+    else if (r.status === "error" || r.status === "needs_setup") summary.failed += 1;
+    else {
+      summary.fetched += r.fetched;
+      summary.saved += r.imported + r.updated;
+    }
+  }
+  return summary;
+}
 
 const PLACEHOLDER_IMAGE =
   "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=900&q=70";
@@ -42,11 +65,12 @@ export async function runSync(
             imported: 0,
             updated: 0,
             hidden: 0,
+            fetched: 0,
             errors: ["No authorized automatic feed is connected for this partner yet."],
           },
     );
   }
-  return { ran, results };
+  return { ran, results, summary: summarizeSync(results) };
 }
 
 async function recordRun(
@@ -84,7 +108,7 @@ async function runPaapiSource(db: AdminDb, slug: string): Promise<SyncSourceResu
       .from("affiliate_sources")
       .update({ last_sync_at: startedAt, last_sync_status: "needs_setup", last_sync_error: msg })
       .eq("slug", slug);
-    return { ...base, status: "needs_setup", errors: [msg] };
+    return { ...base, status: "needs_setup", fetched: 0, errors: [msg] };
   }
 
   try {
@@ -97,7 +121,9 @@ async function runPaapiSource(db: AdminDb, slug: string): Promise<SyncSourceResu
 
     const picked: { item: PaapiItem; bucket: BucketId }[] = [];
     const seen = new Set<string>();
+    let fetched = 0;
     const searchErrors = await searchAll(plan, (items, keywords) => {
+      fetched += items.length;
       const bucket = bucketByKeywords.get(keywords);
       if (!bucket) return;
       for (const item of items) {
